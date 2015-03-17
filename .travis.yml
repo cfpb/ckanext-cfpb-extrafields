@@ -1,0 +1,10 @@
+language: python
+python:
+  - "2.7"
+install:
+  - pip install -r requirements-test.txt --use-mirrors
+
+script:
+  - nosetests -s --cover-package=ckanext.cfpb_extrafields.validators
+after_success:
+  - coveralls

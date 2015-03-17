@@ -2,25 +2,49 @@
 {% import 'macros/form.html' as form %}
 
 {% block custom_fields %}
-{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=[{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}], error=errors.sensitivity_level, classes=['control-medium']) }}
+
+{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=[{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
   <div class="control-group ">
     <label class="control-label">Has PII?</label>
     <div class="controls ">
-        <input id="has_pii" type="radio" name="has_pii" value='yes' placeholder="Yes">Yes</input>
-        <input id="has_pii" type="radio" name="has_pii" value='no' placeholder="No" checked>No</input>
+        <input id="has_pii" type="radio" name="has_pii" value='yes' placeholder="Yes" {% if data.has_pii == 'yes' %}checked{% endif %}>Yes</input>
+        <input id="has_pii" type="radio" name="has_pii" value='no' placeholder="No"  {% if data.has_pii != 'yes' %}checked{% endif %}>No</input>
     </div>
   </div>
+
+
   <div class="control-group ">
     <label class="control-label">Types of Entries</label>
     <div class="controls ">
 	<select id="type_of_entries" name="type_of_entries" multiple>
-	  <option value="Consumers">Consumers</option>
-          <option value="Financial Institutions">Financial Institutions</option>
-          <option value="Employees">Employees</option>
-          <option value="Government">Government</option>
-          <option value="Other">Other (please specify)</option>
+
+      <!-- could do this with a loop; see commented get_helpers() function in plugin.py for a simple way to implement -->
+      {#
+          {% for type in h.type_of_entries %}
+            <option value="{{type}}" {% if type in data.get('type_of_entries', []) %}selected="selected"{% endif %}>{{type}}</option>
+          {% endfor %}
+      #}
+        <option value="Consumers" {% if "Consumers" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Consumers</option>
+        <option value="Financial Institutions" {% if "Financial Institutions" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Financial Institutions</option>
+        <option value="Employees" {% if "Employees" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Employees</option>
+        <option value="Government" {% if "Government" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Government</option>
+        <option value="Other" {% if "Other" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Other (please specify)</option>
+
 	</select>
     </div>
   </div>
-{{ form.input('pra_control_num', label=_("PRA Control Number"), placeholder="XXXX-XXXX", value="", error=errors.pra_control_num) }}
+{{ form.input('pra_control_num', label=_("PRA Control Number"), placeholder="XXXX-XXXX", value=data.pra_control_num, error=errors.pra_control_num) }}
+
+{{ form.input('size_in_mb', label=_("Size in MB"), placeholder="eg 1.2", value=data.size_in_mb, error=errors.size_in_mb) }}
+
+{{ form.input('time_period_start_date', type='date', label=_("Time Period Start Date"), placeholder="eg 12/21/2012", value=data.time_period_start_date, error=errors.time_period_start_date) }}
+
+{{ form.input('pia_url', type='url', label=_("PIA Link"), placeholder="eg http://...", value=data.pia_url, error=errors.pia_url) }}
+
+{{ form.input('storage_location', label=_("Storage Location"), placeholder="eg http://..., D:\path\to\data", value=data.storage_location, error=errors.storage_location) }}
+
+
+
+
+
 {% endblock %}
