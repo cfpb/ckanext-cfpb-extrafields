@@ -1,6 +1,7 @@
 # CFPB CKAN Extra Fields
 
 [![Build Status](https://travis-ci.org/marcesher/ckanext-cfpb-extrafields.png)](https://travis-ci.org/marcesher/ckanext-cfpb-extrafields)
+[![Coverage Status](https://coveralls.io/repos/marcesher/ckanext-cfpb-extrafields/badge.svg)](https://coveralls.io/r/marcesher/ckanext-cfpb-extrafields)
 
 **Description**: This is a [CKAN](http://docs.ckan.org) extension to add CFPB-specific extra metadata fields.
 It is a sibling project to https://github.com/cfpb/ckan and expected to live along-side that project.
