@@ -1,0 +1,70 @@
+{% ckan_extends %}
+
+{% block extras %}
+
+  {#
+     {{pkg_dict}}
+  #}
+
+  {% if pkg_dict.has_pii %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Has PII?") }}</th>
+      <td class="dataset-details">{{ pkg_dict.has_pii }}</td>
+     </tr>
+  {% endif %}
+
+  {% if pkg_dict.sensitivity_level %}
+    <tr>
+	<th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
+	<td class="dataset-details">{{ pkg_dict.sensitivity_level }} </td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.type_of_entries %}
+    <tr>
+	<th scope="row" class="dataset-label">{{ _("Type Of Entries") }} </th>
+
+    <!-- TODO: make this a prettier list; right now it just dumps the set -->
+	<td class="dataset-details">
+	  {{pkg_dict.type_of_entries}}
+	</td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.pra_control_num %}
+    <tr>
+        <th scope="row" class="dataset-label">{{ _("PRA Control Number") }} </th>
+        <td class="dataset-details">{{ pkg_dict.pra_control_num }} </td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.size_in_mb %}
+    <tr>
+        <th scope="row" class="dataset-label">{{ _("Size (MB)") }} </th>
+        <td class="dataset-details">{{ pkg_dict.size_in_mb }} </td>
+    </tr>
+  {% endif %}
+
+  {% if pkg_dict.time_period_start_date %}
+    <tr>
+        <th scope="row" class="dataset-label">{{ _("Time Period Start Date") }} </th>
+        <td class="dataset-details">{{ pkg_dict.time_period_start_date }} </td>
+    </tr>
+  {% endif %}
+
+
+  {% if pkg_dict.pia_url %}
+    <tr>
+        <th scope="row" class="dataset-label">{{ _("PIA Link") }} </th>
+        <td class="dataset-details"><a href="{{ pkg_dict.pia_url }}">{{ pkg_dict.pia_url }}</a> </td>
+    </tr>
+  {% endif %}
+
+  {% if pkg_dict.storage_location %}
+    <tr>
+        <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
+        <td class="dataset-details"><a href="{{ pkg_dict.storage_location }}">{{ pkg_dict.storage_location }}</a> </td>
+    </tr>
+  {% endif %}
+
+
+
+{% endblock %}
+
