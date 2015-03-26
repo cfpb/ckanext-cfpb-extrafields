@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{% block metadata_fields %}
+
+{{ form.select('resource_type', label=_('Resource type'), id='field-resource-type', options=[{'value': 'Canonical'}, {'value': 'Extract'}, {'value': 'Documentation'}, {'value': 'Data Dictionary'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
+
+{% endblock %}
+
