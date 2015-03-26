@@ -26,7 +26,7 @@ For running unit tests:
 
 1. git clone this repository and cd into it
 1. create a new virtualenv: `mkvirtualenv ckanext-cfpb-extrafields`
-1. install requirements: `pip install requirements-test.txt`
+1. install requirements: `pip install -r requirements-test.txt`
 
 ## Installation
 
