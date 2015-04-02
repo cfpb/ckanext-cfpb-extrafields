@@ -1,25 +1,39 @@
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import pprint
-
-
 import validators as v
+import options.types_of_entries
 
+def options_type_of_entries():
+    return options.types_of_entries.defaults
+
+def clean_select_multi(a):
+    ''' parses the results of an html form select multiple '''
+    a = a.split(',')
+    a = [item.strip('{}"') for item in a]
+    return a
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
     p.implements(p.IConfigurer)
-    # p.implements(p.ITemplateHelpers)
+    p.implements(p.ITemplateHelpers)
 
-
-    # def get_helpers(self):
-    # return {'type_of_entries': ['Consumers', 'Financial Institutions', 'Employees', 'Government', 'Other'],
-    #             'sensitivity_levels': [{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}]}
+    def get_helpers(self):
+        return {'clean_select_multi': clean_select_multi,
+                'options_type_of_entries': options_type_of_entries,
+                }
 
     def _modify_package_schema(self, schema):
         schema.update({
             'sensitivity_level': [tk.get_validator('ignore_missing'),
                                   tk.get_converter('convert_to_extras')],
+
+            'custom_link_label': [tk.get_validator('ignore_missing'),
+                                v.check_all,
+                        tk.get_converter('convert_to_extras')],
+            'custom_link_link': [tk.get_validator('ignore_missing'),
+                        tk.get_converter('convert_to_extras')],
+
             'has_pii': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'type_of_entries': [tk.get_validator('ignore_missing'),
@@ -58,6 +72,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
             'sensitivity_level': [tk.get_converter('convert_from_extras'),
                                   tk.get_validator('ignore_missing')],
+            'custom_link_label': [tk.get_converter('convert_from_extras'),
+                                  tk.get_validator('ignore_missing')],
+            'custom_link_link': [tk.get_converter('convert_from_extras'),
+                        tk.get_validator('ignore_missing')],
             'has_pii': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'type_of_entries': [tk.get_converter('convert_from_extras'),
@@ -94,3 +112,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
         tk.add_template_directory(config, 'templates')
+
+        # Register this plugin's fanstatic directory with CKAN.
+        # Here, 'fanstatic' is the path to the fanstatic directory
+        # (relative to this plugin.py file), and 'example_theme' is the name
+        # that we'll use to refer to this fanstatic directory from CKAN
+        # templates.
+        #tk.add_resource('fanstatic', 'example_theme')

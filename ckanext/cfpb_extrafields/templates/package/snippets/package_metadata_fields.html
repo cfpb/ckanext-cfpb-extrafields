@@ -3,6 +3,60 @@
 
 {% block custom_fields %}
 
+<!------------- link/label paired fields ------------------->
+{% call form.input_block("field-custom_link_label",_("My field"), error="") %} {# this is just for clicking #}
+    <input id="field-custom_link_label" type="text" placeholder="text"  value="{{data.custom_link_label}}" name="custom_link_label" />
+    <input id="field-custom_link_link" type="url" placeholder="http://" value="{{data.custom_link_link}}" name="custom_link_link" />
+{% endcall %}
+
+<!--------------------add-one to pick-1 list --------------------->
+<!-- TO DO:
+add the jquery js to static
+make the js apply only to specific selects and not all selects
+validation:
+check that __Other is not a chose option.
+check that options dont contain special characters and strip them if they do.
+check that options don't include spaces because these wont work as variables (replace with underscores)
+check that there aren't duplicate options being created (just warn and unselect them if they exist)
+-->
+{# this uses jquery from http://stackoverflow.com/questions/1962041/jquery-dynamically-update-other-option-in-select
+#}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(function() {
+    $('select#type_of_entries').change( function() {
+        var value = $(this).val();
+        if (value == "__Other") {
+           var custom = prompt( "Please enter custom value:" );
+           if (!custom) return false;
+           $(this).prepend('<option value="' + custom + '">' + custom
+                             + '</option>');
+        }
+    });
+});
+</script>
+<div class="control-group ">
+    <label class="control-label">Types of Entries</label>
+    <div class="controls ">
+	<select id="type_of_entries" name="type_of_entries" multiple>
+    {# move previously selected elements to the top and select #}
+	{% for e in h.clean_select_multi(data.get('type_of_entries', '')) %}
+        {% if e %}
+        <option value="{{e}}" selected="selected">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide the default options but don't duplicate if they were selected above #}
+	{% for e in h.options_type_of_entries() %}
+        {% if e not in data.get('type_of_entries', []) %}
+            <option value="{{e}}">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other" {% if "__Other" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
+	</select>
+    </div>
+</div>
+
 {{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=[{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
   <div class="control-group ">
     <label class="control-label">Has PII?</label>
@@ -12,27 +66,6 @@
     </div>
   </div>
 
-
-  <div class="control-group ">
-    <label class="control-label">Types of Entries</label>
-    <div class="controls ">
-	<select id="type_of_entries" name="type_of_entries" multiple>
-
-      <!-- could do this with a loop; see commented get_helpers() function in plugin.py for a simple way to implement -->
-      {#
-          {% for type in h.type_of_entries %}
-            <option value="{{type}}" {% if type in data.get('type_of_entries', []) %}selected="selected"{% endif %}>{{type}}</option>
-          {% endfor %}
-      #}
-        <option value="Consumers" {% if "Consumers" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Consumers</option>
-        <option value="Financial Institutions" {% if "Financial Institutions" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Financial Institutions</option>
-        <option value="Employees" {% if "Employees" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Employees</option>
-        <option value="Government" {% if "Government" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Government</option>
-        <option value="Other" {% if "Other" in data.get('type_of_entries', []) %}selected="selected"{% endif %}>Other (please specify)</option>
-
-	</select>
-    </div>
-  </div>
 {{ form.input('pra_control_num', label=_("PRA Control Number"), placeholder="XXXX-XXXX", value=data.pra_control_num, error=errors.pra_control_num) }}
 
 {{ form.input('size_in_mb', label=_("Size in MB"), placeholder="eg 1.2", value=data.size_in_mb, error=errors.size_in_mb) }}
@@ -42,9 +75,5 @@
 {{ form.input('pia_url', type='url', label=_("PIA Link"), placeholder="eg http://...", value=data.pia_url, error=errors.pia_url) }}
 
 {{ form.input('storage_location', label=_("Storage Location"), placeholder="eg http://..., D:\path\to\data", value=data.storage_location, error=errors.storage_location) }}
-
-
-
-
 
 {% endblock %}

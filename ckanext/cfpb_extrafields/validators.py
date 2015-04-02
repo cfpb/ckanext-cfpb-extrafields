@@ -7,12 +7,15 @@ def Invalid(message):
     import ckan.plugins.toolkit as tk
     raise tk.Invalid(message)
 
+# check multiple fields at once
+# http://docs.ckan.org/en/latest/extensions/adding-custom-fields.html#custom-validators
+def check_all(key, flattened_data, errors, context):
+    return
 
 def pra_control_num_validator(value):
     if value and not PRA_CONTROL_NUM_REGEX.match(value):
         Invalid("Must be in the format XXXX-XXXX")
     return value
-
 
 def positive_number_validator(value):
     # feels incredibly verbose... requires code review
