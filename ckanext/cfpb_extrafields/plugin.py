@@ -27,17 +27,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
             'sensitivity_level': [tk.get_validator('ignore_missing'),
                                   tk.get_converter('convert_to_extras')],
-
-            'custom_link_label': [tk.get_validator('ignore_missing'),
-                                v.check_all,
-                        tk.get_converter('convert_to_extras')],
-            'custom_link_link': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
-
             'has_pii': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
-            'type_of_entries': [tk.get_validator('ignore_missing'),
-                                tk.get_converter('convert_to_extras')],
             'pra_control_num': [tk.get_validator('ignore_missing'),
                                 v.pra_control_num_validator,
                                 tk.get_converter('convert_to_extras')],
@@ -50,11 +41,19 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
             'storage_location': [tk.get_validator('ignore_missing'),
                                  tk.get_converter('convert_to_extras')],
+            'type_of_entries': [tk.get_validator('ignore_missing'),
+                                v.input_value_validator,
+                                tk.get_converter('convert_to_extras')],
+            'custom_link_label': [tk.get_validator('ignore_missing'),
+                                  v.check_all,
+                                  tk.get_converter('convert_to_extras')],
+            'custom_link_link': [tk.get_validator('ignore_missing'),
+                                 tk.get_converter('convert_to_extras')],
         })
         schema['resources'].update({
                 'resource_type' : [ tk.get_validator('ignore_missing'),]
         })
-        # pprint.pprint(schema)
+        pprint.pprint(schema)
         return schema
 
     def create_package_schema(self):
