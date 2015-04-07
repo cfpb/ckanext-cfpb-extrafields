@@ -19,7 +19,7 @@ def input_value_validator(value):
     if not is_alphanumeric_plus(value):
         Invalid('Specified "Other" field cannot include most special characters')
     # assume that duplicates are mistakes continue quietly
-    if not isinstance(items, basestring):
+    if not isinstance(value, basestring):
         value = dedupe_unordered(value)
     return value
 

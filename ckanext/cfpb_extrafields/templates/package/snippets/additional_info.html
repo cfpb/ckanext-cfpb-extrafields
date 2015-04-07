@@ -72,41 +72,27 @@
 	<td class="dataset-details">{{ pkg_dict.dig_id }} </td>
   </tr>
  
+    <tr>
+      <th scope="row" class="dataset-label"><hr></th>
+      <td class="dataset-details"><hr></td>
+    </tr>
+    {% if res.usage_restrictions %}
+    {% endif %}
+<tr>
+  <th scope="row" class="dataset-label">{{ _("Usage Restrictions") }} </th>
+  <td class="dataset-details">{{ pkg_dict.usage_restrictions }} </td>
+</tr>
   <!--not core -->
   {% if pkg_dict.privacy_has_direct_identifiers %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
       <td class="dataset-details">{{ pkg_dict.privacy_has_direct_identifiers }}</td>
-     </tr>
+    </tr>
   {% endif %}
   {% if pkg_dict.privacy_has_privacy_act_statement %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("Privacy: Has Privacy Act Statement") }}</th>
       <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
-     </tr>
-  {% endif %}
-
-  <!-- below are templates -->
-
-  {% if pkg_dict.transfer_initial_size %}
-    <tr>
-        <th scope="row" class="dataset-label">{{ _("Transfer: Initial Size (mb)") }} </th>
-        <td class="dataset-details">{{ pkg_dict.transfer_initial_size }} </td>
-    </tr>
-  {% endif %}
-
-  {% if pkg_dict.time_period_start_date %}
-    <tr>
-        <th scope="row" class="dataset-label">{{ _("Time Period Start Date") }} </th>
-        <td class="dataset-details">{{ pkg_dict.time_period_start_date }} </td>
-    </tr>
-  {% endif %}
-
-
-  {% if pkg_dict.pia_url %}
-    <tr>
-        <th scope="row" class="dataset-label">{{ _("PIA Link") }} </th>
-        <td class="dataset-details"><a href="{{ pkg_dict.pia_url }}">{{ pkg_dict.pia_url }}</a> </td>
     </tr>
   {% endif %}
 

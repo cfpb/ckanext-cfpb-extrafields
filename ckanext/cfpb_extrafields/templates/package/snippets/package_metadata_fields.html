@@ -119,6 +119,9 @@ SHOULD BE f(label,id, h.options_helperfunction [or the returned value])  -->
 <!-- dig_id -- DI##### -- slug field? -->
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
 
+{{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
+label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
+
 <!--------------------add-one to pick-1 list --------------------->
 <!-- TO DO: add the jquery js to static -->
 {# this uses jquery from http://stackoverflow.com/questions/1962041/jquery-dynamically-update-other-option-in-select

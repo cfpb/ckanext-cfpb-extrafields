@@ -76,8 +76,6 @@ $(function() {
 
 {{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=[{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
 
-{{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
-label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 
 <!-- DONE privacy_contains_pii -- yes/no -->
   <div class="control-group ">

@@ -64,12 +64,10 @@
 	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
 	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
               </tr>
-              {% if res.usage_restrictions %}
-              {% endif %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("Usage Restrictions") }} </th>
-	            <td class="dataset-details">{{ res.usage_restrictions }} </td>
-              </tr>
+    <tr>
+      <th scope="row" class="dataset-label"><hr></th>
+      <td class="dataset-details"><hr></td>
+    </tr>
               {% if res.privacy_contains_pii %}
               {% endif %}
               <tr>

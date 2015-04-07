@@ -59,6 +59,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'dig_id': [tk.get_validator('ignore_missing'),
                         v.dig_id_validator,
                         tk.get_converter('convert_to_extras')],
+            'usage_restrictions' : [ 
+                    tk.get_validator('ignore_missing'),
+                    tk.get_converter('convert_to_extras')],
             
 
             'privacy_has_direct_identifiers': [tk.get_validator('ignore_missing'),
@@ -91,8 +94,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [   
                     tk.get_validator('ignore_missing'),],# this can be any unicode input
                 'sensitivity_level' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'usage_restrictions' : [ 
                     tk.get_validator('ignore_missing'),],
                 'privacy_contains_pii' : [ 
                     tk.get_validator('ignore_missing'),],
@@ -136,6 +137,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_validator('ignore_missing')],
             'dig_id': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
+            'usage_restrictions' : [tk.get_converter('convert_from_extras'),
+                    tk.get_validator('ignore_missing'),],
             
 
             'privacy_has_direct_identifiers': [tk.get_converter('convert_from_extras'),
@@ -162,7 +165,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
                 'storage_location_path': [ tk.get_validator('ignore_missing'),],
                 'sensitivity_level' : [ tk.get_validator('ignore_missing'),],
-                'usage_restrictions' : [ tk.get_validator('ignore_missing'),],
                 'privacy_contains_pii' : [ tk.get_validator('ignore_missing'),],
         })
         return schema
