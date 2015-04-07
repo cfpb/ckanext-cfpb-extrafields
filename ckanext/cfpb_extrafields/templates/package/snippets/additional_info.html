@@ -2,43 +2,96 @@
 
 {% block extras %}
 
-  {#
-     {{pkg_dict}}
-  #}
+{#{pkg_dict}#}
 
-  {% if pkg_dict.has_pii %}
+  {% if pkg_dict.id %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Dataset ID") }} </th>
+	<td class="dataset-details">{{ pkg_dict.id }} </td>
+  </tr>
+  {% endif %}
+  <!-- Core -->
+  {% if pkg_dict.source_names %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Source Names") }} </th>
+	<td class="dataset-details">{{ pkg_dict.source_names }} </td>
+  </tr>
+  {% if pkg_dict.access_restrictions %}
+  {% endif %}
+  <tr>
+	<th scope="row" class="dataset-label">{{ _("Access: Restrictions") }} </th>
+	<td class="dataset-details">{{ pkg_dict.access_restrictions }} </td>
+  </tr>
+  {% if pkg_dict.contact_primary %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Contact: Primary") }} </th>
+	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_primary_email}}">{{pkg_dict.contact_primary_name}} </a> link to active directory?</td>
+  </tr>
+  {% if pkg_dict.initial_purpose_for_intake %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Initial Purpose for Intake") }} </th>
+	<td class="dataset-details">{{ pkg_dict.initial_purpose_for_intake}} </td>
+  </tr>
+  {% if pkg_dict.legal_authority_for_collection %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Legal Authority for Collection") }} </th>
+	<td class="dataset-details">{{ pkg_dict.legal_authority_for_collection}} </td>
+  </tr>
+  {% if pkg_dict.pra_omb_control_number %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("PRA OMB Control Number") }} </th>
+	<td class="dataset-details">{{ pkg_dict.pra_omb_control_number }} </td>
+  </tr>
+  {% endif %}
+  {% if pkg_dict.privacy_pia_title %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Privacy: PIA Title") }} </th>
+	<td class="dataset-details">{{ pkg_dict.privacy_pia_title }} </td>
+  </tr>
+  {% if pkg_dict.privacy_sorn_number %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Privacy: SORN Number") }} </th>
+	<td class="dataset-details">{{ pkg_dict.privacy_sorn_number }} </td>
+  </tr>
+  {% if pkg_dict.relevant_governing_documents %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Relevant Governing Documents") }} </th>
+	<td class="dataset-details">{{ pkg_dict.relevant_governing_documents }} </td>
+  </tr>
+  {% if pkg_dict.dig_id %}
+  {% endif %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("DIG ID") }} </th>
+	<td class="dataset-details">{{ pkg_dict.dig_id }} </td>
+  </tr>
+ 
+  <!--not core -->
+  {% if pkg_dict.privacy_has_direct_identifiers %} 
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Has PII?") }}</th>
-      <td class="dataset-details">{{ pkg_dict.has_pii }}</td>
+      <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
+      <td class="dataset-details">{{ pkg_dict.privacy_has_direct_identifiers }}</td>
+     </tr>
+  {% endif %}
+  {% if pkg_dict.privacy_has_privacy_act_statement %} 
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Privacy: Has Privacy Act Statement") }}</th>
+      <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
      </tr>
   {% endif %}
 
-  {% if pkg_dict.sensitivity_level %}
-    <tr>
-	<th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
-	<td class="dataset-details">{{ pkg_dict.sensitivity_level }} </td>
-    </tr>
-  {% endif %}
-  {% if pkg_dict.type_of_entries %}
-    <tr>
-	<th scope="row" class="dataset-label">{{ _("Type Of Entries") }} </th>
+  <!-- below are templates -->
 
-    <!-- TODO: make this a prettier list; right now it just dumps the set -->
-	<td class="dataset-details">
-	  {{pkg_dict.type_of_entries}}
-	</td>
-    </tr>
-  {% endif %}
-  {% if pkg_dict.pra_control_num %}
+  {% if pkg_dict.transfer_initial_size %}
     <tr>
-        <th scope="row" class="dataset-label">{{ _("PRA Control Number") }} </th>
-        <td class="dataset-details">{{ pkg_dict.pra_control_num }} </td>
-    </tr>
-  {% endif %}
-  {% if pkg_dict.size_in_mb %}
-    <tr>
-        <th scope="row" class="dataset-label">{{ _("Size (MB)") }} </th>
-        <td class="dataset-details">{{ pkg_dict.size_in_mb }} </td>
+        <th scope="row" class="dataset-label">{{ _("Transfer: Initial Size (mb)") }} </th>
+        <td class="dataset-details">{{ pkg_dict.transfer_initial_size }} </td>
     </tr>
   {% endif %}
 
@@ -54,13 +107,6 @@
     <tr>
         <th scope="row" class="dataset-label">{{ _("PIA Link") }} </th>
         <td class="dataset-details"><a href="{{ pkg_dict.pia_url }}">{{ pkg_dict.pia_url }}</a> </td>
-    </tr>
-  {% endif %}
-
-  {% if pkg_dict.storage_location %}
-    <tr>
-        <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
-        <td class="dataset-details"><a href="{{ pkg_dict.storage_location }}">{{ pkg_dict.storage_location }}</a> </td>
     </tr>
   {% endif %}
 

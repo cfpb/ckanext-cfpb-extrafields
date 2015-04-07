@@ -1,6 +1,7 @@
 {% ckan_extends %}
 {% block resource_additional_information %}
     {% if res %}
+{#{ res }#}
       <section class="module">
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>
@@ -29,12 +30,51 @@
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
               {% for key, value in h.format_resource_items(res.items()) %}
-                <tr class="toggle-more"><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
+                <tr><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
               {% endfor %}
-                <!-- new template -->
+
+              <!-- new core fields -->
+              {% if res.format_cfpb %}
+              {% endif %}
               <tr>
-                <th scope="row">{{ _('New License') }}</th>
-                <td><a href="{{ pkg.license_url }}">{{ pkg.license_title }}</a></td>
+	            <th scope="row" class="dataset-label">{{ _("Format (CFPB)") }} </th>
+	            <td class="dataset-details">{{ res.format_cfpb }} 
+              </tr>
+              {% if res.content_temporal_range_end %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range End") }} </th>
+	            <td class="dataset-details">{{ res.content_temporal_range_end }} </td>
+              </tr>
+              {% if res.content_temporal_range_start %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range Start") }} </th>
+	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
+              </tr>
+              {% if res.storage_location %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
+	            <td class="dataset-details">{{ res.storage_location }} ; {{ res.storage_location_path }} </td></td>
+              </tr>
+              {% if res.sensitivity_level %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
+	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
+              </tr>
+              {% if res.usage_restrictions %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Usage Restrictions") }} </th>
+	            <td class="dataset-details">{{ res.usage_restrictions }} </td>
+              </tr>
+              {% if res.privacy_contains_pii %}
+              {% endif %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PII") }} </th>
+	            <td class="dataset-details">{{ res.privacy_contains_pii}} </td>
               </tr>
                     
             </tbody>

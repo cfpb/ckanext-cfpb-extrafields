@@ -2,7 +2,92 @@
 
 {% block metadata_fields %}
 
-{{ form.select('resource_type', label=_('Resource type'), id='field-resource-type', options=[{'value': 'Canonical'}, {'value': 'Extract'}, {'value': 'Documentation'}, {'value': 'Data Dictionary'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
+{# validation should check that end is greater than start #}
+<!-- DONE content_temporal_range_end  YYYY-MM-DD -->
+{{ form.input('content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
+
+<!-- DONE content_temporal_range_start YYYY-MM-DD -->
+{{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(function() {
+    $('select').change( function() { <!--select#type_of_entries-->
+        var value = $(this).val();
+        if (value == "__Other") {
+           var custom = prompt( "Please enter custom value:" );
+           if (!custom) return false;
+           <!-- clear selections -->
+           $(this).find($('option')).attr('selected',false) 
+           <!-- add and select new option -->
+           $(this).prepend('<option value="' + custom + '" selected="selected">' + custom
+                             + '</option>');
+        }
+    });
+});
+</script>
+<!-- DONE format_cfpb -- PICK 1! -- csv, ascii, stata, sql, pdf, sas, xml, Word Doc, Excel, txt, tab, json, other -->
+<div class="control-group ">
+    <label class="control-label">Format (CFPB)</label>
+    <div class="controls ">
+	<select id="format_cfpb" name="format_cfpb">
+    {# move previously selected elements to the top and select #}
+	{% for e in h.clean_select_multi(data.get('format_cfpb', '')) %}
+        {% if e %}
+        <option value="{{e}}" selected="selected">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide the default options but don't duplicate if they were selected above #}
+	{% for e in h.options_format_cfpb() %}
+        {% if e not in data.get('format_cfpb', []) %}
+            <option value="{{e}}">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other" {% if "__Other" in data.get('format_cfpb', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
+	</select>
+    </div>
+</div>
+
+
+<!-- storage_location --  (URI?) -- Location could be Research Server, SQLServer, Postgres, MSAccess, Z Drive, SES, RightNow, Other -->
+<div class="control-group ">
+    <label class="control-label">Storage Location</label>
+    <div class="controls ">
+	<select id="storage_location" name="storage_location">
+    {# move previously selected elements to the top and select #}
+	{% for e in h.clean_select_multi(data.get('storage_location', '')) %}
+        {% if e %}
+        <option value="{{e}}" selected="selected">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide the default options but don't duplicate if they were selected above #}
+	{% for e in h.options_storage_location() %}
+        {% if e not in data.get('storage_location', []) %}
+            <option value="{{e}}">{{e}}</option>
+	    {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other" {% if "__Other" in data.get('storage_location', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
+	</select>  
+    path: <input id="field-storage_location_path" placeholder="eg http://..., D:\path\" value="{{data.storage_location_path}}" name="storage_location_path"/>
+    </div>
+</div>
+
+{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=[{'value': 'Public'}, {'value': 'Low'}, {'value': 'Medium'}, {'value': 'High'}], selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
+
+{{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
+label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
+
+<!-- DONE privacy_contains_pii -- yes/no -->
+  <div class="control-group ">
+    <label class="control-label">Privacy: Contains PII?</label>
+    <div class="controls ">
+        <input id="privacy_contains_pii" type="radio" name="privacy_contains_pii" value='yes' placeholder="Yes" {% if data.privacy_contains_pii == 'yes' %}checked{% endif %}>Yes</input>
+        <input id="privacy_contains_pii" type="radio" name="privacy_contains_pii" value='no' placeholder="No"  {% if data.privacy_contains_pii != 'yes' %}checked{% endif %}>No</input>
+    </div>
+  </div>
+
 
 {% endblock %}
 
