@@ -9,15 +9,14 @@ def dedupe_unordered(items):
     return list(set(items))
 
 def is_alphanumeric_plus(str):
-    '''Check that all characters are are alphanumeric or [space,_,-].'''
-    # make sure input is a string before matching
-    return re.match('^[-\w ]+$', ''.join(str)) is not None
+    '''Check that all characters are are alphanumeric or [space,_,-,.,/,:].'''
+    return re.match('^[-.:/\w ]+$', ''.join(str)) is not None
 
 def input_value_validator(value):
     if "__Other" in value :
-        Invalid("Please unselect 'Other' from drop down menus")
+        Invalid("'Other, please specify' is not a valid option")
     if not is_alphanumeric_plus(value):
-        Invalid('Specified "Other" field cannot include most special characters')
+        Invalid('A selected field cannot include most special characters')
     # assume that duplicates are mistakes continue quietly
     if not isinstance(value, basestring):
         value = dedupe_unordered(value)
