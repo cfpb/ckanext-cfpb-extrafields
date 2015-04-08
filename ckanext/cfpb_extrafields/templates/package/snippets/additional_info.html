@@ -2,7 +2,7 @@
 
 {% block extras %}
 
-{#{pkg_dict}#}
+{{pkg_dict}}
 
   {% if pkg_dict.id %}
   <tr> 
@@ -76,12 +76,12 @@
       <th scope="row" class="dataset-label"><hr></th>
       <td class="dataset-details"><hr></td>
     </tr>
-    {% if res.usage_restrictions %}
+    {% if pkg_dict.usage_restrictions %}
     {% endif %}
-<tr>
-  <th scope="row" class="dataset-label">{{ _("Usage Restrictions") }} </th>
-  <td class="dataset-details">{{ pkg_dict.usage_restrictions }} </td>
-</tr>
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Usage Restrictions") }} </th>
+      <td class="dataset-details">{{ pkg_dict.usage_restrictions }} </td>
+    </tr>
   <!--not core -->
   {% if pkg_dict.privacy_has_direct_identifiers %} 
     <tr>
