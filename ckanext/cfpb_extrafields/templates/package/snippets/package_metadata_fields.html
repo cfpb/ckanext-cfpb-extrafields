@@ -33,7 +33,6 @@ options_defaults=h.options_privacy_pia_title(),
 error=errors.privacy_pia_title,
 multiple=True) }}
 
-<!-- privacy_sorn_number -- pick many: CFPB.#### + OTHER -- list in tab (format enforced) -->
 {{ form_custom.select_with_other('privacy_sorn_number', 
 label=_('Privacy: SORN number'),  
 current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')), 
@@ -41,7 +40,6 @@ options_defaults=h.options_privacy_sorn_number(),
 error=errors.privacy_sorn_number,
 multiple=True) }}
 
-<!-- relevant_governing_documents -- pick many  ["Contract", "MOU", "NDA", "Inter-agency Agreement"] + OTHER -->
 {{ form_custom.select_with_other('relevant_governing_documents', 
 label=_('Relevant Governing Documents'),  
 current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
@@ -49,16 +47,13 @@ options_defaults=h.options_relevant_governing_documents(),
 error=errors.relevant_governing_documents,
 multiple=True) }}
 
-<!-- dig_id -- DI##### -- slug field? -->
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
 
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
 label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 
-<!--------------------add-one to pick-1 list --------------------->
+<!-------------------- js adds one to select --------------------->
 <!-- TO DO: add the jquery js to static -->
-{# this uses jquery from http://stackoverflow.com/questions/1962041/jquery-dynamically-update-other-option-in-select
-#}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(function() {
