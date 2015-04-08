@@ -6,6 +6,10 @@ import options as opts
 
 def clean_select_multi(a):
     ''' parses the results of an html form select multiple '''
+    # code review! select multis are contained in unicode strings that look like: 
+    # u'{"blah blah","blah asdf", asdf}' ; u'{asdf, asdf}' ; u'asdf' 
+    # a regex solution would be nice, but for now I demand fields 
+    # do not contain special characters. 
     # convert to string if a list
     a = ''.join(a) 
     # convert back to comma separated array 
