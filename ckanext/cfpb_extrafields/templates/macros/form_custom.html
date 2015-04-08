@@ -1,0 +1,24 @@
+{% macro select_with_other(name, label='', current_values=[], options_defaults=[], error='' , multiple=True) %}
+<div class="control-group ">
+    <label class="control-label">{{label}}</label>
+    <div class="controls ">
+    <select id={{name}} name={{name}} width="400" style="width: 400px" {% if multiple %}multiple{%endif %}>
+    {# move previously selected elements to the top and select #}
+    {% for e in current_values %}
+        {% if e %}
+        <option value="{{e}}" selected="selected">{{e}}</option>
+        {% endif %}
+    {% endfor %}
+    {# provide the default options but don't duplicate if they were selected above #}
+    {% for e in options_defaults %}
+        {% if e not in current_values %}
+            <option value="{{e}}">{{e}}</option>
+        {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other">Other, please specify</option>
+    </select>
+    </div>
+</div>
+{% endmacro %}
+
