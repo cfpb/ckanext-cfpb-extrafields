@@ -1,5 +1,7 @@
 {% ckan_extends %}
 {% import 'macros/form.html' as form %}
+{% import 'macros/form_custom.html' as form_custom %}
+
 
 {% block custom_fields %}
 
@@ -8,7 +10,6 @@
 
 <!--access_restrictions -- free form -- permission notes -->
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
-{{ form.input('access_restrictions', label=_("Access Restrictions"), placeholder="", value=data.access_restrictions, error=errors.access_restrictions) }}
 
 <!-- contact_primary -- _name+_email? (two field form) -->
 {% call form.input_block("field-constact_primary_name",_("Contact: Primary"), error="") %} {# this is just for clicking #}
@@ -16,66 +17,30 @@
     <input id="field-contact_primary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_primary_email}}" name="contact_primary_email" />
 {% endcall %}
 
-
-
-<!-- initial_purpose_for_intake -- markdown free form -->
 {{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('Initial Purpose for Intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
 
-<!-- legal_authority_for_collection -- pick many ["Market Monitoring", "Supervision", "Enforcement", "Consumer Response"] + OTHER
-SHOULD BE f(label,id, h.options_helperfunction [or the returned value])  -->
-<div class="control-group ">
-    <label class="control-label">Legal Authority for Collection</label>
-    <div class="controls ">
-	<select id="legal_authority_for_collection" name="legal_authority_for_collection" multiple>
-    {# move previously selected elements to the top and select #}
-	{% for e in h.clean_select_multi(data.get('legal_authority_for_collection', '')) %}
-        {% if e %}
-        <option value="{{e}}" selected="selected">{{e}}</option>
-	    {% endif %}
-    {% endfor %}
-    {# provide the default options but don't duplicate if they were selected above #}
-	{% for e in h.options_legal_authority_for_collection() %}
-        {% if e not in data.get('legal_authority_for_collection', []) %}
-            <option value="{{e}}">{{e}}</option>
-	    {% endif %}
-    {% endfor %}
-    {# provide an option for javascript to use to create new fields #}
-    <option value="__Other" {% if "__Other" in data.get('legal_authority_for_collection', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
-	</select>
-    </div>
-</div>
+{{ form_custom.select_with_other('legal_authority_for_collection', 
+label=_('Legal Authority for Collection'),  
+current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')), 
+options_defaults=h.options_legal_authority_for_collection(), 
+error=errors.legal_authority_for_collection,
+multiple=True) }}
 
 {{ form.input('pra_omb_control_number', label=_("PRA: OMB Control Number"), placeholder="####-####", value=data.pra_omb_control_number, error=errors.pra_omb_control_number) }}
 
 <!-- privacy_pia_title -- pick many: list of titles + OTHER -- list on tab titled DIG Lists in xl file  -->
-<div class="control-group ">
-    <label class="control-label">Privacy: PIA Title</label>
-    <div class="controls ">
-	<select id="privacy_pia_title" name="privacy_pia_title" multiple>
-    {# move previously selected elements to the top and select #}
-	{% for e in h.clean_select_multi(data.get('privacy_pia_title', '')) %}
-        {% if e %}
-        <option value="{{e}}" selected="selected">{{e}}</option>
-	    {% endif %}
-    {% endfor %}
-    {# provide the default options but don't duplicate if they were selected above #}
-	{% for e in h.options_privacy_pia_title() %}
-        {% if e not in data.get('privacy_pia_title', []) %}
-            <option value="{{e}}">{{e}}</option>
-	    {% endif %}
-    {% endfor %}
-    {# provide an option for javascript to use to create new fields #}
-    <option value="__Other" {% if "__Other" in data.get('privacy_pia_title', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
-	</select>
-    </div>
-</div>
-
+{{ form_custom.select_with_other('privacy_pia_title', 
+label=_('Privacy: PIA Title'),  
+current_values=h.clean_select_multi(data.get('privacy_pia_title', '')), 
+options_defaults=h.options_privacy_pia_title(), 
+error=errors.privacy_pia_title,
+multiple=True) }}
 
 <!-- privacy_sorn_number -- pick many: CFPB.#### + OTHER -- list in tab (format enforced) -->
-<div class="control-group ">
+<div class="control-group">
     <label class="control-label">Privacy: SORN number</label>
-    <div class="controls ">
-    <select id="privacy_sorn_number" name="privacy_sorn_number" multiple>
+    <div class="controls">
+    <select id="privacy_sorn_number" name="privacy_sorn_number" width="400" style="width: 400px" multiple>
     {# move previously selected elements to the top and select #}
     {% for e in h.clean_select_multi(data.get('privacy_sorn_number', '')) %}
     {% if e %}
@@ -89,7 +54,7 @@ SHOULD BE f(label,id, h.options_helperfunction [or the returned value])  -->
         {% endif %}
     {% endfor %}
     {# provide an option for javascript to use to create new fields #}
-    <option value="__Other" {% if "__Other" in data.get('privacy_sorn_number', []) %}selected="selected"{% endif %}>Other (specify then select)</option>
+    <option value="__Other" {% if "__Other" in data.get('privacy_sorn_number', []) %}selected="selected"{% endif %}>Other, please specify</option>
 
     </select>
     </div>
