@@ -1,3 +1,4 @@
+
 {% macro select_with_other(name, label='', current_values=[], options_defaults=[], error='' , multiple=True) %}
 <div class="control-group ">
     <label class="control-label">{{label}}</label>
@@ -22,3 +23,13 @@
 </div>
 {% endmacro %}
 
+
+{% macro radio(name, label='', current_value='no') %}
+  <div class="control-group ">
+    <label class="control-label">{{label}}</label>
+    <div class="controls ">
+        <input id={{name}} type="radio" name={{name}} value='yes' placeholder="Yes" {% if current_value == 'yes' %}checked{% endif %}>Yes</input>
+        <input id={{name}} type="radio" name={{name}} value='no' placeholder="No"  {% if current_value != 'yes' %}checked{% endif %}>No</input>
+    </div>
+  </div>
+{% endmacro %}
