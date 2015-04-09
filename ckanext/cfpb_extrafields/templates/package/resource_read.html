@@ -64,16 +64,49 @@
 	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
 	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
               </tr>
-    <tr>
-      <th scope="row" class="dataset-label"><hr></th>
-      <td class="dataset-details"><hr></td>
-    </tr>
               {% if res.privacy_contains_pii %}
-              {% endif %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PII") }} </th>
 	            <td class="dataset-details">{{ res.privacy_contains_pii}} </td>
               </tr>
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label"><hr></th>
+                <td class="dataset-details"><hr></td>
+              </tr>
+              {% if res.intake_date %} 
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Intake Date") }}</th>
+                <td class="dataset-details">{{ res.intake_date }}</td>
+              </tr>
+              {% if res.update_size %} 
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Update: Size") }}</th>
+                <td class="dataset-details">{{ res.update_size }}</td>
+              </tr>
+              {% if res.approximate_total_size %} 
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Approximate Total Size") }}</th>
+                <td class="dataset-details">{{ res.approximate_total_size }}</td>
+              </tr>
+              {% if res.resource_type %} 
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Resource Type") }}</th>
+                <td class="dataset-details">{{ res.resource_type }}</td>
+              </tr>
+              {% if res.privacy_has_direct_identifiers %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
+                <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
+              </tr>
+              {% endif %}
+              
+              
+
                     
             </tbody>
           </table>
