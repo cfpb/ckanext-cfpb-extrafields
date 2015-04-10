@@ -1,7 +1,7 @@
 # CFPB CKAN Extra Fields
 
 **Description**: This is a [CKAN](http://docs.ckan.org) extension to add CFPB-specific extra metadata fields.
-It is a sibling project to https://github.com/cfpb/ckan and expected to live along-side that project.
+It is a sibling project to https://github.com/cfpb/ckan-installer and expected to live along-side that project.
 
 
 ## Dependencies
@@ -15,7 +15,7 @@ It is a sibling project to https://github.com/cfpb/ckan and expected to live alo
 ### Runtime
 
 This is a CKAN extension designed to plug in to a running instance of CKAN.
-For local testing, we use Vagrant. See https://github.com/cfpb/ckan for details.
+For local testing, we use Vagrant. See https://github.com/cfpb/ckan-installer for details.
 
 ### Testing
 
@@ -27,7 +27,7 @@ For running unit tests:
 
 ## Installation
 
-This software should live alongside a cloned copy of https://github.com/cfpb/ckan.
+This software should live alongside a cloned copy of https://github.com/cfpb/ckan-installer.
 That project's provisioning will create a mapped directory in the Vagrant install.
 
 For real servers, this software should be installed via `pip install`
