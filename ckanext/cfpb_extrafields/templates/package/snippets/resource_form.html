@@ -44,7 +44,7 @@ multiple=False) }}
 label=_('Privacy: Contains PII?'),
 current_value=data.privacy_contains_pii)}}
 
-<!-- non-core fields(?) -->
+<!-- non-core fields -->
 
 {{ form.input('intake_date', type='date', label=_("Intake Date"), placeholder="eg 12/21/2012", value=data.intake_date, error=errors.intake_date) }}
 
@@ -59,6 +59,7 @@ current_value=data.privacy_has_direct_identifiers)}}
 
 <!-------------------- js adds one to select --------------------->
 <!-- TO DO: add the jquery js to static -->
+<!-- use CKAN for javascript: http://docs.ckan.org/en/latest/theming/javascript.html -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(function() {

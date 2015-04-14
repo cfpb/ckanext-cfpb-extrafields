@@ -29,9 +29,9 @@
                 <th scope="row">{{ _('License') }}</th>
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
-              {% for key, value in h.format_resource_items(res.items()) %}
+              {#% for key, value in h.format_resource_items(res.items()) %}
                 <tr><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
-              {% endfor %}
+              {% endfor %#}
 
               <!-- new core fields -->
               {% if res.format_cfpb %}
@@ -56,7 +56,7 @@
               {% endif %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
-	            <td class="dataset-details">{{ res.storage_location }} ; {{ res.storage_location_path }} </td></td>
+	            <td class="dataset-details">{{ res.storage_location }} ; {{ res.storage_location_path }} </td>
               </tr>
               {% if res.sensitivity_level %}
               {% endif %}

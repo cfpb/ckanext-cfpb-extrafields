@@ -23,12 +23,13 @@
 	<th scope="row" class="dataset-label">{{ _("Access: Restrictions") }} </th>
 	<td class="dataset-details">{{ pkg_dict.access_restrictions }} </td>
   </tr>
-  {% if pkg_dict.contact_primary %}
-  {% endif %}
+  {% if pkg_dict.contact_primary_name %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Contact: Primary") }} </th>
-	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_primary_email}}">{{pkg_dict.contact_primary_name}} </a> link to active directory?</td>
+	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_primary_email}}">{{pkg_dict.contact_primary_name}}</a></td>
   </tr>
+  {% endif %}
+
   {% if pkg_dict.initial_purpose_for_intake %}
   {% endif %}
   <tr> 
@@ -84,6 +85,12 @@
   <!--not core -->
 
 
+  {% if pkg_dict.contact_secondary_name %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Contact: Secondary") }} </th>
+	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_secondary_email}}">{{pkg_dict.contact_secondary_name}}</a></td>
+  </tr>
+  {% endif %}
   {% if pkg_dict.obfuscated_title %} 
   {% endif %}
     <tr>
@@ -116,11 +123,11 @@
       <th scope="row" class="dataset-label">{{ _("Also Known As") }}</th>
       <td class="dataset-details">{{ pkg_dict.also_known_as }}</td>
     </tr>
-  {% if pkg_dict.current_periodicity %} 
+  {% if pkg_dict.content_periodicity %} 
   {% endif %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Current Periodicity") }}</th>
-      <td class="dataset-details">{{ pkg_dict.current_periodicity }}</td>
+      <th scope="row" class="dataset-label">{{ _("Content: Periodicity") }}</th>
+      <td class="dataset-details">{{ pkg_dict.content_periodicity }}</td>
     </tr>
   {% if pkg_dict.content_spatial %} 
   {% endif %}
@@ -138,14 +145,14 @@
   {% endif %}
     <tr>
       <th scope="row" class="dataset-label">{{ _("Website URL") }}</th>
-      <td class="dataset-details">{{ pkg_dict.website_url }}</td>
+      <td class="dataset-details"><a href="{{ pkg_dict.website_url }}">{{ pkg_dict.website_name}}</a> </td>
     </tr>
   {% if pkg_dict.wiki_link %} 
-  {% endif %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Obfuscated Title") }}</th>
-      <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">wiki link</a></td>
+      <th scope="row" class="dataset-label">{{ _("Wiki Link") }}</th>
+      <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">CFPB wiki article</a></td>
     </tr>
+  {% endif %}
   {% if pkg_dict.acquisition_methods %} 
   {% endif %}
     <tr>
@@ -157,12 +164,6 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("PRA Exclusion") }}</th>
       <td class="dataset-details">{{ pkg_dict.pra_exclusion }}</td>
-    </tr>
-  {% if pkg_dict.obfuscated_title %} 
-  {% endif %}
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("Obfuscated Title") }}</th>
-      <td class="dataset-details">{{ pkg_dict.obfuscated_title }}</td>
     </tr>
   {% if pkg_dict.pra_omb_expiration_date %} 
   {% endif %}
@@ -204,9 +205,11 @@
     </tr>
   {% endif %}
 
+  {% if pkg_dict.dataset_last_modified_date %} 
+  {% endif %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Last modified date") }}</th>
-      <td class="dataset-details">last modified date (an internal field? a combination of fields?)</td>
+      <th scope="row" class="dataset-label">{{ _(" Dataset Last Modified Date") }}</th>
+      <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
     </tr>
 
 
