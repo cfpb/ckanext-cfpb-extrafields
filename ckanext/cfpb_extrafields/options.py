@@ -32,7 +32,7 @@ def privacy_pia_title():
 "Republication of the Home Mortgage Disclosure Act Public Use Dataset",
 "Scheduling and Examination System (SES) PIA",
 "SES November 2012 update",
-"n/a",]
+"N/A",]
 def privacy_sorn_number():
     return ["CFPB.001 - Freedom of Information Act/Privacy Act System",
 "CFPB.002 - Depository Institution Supervision Database",
@@ -61,7 +61,46 @@ def privacy_sorn_number():
 "CFPB.025 - Civil Penalty Fund and Bureau-Administered Redress Program Records",
 "CFPB.026 - Biographies",
 "Government-wide",
-"n/a",]
+"N/A",]
 def relevant_governing_documents():
     return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
-
+#http://dublincore.org/groups/collections/frequency/
+def content_periodicity0():
+    return ["Triennial", "Biennial",
+            "Annual",
+            "Semiannual",
+            "Three times a year",
+            "Quarterly",
+            "Bimonthly",
+            "Monthly",
+            "Semimonthly",
+            "Biweekly",
+            "Three times a month",
+            "Weekly",
+            "Semiweekly",
+            "Three times a week",
+            "Daily",
+            "Continuous",
+            "Irregular",]
+def content_periodicity():
+    return ["Daily", "Weekly", "Monthly", "Annually", "N/A"]
+def acquisition_method():
+    return ["commercial purchase", "custom purchase", "public download", 
+            "received from government agency", "received from third party", 
+            "complaint database", "direct collection", "supervision examination", 
+            "enforcement investigation", "mandatory collection through order",]
+def pra_exclusion():
+    return ["5 C.F.R. 1320.3(h)(1)",
+            "5 C.F.R. 1320.3(h)(2)",
+            "5 C.F.R. 1320.3(h)(3)",
+            "5 C.F.R. 1320.3(h)(4)",
+            "5 C.F.R. 1320.3(h)(5)",
+            "5 C.F.R. 1320.3(h)(6)",
+            "5 C.F.R. 1320.3(h)(7)",
+            "5 C.F.R. 1320.3(h)(8)",
+            "5 C.F.R. 1320.3(h)(9)",
+            "5 C.F.R. 1320.3(h)(10)",
+            "N/A",]
+def privacy_pia_notes():
+    return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII", 
+            "No PIA - All PII Aggregated"]
