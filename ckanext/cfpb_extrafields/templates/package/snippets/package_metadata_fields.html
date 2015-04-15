@@ -64,14 +64,14 @@ label=_('Transfer Details'), placeholder=_(''), value=data.transfer_details, err
 {{ form.input('transfer_initial_size', label=_("Transfer: Initial Size (MB)"), placeholder="eg 1.2", value=data.transfer_initial_size, error=errors.transfer_initial_size) }}
 
 {#Website, SFTP, FTP, Physical Media, Email, Connect Direct, Other#}
-{{ form.select('transfer_method', label=_('Transfer: Method'), id='field-transfer_method', options=[{'value': 'Website'}, {'value': 'SFTP'}, {'value': 'FTP'}, {'value': 'Physical Media'},{'value': 'Connect Direct'},{'value': 'Other'}], selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
+{{ form.select('transfer_method', label=_('Transfer: Method'), id='field-transfer_method', options=[{'value':""}, {'value': 'Website'}, {'value': 'SFTP'}, {'value': 'FTP'}, {'value': 'Physical Media'},{'value': 'Connect Direct'},{'value': 'Other'}], selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
 
 {{ form.markdown('also_known_as', id='field-also_known_as', 
 label=_('Also Known As'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
 
-{{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=[{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"}], selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
+{{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"}], selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
-Eg. HMDA has points, census has geometries. Look up existing taxonomies.
+What does this mean for options: "HMDA has points, census has geometries. Look up existing taxonomies."?
 {{ form_custom.select_with_other('content_spatial', 
 label=_('Content: Spatial'),  
 current_values=h.clean_select_multi(data.get('content_spatial', '')), 
@@ -79,16 +79,15 @@ options_defaults=h.options_content_spatial(),
 error=errors.content_spatial,
 multiple=True) }}
 
-use http://dublincore.org/groups/collections/frequency/
-{{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=[{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"},], selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
+Should I provide all options from http://dublincore.org/groups/collections/frequency/ ?
+{{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"},], selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
 {% call form.input_block("field-website_url",_("Website URL"), error="") %} {# this is just for clicking #}
     <input id="field-website_url" type="url" placeholder="http://www..."  value="{{data.website_url}}" name="website_url" />
     <input id="field-website_name" type="text" placeholder="name" value="{{data.website_name}}" name="website_name" />
 {% endcall %}
 
-make this into a link titled cfpb wiki in additional info
-{{ form.input('wiki_link', label=_("Wiki Link"), placeholder="http://cfpb.local/...", value=data.wiki_link, error=errors.wiki_link) }}
+{{ form.input('wiki_link', label=_("Wiki Link"), placeholder="http://cfpb.local/...", type="url", value=data.wiki_link, error=errors.wiki_link) }}
 
 {{ form.markdown('access_notes', id='field-access_notes', label=_('Access: Notes'), placeholder=_('enter notes'), value=data.access_notes, error=errors.access_notes) }}
 
@@ -98,6 +97,7 @@ validate
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
 
+validate
 {{ form_custom.select_with_other('acquisition_method', 
 label=_('Acquisition Method'),  
 current_values=h.clean_select_multi(data.get('acquisition_method', '')), 
@@ -105,7 +105,7 @@ options_defaults=h.options_acquisition_method(),
 error=errors.acquisition_method,
 multiple=False) }}
 
-validate the other?
+validate 
 {{ form_custom.select_with_other('pra_exclusion', 
 label=_('PRA Exclusion'),  
 current_values=h.clean_select_multi(data.get('pra_exclusion', '')), 

@@ -5,11 +5,11 @@
 {{pkg_dict}}
 
   {% if pkg_dict.id %}
+  {% endif %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Dataset ID") }} </th>
 	<td class="dataset-details">{{ pkg_dict.id }} </td>
   </tr>
-  {% endif %}
   <!-- Core -->
   {% if pkg_dict.source_names %}
   {% endif %}
@@ -24,11 +24,11 @@
 	<td class="dataset-details">{{ pkg_dict.access_restrictions }} </td>
   </tr>
   {% if pkg_dict.contact_primary_name %}
+  {% endif %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Contact: Primary") }} </th>
 	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_primary_email}}">{{pkg_dict.contact_primary_name}}</a></td>
   </tr>
-  {% endif %}
 
   {% if pkg_dict.initial_purpose_for_intake %}
   {% endif %}
@@ -43,11 +43,11 @@
 	<td class="dataset-details">{{ pkg_dict.legal_authority_for_collection}} </td>
   </tr>
   {% if pkg_dict.pra_omb_control_number %}
+  {% endif %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("PRA OMB Control Number") }} </th>
 	<td class="dataset-details">{{ pkg_dict.pra_omb_control_number }} </td>
   </tr>
-  {% endif %}
   {% if pkg_dict.privacy_pia_title %}
   {% endif %}
   <tr> 
@@ -73,8 +73,8 @@
 	<td class="dataset-details">{{ pkg_dict.dig_id }} </td>
   </tr>
   <tr>
-    <th scope="row" class="dataset-label"><hr></th>
-    <td class="dataset-details"><hr></td>
+    <th scope="row" class="dataset-label"><br></th>
+    <td class="dataset-details"><br></td>
   </tr>
   {% if pkg_dict.usage_restrictions %}
   {% endif %}
@@ -86,11 +86,11 @@
 
 
   {% if pkg_dict.contact_secondary_name %}
+  {% endif %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Contact: Secondary") }} </th>
 	<td class="dataset-details"><a href="mailto:{{pkg_dict.contact_secondary_email}}">{{pkg_dict.contact_secondary_name}}</a></td>
   </tr>
-  {% endif %}
   {% if pkg_dict.obfuscated_title %} 
   {% endif %}
     <tr>
@@ -148,16 +148,16 @@
       <td class="dataset-details"><a href="{{ pkg_dict.website_url }}">{{ pkg_dict.website_name}}</a> </td>
     </tr>
   {% if pkg_dict.wiki_link %} 
+  {% endif %}
     <tr>
       <th scope="row" class="dataset-label">{{ _("Wiki Link") }}</th>
       <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">CFPB wiki article</a></td>
     </tr>
-  {% endif %}
-  {% if pkg_dict.acquisition_methods %} 
+  {% if pkg_dict.acquisition_method %} 
   {% endif %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Acquisition Methods") }}</th>
-      <td class="dataset-details">{{ pkg_dict.acquisition_methods }}</td>
+      <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
+      <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
     </tr>
   {% if pkg_dict.pra_exclusion %} 
   {% endif %}
@@ -196,14 +196,12 @@
       <td class="dataset-details">{{ pkg_dict.procurement_document_id }}</td>
     </tr>
 
-
-
   {% if pkg_dict.privacy_has_privacy_act_statement %} 
+  {% endif %}
     <tr>
       <th scope="row" class="dataset-label">{{ _("Privacy: Has Privacy Act Statement") }}</th>
       <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
     </tr>
-  {% endif %}
 
   {% if pkg_dict.dataset_last_modified_date %} 
   {% endif %}

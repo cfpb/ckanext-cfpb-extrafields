@@ -53,10 +53,10 @@
 	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
               </tr>
               {% if res.storage_location %}
-              {% endif %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
 	            <td class="dataset-details">{{ res.storage_location }} ; {{ res.storage_location_path }} </td>
+              {% endif %}
               </tr>
               {% if res.sensitivity_level %}
               {% endif %}
@@ -71,8 +71,8 @@
               </tr>
               {% endif %}
               <tr>
-                <th scope="row" class="dataset-label"><hr></th>
-                <td class="dataset-details"><hr></td>
+                <th scope="row" class="dataset-label"><br> </th>
+                <td class="dataset-details"><br> </td>
               </tr>
               {% if res.intake_date %} 
               {% endif %}
@@ -104,8 +104,6 @@
                 <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
               </tr>
               {% endif %}
-              
-              
 
                     
             </tbody>
