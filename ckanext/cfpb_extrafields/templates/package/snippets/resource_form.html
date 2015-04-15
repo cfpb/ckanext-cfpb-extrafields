@@ -6,14 +6,13 @@
 {{ form.input('content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
 {{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
 
-{{ form_custom.select_with_other('format_cfpb', 
-label=_('Format (CFPB)'),  
-current_values=h.clean_select_multi(data.get('format_cfpb', '')), 
+{{ form_custom.select_one_with_other('format_cfpb', 
+label=_('Form (CFPB)'),  
+current_value=data.get('format_cfpb', ''), 
 options_defaults=h.options_format_cfpb(), 
-error=errors.format_cfpb,
-multiple=False) }}
+error=errors.format_cfpb,) }}
 
-<!-- custom version of select -->
+<!-- custom version of select one with extra field -->
 <div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
   <label class="control-label" for="storage_location">storage_location</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
@@ -21,14 +20,14 @@ multiple=False) }}
     {# move previously selected elements to the top and select #}
     {# provide nothing as an option #}
     <option value=""></option>
-	{% for e in h.clean_select_multi(data.get('storage_location', '')) %}
+	{% for e in [data.get('storage_location', '')] %}
         {% if e %}
         <option value="{{e}}" selected="selected">{{e}}</option>
 	    {% endif %}
     {% endfor %}
     {# provide the default options but don't duplicate if they were selected above #}
 	{% for e in h.options_storage_location() %}
-        {% if e not in data.get('storage_location', []) %}
+        {% if e != data.get('storage_location', '') %}
             <option value="{{e}}">{{e}}</option>
 	    {% endif %}
     {% endfor %}

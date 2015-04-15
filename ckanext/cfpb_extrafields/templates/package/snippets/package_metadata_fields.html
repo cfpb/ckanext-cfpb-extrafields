@@ -71,7 +71,6 @@ label=_('Also Known As'), placeholder=_(''), value=data.also_known_as, error=err
 
 {{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"}], selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
-What does this mean for options: "HMDA has points, census has geometries. Look up existing taxonomies."?
 {{ form_custom.select_with_other('content_spatial', 
 label=_('Content: Spatial'),  
 current_values=h.clean_select_multi(data.get('content_spatial', '')), 
@@ -79,7 +78,6 @@ options_defaults=h.options_content_spatial(),
 error=errors.content_spatial,
 multiple=True) }}
 
-Should I provide all options from http://dublincore.org/groups/collections/frequency/ ?
 {{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"},], selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
 {% call form.input_block("field-website_url",_("Website URL"), error="") %} {# this is just for clicking #}
@@ -91,27 +89,23 @@ Should I provide all options from http://dublincore.org/groups/collections/frequ
 
 {{ form.markdown('access_notes', id='field-access_notes', label=_('Access: Notes'), placeholder=_('enter notes'), value=data.access_notes, error=errors.access_notes) }}
 
-validate
 {% call form.input_block("field-contact_secondary_name",_("Contact: Secondary"), error="") %} {# this is just for clicking #}
     <input id="field-contact_secondary_name" type="text" placeholder="last name, first name"  value="{{data.contact_secondary_name}}" name="contact_secondary_name" />
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
 
-validate
-{{ form_custom.select_with_other('acquisition_method', 
+{{ form_custom.select_one_with_other('acquisition_method', 
 label=_('Acquisition Method'),  
-current_values=h.clean_select_multi(data.get('acquisition_method', '')), 
+current_value=data.get('acquisition_method', ''), 
 options_defaults=h.options_acquisition_method(), 
-error=errors.acquisition_method,
-multiple=False) }}
+error=errors.acquisition_method,) }}
 
-validate 
-{{ form_custom.select_with_other('pra_exclusion', 
+{{ form_custom.select_one_with_other('pra_exclusion', 
 label=_('PRA Exclusion'),  
-current_values=h.clean_select_multi(data.get('pra_exclusion', '')), 
+current_value=data.get('pra_exclusion', ''), 
 options_defaults=h.options_pra_exclusion(), 
-error=errors.pra_exclusion,
-multiple=False) }}
+error=errors.pra_exclusion,) }}
+
 
 {{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last modified Date"), placeholder="eg 12/21/2012", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
 
@@ -121,16 +115,14 @@ multiple=False) }}
 label=_('Privacy: Has Privacy Act Statement'),
 current_value=data.privacy_has_privacy_act_statement)}}
 
-{{ form_custom.select_with_other('privacy_pia_notes', 
+{{ form_custom.select_one_with_other('privacy_pia_notes', 
 label=_('Privacy: PIA Notes'),  
-current_values=h.clean_select_multi(data.get('privacy_pia_notes', '')), 
+current_value=data.get('privacy_pia_notes', ''), 
 options_defaults=h.options_privacy_pia_notes(), 
-error=errors.privacy_pia_notes,
-multiple=False) }}
+error=errors.privacy_pia_notes,) }}
 
 {{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('Records Retention Schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
 
-more specificity on the exact format is needed for validation CFPB-12-Z-00015-0011
 {{ form.input('procurement_document_id', label=_("Procurement Document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
 

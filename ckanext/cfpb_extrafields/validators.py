@@ -16,7 +16,7 @@ def input_value_validator(value):
     if "__Other" in value :
         Invalid("'Other, please specify' is not a valid option")
     if not is_alphanumeric_plus(value):
-        Invalid('A selected field cannot include most special characters')
+        Invalid('multi-select fields cannot contain commas or quotation marks')
     # assume that duplicates are mistakes continue quietly
     if not isinstance(value, basestring):
         value = dedupe_unordered(value)

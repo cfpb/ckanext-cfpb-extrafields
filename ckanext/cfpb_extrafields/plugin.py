@@ -89,6 +89,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'content_periodicity': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'content_spatial': [tk.get_validator('ignore_missing'),
+                                v.input_value_validator,
                         tk.get_converter('convert_to_extras')],
             'update_frequency': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],

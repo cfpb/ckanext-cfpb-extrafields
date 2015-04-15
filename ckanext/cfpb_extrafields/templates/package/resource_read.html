@@ -52,10 +52,10 @@
 	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range Start") }} </th>
 	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
               </tr>
-              {% if res.storage_location %}
+              {% if res.storage_location or res.storage_location_path %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
-	            <td class="dataset-details">{{ res.storage_location }} ; {{ res.storage_location_path }} </td>
+	            <td class="dataset-details">{{ res.storage_location }}  {{ res.storage_location_path }} </td>
               {% endif %}
               </tr>
               {% if res.sensitivity_level %}
