@@ -65,6 +65,8 @@ def privacy_sorn_number():
 def relevant_governing_documents():
     return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
 #http://dublincore.org/groups/collections/frequency/
+def content_spatial():
+    return [""]
 def content_periodicity0():
     return ["Triennial", "Biennial",
             "Annual",
