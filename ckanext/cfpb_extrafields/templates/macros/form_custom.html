@@ -1,9 +1,11 @@
 
-{% macro select_with_other(name, label='', current_values=[], options_defaults=[], error='' , multiple=True) %}
-<div class="control-group ">
-    <label class="control-label">{{label}}</label>
-    <div class="controls ">
-    <select id={{name}} name={{name}} width="400" style="width: 400px" {% if multiple %}multiple{%endif %}>
+{% macro select_with_other(name, label='', current_values=[], options_defaults=[], extra_html="", error='' , multiple=True) %}
+<div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+    <label class="control-label" for="{{ name }}">{{label}}</label>
+    <div class="controls{{ " " ~ control_classes | join(' ') }}">
+    <select id={{name}} name={{name}} width="400" style="width: 400px" {% if multiple %}multiple{% endif %}>
+    {# provide nothing as an option #}
+    {% if not multiple %}<option value=""></option>{% endif %}
     {# move previously selected elements to the top and select #}
     {% for e in current_values %}
         {% if e %}
@@ -19,12 +21,14 @@
     {# provide an option for javascript to use to create new fields #}
     <option value="__Other">Other, please specify</option>
     </select>
+    {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
+    {{ extra_html }}
     </div>
 </div>
 {% endmacro %}
 
 
-{% macro radio(name, label='', current_value='no') %}
+{% macro radio(name, label='', current_value='no', error='') %}
   <div class="control-group ">
     <label class="control-label">{{label}}</label>
     <div class="controls ">
