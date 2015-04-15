@@ -33,6 +33,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_privacy_sorn_number': opts.privacy_sorn_number,
                 'options_relevant_governing_documents': opts.relevant_governing_documents,
                 'options_content_periodicity': opts.content_periodicity,
+                'options_content_spatial': opts.content_spatial,
                 'options_acquisition_method': opts.acquisition_method,
                 'options_pra_exclusion': opts.pra_exclusion,
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
@@ -72,16 +73,15 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'dig_id': [tk.get_validator('ignore_missing'),
                         v.dig_id_validator,
                         tk.get_converter('convert_to_extras')],
-            'usage_restrictions' : [ 
-                    tk.get_validator('ignore_missing'),
-                    tk.get_converter('convert_to_extras')],
+            'usage_restrictions' : [ tk.get_validator('ignore_missing'),
+                                     tk.get_converter('convert_to_extras')],
             'obfuscated_title': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
+                                 tk.get_converter('convert_to_extras')],
             'transfer_details': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
+                                 tk.get_converter('convert_to_extras')],
             'transfer_initial_size': [tk.get_validator('ignore_missing'),
-                           v.positive_number_validator,
-                        tk.get_converter('convert_to_extras')],
+                                      v.positive_number_validator,
+                                      tk.get_converter('convert_to_extras')],
             'transfer_method': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'also_known_as': [tk.get_validator('ignore_missing'),
@@ -119,36 +119,18 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
         })
         schema['resources'].update({
-                'format_cfpb' : [ 
-                    tk.get_validator('ignore_missing'), v.input_value_validator,],
-                'storage_location' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'storage_location_path' : [   
-                    tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'storage_location' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'intake_date' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'update_size' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'approximate_total_size' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'resource_type' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_has_direct_identifiers' : [ 
-                    tk.get_validator('ignore_missing'),],
+                'approximate_total_size' : [tk.get_validator('ignore_missing'),],
+                'content_temporal_range_end' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
+                'content_temporal_range_start' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
+                'format_cfpb' : [ tk.get_validator('ignore_missing'), ],
+                'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
+                'privacy_contains_pii' : [tk.get_validator('ignore_missing'),],
+                'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),],
+                'resource_type' : [tk.get_validator('ignore_missing'),],
+                'sensitivity_level' : [tk.get_validator('ignore_missing'),],
+                'storage_location' : [tk.get_validator('ignore_missing'),],
+                'storage_location_path' : [tk.get_validator('ignore_missing'),],
+                'update_size' : [tk.get_validator('ignore_missing'),],
         })
 #        pprint.pprint(schema)
         return schema
@@ -214,7 +196,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'pra_exclusion': [tk.get_converter('convert_from_extras'),
                               tk.get_validator('ignore_missing')],
             'dataset_last_modified_date': [tk.get_converter('convert_from_extras'),
-                                        tk.get_validator('ignore_missing')],
+                                           tk.get_validator('ignore_missing')],
             'pra_omb_expiration_date': [tk.get_converter('convert_from_extras'),
                                         tk.get_validator('ignore_missing')],
             'privacy_has_privacy_act_statement': [tk.get_converter('convert_from_extras'),
@@ -237,36 +219,18 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                     tk.get_validator('ignore_missing')],
         })
         schema['resources'].update({
-                'format_cfpb' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'storage_location' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'storage_location_path' : [   
-                    tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'storage_location' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'intake_date' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'update_size' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'approximate_total_size' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'resource_type' : [ 
-                    tk.get_validator('ignore_missing'),],
-                'privacy_has_direct_identifiers' : [ 
-                    tk.get_validator('ignore_missing'),],
+                'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
+                'content_temporal_range_end' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
+                'content_temporal_range_start' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
+                'format_cfpb' : [ tk.get_validator('ignore_missing'),],
+                'intake_date' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
+                'privacy_contains_pii' : [ tk.get_validator('ignore_missing'),],
+                'privacy_has_direct_identifiers' : [ tk.get_validator('ignore_missing'),],
+                'resource_type' : [ tk.get_validator('ignore_missing'),],
+                'sensitivity_level' : [ tk.get_validator('ignore_missing'),],
+                'storage_location' : [ tk.get_validator('ignore_missing'),],
+                'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
+                'update_size' : [ tk.get_validator('ignore_missing'),],
         })
         return schema
 
