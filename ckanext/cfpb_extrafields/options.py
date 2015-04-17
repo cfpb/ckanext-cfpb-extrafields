@@ -11,7 +11,7 @@ def legal_authority_for_collection():
     return ["Market Monitoring", "Supervision", "Enforcement", "Consumer Response"]
 def privacy_pia_title():
     return ["CFPB Business Intelligence Tool",
-"Certain Supervision, Enforcement, and Fair Lending Data used for Market Research",
+"Certain Supervision  Enforcement and Fair Lending Data used for Market Research",
 "Civil Penalty Fund PIA",
 "Compliance Analysis Toolkit (CAT) PIA",
 "Consumer Education PIA ",
@@ -22,7 +22,7 @@ def privacy_pia_title():
 "Extranet PIA",
 "Freedom of Information Act/Privacy Act System",
 "HUD Counselor Tool PIA",
-"Industry, Expert, and Community Input and Engagement PIA",
+"Industry  Expert and Community Input and Engagement PIA",
 "Litigation and Investigation Support Toolset (LIST) PIA",
 "Market Analysis of Administrative Data Under Research Authorities PIA",
 "Market Research in the Field PIA ",
@@ -64,28 +64,22 @@ def privacy_sorn_number():
 "N/A",]
 def relevant_governing_documents():
     return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
-#http://dublincore.org/groups/collections/frequency/
 def content_spatial():
     return [""]
-def content_periodicity0():
-    return ["Triennial", "Biennial",
-            "Annual",
-            "Semiannual",
-            "Three times a year",
-            "Quarterly",
-            "Bimonthly",
-            "Monthly",
-            "Semimonthly",
-            "Biweekly",
-            "Three times a month",
-            "Weekly",
-            "Semiweekly",
-            "Three times a week",
-            "Daily",
-            "Continuous",
-            "Irregular",]
+#http://dublincore.org/groups/collections/frequency/
 def content_periodicity():
-    return ["Daily", "Weekly", "Monthly", "Annually", "N/A"]
+    a=["Triennial", "Biennial","Annual",
+       "Semiannual","Three times a year","Quarterly","Bimonthly","Monthly", 
+       "Semimonthly","Biweekly","Three times a month","Weekly",
+       "Semiweekly","Three times a week","Daily",
+       "Continuous","Irregular",]
+    # want shorter options first
+    a.reverse() 
+    # insert a blank at the beginning
+    a.insert(0,"")
+    # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
+    a = [{'value':i} for i in a] 
+    return a
 def acquisition_method():
     return ["commercial purchase", "custom purchase", "public download", 
             "received from government agency", "received from third party", 
