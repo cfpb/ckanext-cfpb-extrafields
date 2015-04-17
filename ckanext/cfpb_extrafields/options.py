@@ -1,7 +1,7 @@
 # resources 
-def format_cfpb():
-    return ["csv", "ascii", "stata", "sql", "pdf", "sas", "xml", "Word Doc", 
-           "Excel", "txt", "tab", "json"] #+other
+def format():
+    return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
+           "excel", "TXT", "TAB", "JSON"] #+other
 def storage_location():
     return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",
             "RightNow"] #+other
@@ -66,8 +66,8 @@ def relevant_governing_documents():
     return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
 def content_spatial():
     return [""]
+def frequency_standards():
 #http://dublincore.org/groups/collections/frequency/
-def content_periodicity():
     a=["Triennial", "Biennial","Annual",
        "Semiannual","Three times a year","Quarterly","Bimonthly","Monthly", 
        "Semimonthly","Biweekly","Three times a month","Weekly",
@@ -80,6 +80,10 @@ def content_periodicity():
     # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
     a = [{'value':i} for i in a] 
     return a
+def content_periodicity():
+    return frequency_standards()
+def update_frequency():
+    return frequency_standards()
 def acquisition_method():
     return ["commercial purchase", "custom purchase", "public download", 
             "received from government agency", "received from third party", 
