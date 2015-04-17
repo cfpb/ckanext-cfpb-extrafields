@@ -1,5 +1,8 @@
 {% ckan_extends %}
 
+
+
+{% block package_additional_info %}
 {% block extras %}
 
 {{pkg_dict}}
@@ -123,6 +126,12 @@
       <th scope="row" class="dataset-label">{{ _("Also Known As") }}</th>
       <td class="dataset-details">{{ pkg_dict.also_known_as }}</td>
     </tr>
+  {% if pkg_dict.update_frequency %} 
+  {% endif %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
+      <td class="dataset-details">{{ pkg_dict.update_frequency }}</td>
+    </tr>
   {% if pkg_dict.content_periodicity %} 
   {% endif %}
     <tr>
@@ -134,12 +143,6 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("Content: Spatial") }}</th>
       <td class="dataset-details">{{ pkg_dict.content_spatial }}</td>
-    </tr>
-  {% if pkg_dict.update_frequency %} 
-  {% endif %}
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
-      <td class="dataset-details">{{ pkg_dict.update_frequency }}</td>
     </tr>
   {% if pkg_dict.website_url %} 
   {% endif %}
@@ -203,14 +206,22 @@
       <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
     </tr>
 
-  {% if pkg_dict.dataset_last_modified_date %} 
+  {% if pkg_dict.dataset_notes %} 
   {% endif %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _(" Dataset Last Modified Date") }}</th>
-      <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
+      <th scope="row" class="dataset-label">{{ _("Dataset Notes") }}</th>
+      <td class="dataset-details">{{ pkg_dict.dataset_notes }}</td>
+    </tr>
+
+  {% if pkg_dict.access_notes %} 
+  {% endif %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Access: Notes") }}</th>
+      <td class="dataset-details">{{ pkg_dict.access_notes }}</td>
     </tr>
 
 
 
 {% endblock %}
 
+{% endblock %}

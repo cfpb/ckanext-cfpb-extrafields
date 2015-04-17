@@ -1,16 +1,21 @@
 {% ckan_extends %}
 
+{% block package_basic_fields_license %}
+{% endblock %}
+    {% block basic_fields_format %}
+    {% endblock %}
+
 {% block metadata_fields %}
 {% import 'macros/form_custom.html' as form_custom %}
 
 {{ form.input('content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
 {{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 12/21/2012", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
 
-{{ form_custom.select_one_with_other('format_cfpb', 
-label=_('Form (CFPB)'),  
-current_value=data.get('format_cfpb', ''), 
-options_defaults=h.options_format_cfpb(), 
-error=errors.format_cfpb,) }}
+{{ form_custom.select_one_with_other('format', 
+label=_('Format'),  
+current_value=data.get('format', ''), 
+options_defaults=h.options_format(), 
+error=errors.format,) }}
 
 <!-- custom version of select one with extra field -->
 <div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
@@ -46,7 +51,7 @@ label=_('Privacy: Contains PII?'),
 current_value=data.privacy_contains_pii,
 error=errors.privacy_contains_pii)}}
 
-<!-- non-core fields -->
+<!-- non-core fields--><hr>
 
 {{ form.input('intake_date', type='date', label=_("Intake Date"), placeholder="eg 12/21/2012", value=data.intake_date, error=errors.intake_date) }}
 

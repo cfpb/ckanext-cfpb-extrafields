@@ -9,8 +9,11 @@ def dedupe_unordered(items):
     return list(set(items))
 
 def is_alphanumeric_plus(str):
-    '''Check that all characters are are alphanumeric or [space,_,-,.,/,:].'''
+    '''Check that all characters are alphanumeric or [space,_,-,.,/,:].'''
     return re.match('^[-.:/\w ]+$', ''.join(str)) is not None
+#def contains_bad_chars(str):
+#    ''' contains "{},'''
+#    return re.match('^[-.:/\w ]+$', ''.join(str)) is not None
 
 def input_value_validator(value):
     if "__Other" in value :

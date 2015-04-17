@@ -1,3 +1,4 @@
+{# pick-one list with specified other option #}
 {% macro select_one_with_other(name, label='', current_value="", options_defaults=[], extra_html="", error='' ) %}
 <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
     <label class="control-label" for="{{ name }}">{{label}}</label>
@@ -22,14 +23,13 @@
 </div>
 {% endmacro %}
 
-
-{% macro select_with_other(name, label='', current_values=[], options_defaults=[], extra_html="", error='' , multiple=True) %}
+{# select multiple list with specified other option #}
+{% macro select_multi_with_other(name, label='', current_values=[], size="400", options_defaults=[], extra_html="", error='') %}
 <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
     <label class="control-label" for="{{ name }}">{{label}}</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
-    <select id={{name}} name={{name}} width="400" style="width: 400px" {% if multiple %}multiple{% endif %}>
+    <select id={{name}} name={{name}} width={{size}} style="width:{{size}}px" multiple>
     {# provide nothing as an option #}
-    {% if not multiple %}<option value=""></option>{% endif %}
     {# move previously selected elements to the top and select #}
     {% for e in current_values %}
         {% if e %}
@@ -50,7 +50,6 @@
     </div>
 </div>
 {% endmacro %}
-
 
 {% macro radio(name, label='', current_value='no', error='') %}
   <div class="control-group ">

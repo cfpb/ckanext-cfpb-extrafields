@@ -2,6 +2,14 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/form_custom.html' as form_custom %}
 
+{% block package_metadata_fields_url %}
+{% endblock %}
+{% block package_metadata_fields_version %}
+{% endblock %}
+{% block package_metadata_author %}
+{% endblock %}
+{% block package_metadata_fields_maintainer %}
+{% endblock %}
 
 {% block custom_fields %}
 
@@ -17,43 +25,45 @@
 
 {{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('Initial Purpose for Intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
 
-{{ form_custom.select_with_other('legal_authority_for_collection', 
+{{ form_custom.select_multi_with_other('legal_authority_for_collection', 
 label=_('Legal Authority for Collection'),  
 current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')), 
 options_defaults=h.options_legal_authority_for_collection(), 
 error=errors.legal_authority_for_collection,
-multiple=True) }}
+) }}
 
 {{ form.input('pra_omb_control_number', label=_("PRA: OMB Control Number"), placeholder="####-####", value=data.pra_omb_control_number, error=errors.pra_omb_control_number) }}
 
-{{ form_custom.select_with_other('privacy_pia_title', 
+{{ form_custom.select_multi_with_other('privacy_pia_title', 
 label=_('Privacy: PIA Title'),  
 current_values=h.clean_select_multi(data.get('privacy_pia_title', '')), 
 options_defaults=h.options_privacy_pia_title(), 
 error=errors.privacy_pia_title,
-multiple=True) }}
+size="550",
+) }}
 
-{{ form_custom.select_with_other('privacy_sorn_number', 
+{{ form_custom.select_multi_with_other('privacy_sorn_number', 
 label=_('Privacy: SORN number'),  
 current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')), 
 options_defaults=h.options_privacy_sorn_number(), 
 error=errors.privacy_sorn_number,
-multiple=True) }}
+size="550",
+) }}
 
-{{ form_custom.select_with_other('relevant_governing_documents', 
+{{ form_custom.select_multi_with_other('relevant_governing_documents', 
 label=_('Relevant Governing Documents'),  
 current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
 options_defaults=h.options_relevant_governing_documents(), 
 error=errors.relevant_governing_documents,
-multiple=True) }}
+) }}
 
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
 
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
 label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 
-<!-- non-core fields(?) -->
-<hr>
+<!-- non-core fields --><hr>
+
 {{ form_custom.radio('obfuscated_title', 
 label=_('Obfuscated Title'),
 current_value=data.obfuscated_title)}}
@@ -69,16 +79,17 @@ label=_('Transfer Details'), placeholder=_(''), value=data.transfer_details, err
 {{ form.markdown('also_known_as', id='field-also_known_as', 
 label=_('Also Known As'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
 
-{{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"}], selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
+{{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=h.options_update_frequency(), selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
-{{ form_custom.select_with_other('content_spatial', 
+{{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
+
+{{ form_custom.select_multi_with_other('content_spatial', 
 label=_('Content: Spatial'),  
 current_values=h.clean_select_multi(data.get('content_spatial', '')), 
 options_defaults=h.options_content_spatial(), 
 error=errors.content_spatial,
-multiple=True) }}
+) }}
 
-{{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=[{'value':""},{'value':"Daily"}, {'value':"Weekly"}, {'value':"Monthly"}, {'value':"Annually"}, {'value':"N/A"},], selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
 {% call form.input_block("field-website_url",_("Website URL"), error="") %} {# this is just for clicking #}
     <input id="field-website_url" type="url" placeholder="http://www..."  value="{{data.website_url}}" name="website_url" />
@@ -88,6 +99,8 @@ multiple=True) }}
 {{ form.input('wiki_link', label=_("Wiki Link"), placeholder="http://cfpb.local/...", type="url", value=data.wiki_link, error=errors.wiki_link) }}
 
 {{ form.markdown('access_notes', id='field-access_notes', label=_('Access: Notes'), placeholder=_('enter notes'), value=data.access_notes, error=errors.access_notes) }}
+
+{{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('Dataset: Notes'), placeholder=_('enter notes'), value=data.dataset_notes, error=errors.dataset_notes) }}
 
 {% call form.input_block("field-contact_secondary_name",_("Contact: Secondary"), error="") %} {# this is just for clicking #}
     <input id="field-contact_secondary_name" type="text" placeholder="last name, first name"  value="{{data.contact_secondary_name}}" name="contact_secondary_name" />

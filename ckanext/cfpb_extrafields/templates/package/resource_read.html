@@ -14,32 +14,20 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">{{ _('Last updated') }}</th>
-                <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
-              </tr>
-              <tr>
-                <th scope="row">{{ _('Created') }}</th>
+                <th scope="row">{{ _('Metadata Resource Created') }}</th>
                 <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
+              <tr>
+                <th scope="row">{{ _('Metadata Last updated') }}</th>
+                <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
+              </tr>
+
               <tr>
                 <th scope="row">{{ _('Format') }}</th>
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
               </tr>
-              <tr>
-                <th scope="row">{{ _('License') }}</th>
-                <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
-              </tr>
-              {#% for key, value in h.format_resource_items(res.items()) %}
-                <tr><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
-              {% endfor %#}
 
               <!-- new core fields -->
-              {% if res.format_cfpb %}
-              {% endif %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("Format (CFPB)") }} </th>
-	            <td class="dataset-details">{{ res.format_cfpb }} 
-              </tr>
               {% if res.content_temporal_range_end %}
               {% endif %}
               <tr>
@@ -55,7 +43,10 @@
               {% if res.storage_location or res.storage_location_path %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
-	            <td class="dataset-details">{{ res.storage_location }}  {{ res.storage_location_path }} </td>
+	            <td class="dataset-details">
+                  <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
+                             <td>{{ res.storage_location_path }}</td>
+                         </tr></table> </td>
               {% endif %}
               </tr>
               {% if res.sensitivity_level %}
