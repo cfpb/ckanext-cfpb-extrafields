@@ -38,6 +38,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_acquisition_method': opts.acquisition_method,
                 'options_pra_exclusion': opts.pra_exclusion,
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
+                'options_transfer_method': opts.transfer_method,
+                'options_sensitivity_level': opts.sensitivity_level,
+                'options_update_size': opts.update_size,
+                'options_approximate_total_size': opts.approximate_total_size,
+                'options_resource_type': opts.resource_type,
                 }
 
     def _modify_package_schema(self, schema):

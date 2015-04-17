@@ -5,6 +5,31 @@ def format():
 def storage_location():
     return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",
             "RightNow"] #+other
+def sensitivity_level():
+    a=["Public", "Low", "Medium", "High"]
+    # insert a blank at the beginning
+    a.insert(0,"")
+    # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
+    a = [{'value':i} for i in a] 
+    return a
+def file_sizes():
+    a=["<500 MB","501-1,000 MB","1001-10,000 MB",">10,000 MB"]
+    # insert a blank at the beginning
+    a.insert(0,"")
+    # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
+    a = [{'value':i} for i in a] 
+    return a
+def update_size():
+    return file_sizes()
+def approximate_total_size():
+    return file_sizes()
+def resource_type():
+    a=["Canonical","Extract","Documentation","Data Dictionary","Other"]
+    # insert a blank at the beginning
+    a.insert(0,"")
+    # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
+    a = [{'value':i} for i in a] 
+    return a
 
 # datasets
 def legal_authority_for_collection():
@@ -104,3 +129,10 @@ def pra_exclusion():
 def privacy_pia_notes():
     return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII", 
             "No PIA - All PII Aggregated"]
+def transfer_method():
+    a=["Website", "SFTP", "FTP", "Physical Media", "Email", "Connect Direct", "Other"]
+    # insert a blank at the beginning
+    a.insert(0,"")
+    # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
+    a = [{'value':i} for i in a] 
+    return a
