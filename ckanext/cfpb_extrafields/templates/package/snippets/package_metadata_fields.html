@@ -73,7 +73,7 @@ label=_('Transfer Details'), placeholder=_(''), value=data.transfer_details, err
 
 {{ form.input('transfer_initial_size', label=_("Transfer: Initial Size (MB)"), placeholder="eg 1.2", value=data.transfer_initial_size, error=errors.transfer_initial_size) }}
 
-{{ form.select('transfer_method', label=_('Transfer: Method'), id='field-transfer_method', options=h.options_transfer_method, selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
+{{ form.select('transfer_method', label=_('Transfer: Method'), id='field-transfer_method', options=h.options_transfer_method(), selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
 
 {{ form.markdown('also_known_as', id='field-also_known_as', 
 label=_('Also Known As'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
