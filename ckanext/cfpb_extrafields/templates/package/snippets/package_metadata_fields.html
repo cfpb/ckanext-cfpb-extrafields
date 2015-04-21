@@ -2,6 +2,30 @@
 {% import 'macros/form.html' as form %}
 {% import 'macros/form_custom.html' as form_custom %}
 
+{% block package_metadata_fields %}
+
+
+{#{ form_custom.select_multi_with_other('relevant_governing_documents', 
+label=_('Relevant Governing Documents'),  
+current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
+options_defaults=h.options_relevant_governing_documents(), 
+error=errors.relevant_governing_documents,
+) }
+#}
+
+  <div class="control-group">
+    <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
+    <div class="controls">
+      <select id="field-relevant_governing_documents" name="relevant_governing_documents" data-module="autocomplete" multiple>
+        {% for op in h.tag_relevant_governing_documents()  %}
+          <option value="{{ op }}" {% if op in data.get('relevant_governing_documents', []) %}selected="selected"{% endif %}>{{ op }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  {{super()}}
+{% endblock %}
+
 {% block package_metadata_fields_url %}
 {% endblock %}
 {% block package_metadata_fields_version %}
@@ -48,13 +72,6 @@ current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')),
 options_defaults=h.options_privacy_sorn_number(), 
 error=errors.privacy_sorn_number,
 size="550",
-) }}
-
-{{ form_custom.select_multi_with_other('relevant_governing_documents', 
-label=_('Relevant Governing Documents'),  
-current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
-options_defaults=h.options_relevant_governing_documents(), 
-error=errors.relevant_governing_documents,
 ) }}
 
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}

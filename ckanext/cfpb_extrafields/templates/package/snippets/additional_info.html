@@ -67,7 +67,7 @@
   {% endif %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Relevant Governing Documents") }} </th>
-	<td class="dataset-details">{{ pkg_dict.relevant_governing_documents }} </td>
+	<td class="dataset-details">{% for i in pkg_dict.relevant_governing_documents %} {{i}}, {% endfor %} </td>
   </tr>
   {% if pkg_dict.dig_id %}
   {% endif %}
@@ -221,7 +221,5 @@
     </tr>
 
 
-
 {% endblock %}
-
 {% endblock %}

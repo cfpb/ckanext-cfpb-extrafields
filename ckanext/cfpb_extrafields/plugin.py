@@ -4,13 +4,34 @@ import pprint
 import validators as v
 import options as opts
 
+# if tag usage is going to be expanded, the following should be generalized.
+def create_relevant_governing_documents():
+    user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
+    context = {'user': user['name']}
+    try:
+        data = {'id': 'relevant_governing_documents'}
+        tk.get_action('vocabulary_show')(context, data)
+    except tk.ObjectNotFound:
+        data = {'name': 'relevant_governing_documents'}
+        vocab = tk.get_action('vocabulary_create')(context, data)
+        for tag in opts.relevant_governing_documents(): 
+            data = {'name': tag, 'vocabulary_id': vocab['id']}
+            tk.get_action('tag_create')(context, data)
+def tag_relevant_governing_documents():
+    create_relevant_governing_documents()
+    try:
+        tag_list = tk.get_action('tag_list')
+        tags = tag_list(data_dict={'vocabulary_id': 'relevant_governing_documents'})
+        return tags
+    except tk.ObjectNotFound:
+        return None
+
 def clean_select_multi(a):
     ''' parses the results of an html form select multiple '''
     # code review! select multis are contained in unicode strings that look like: 
     # u'{"blah blah","blah asdf", asdf}' ; u'{asdf, asdf}' ; u'asdf' 
     # a regex solution would be nice, but for now I demand fields 
     # do not contain special characters. 
-
     # convert to string if a list
     a = ''.join(a) 
     # convert back to comma separated array 
@@ -31,6 +52,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_legal_authority_for_collection': opts.legal_authority_for_collection,
                 'options_privacy_pia_title': opts.privacy_pia_title,
                 'options_privacy_sorn_number': opts.privacy_sorn_number,
+                'tag_relevant_governing_documents': tag_relevant_governing_documents, 
                 'options_relevant_governing_documents': opts.relevant_governing_documents,
                 'options_content_periodicity': opts.content_periodicity,
                 'options_update_frequency': opts.update_frequency,
@@ -71,9 +93,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         v.input_value_validator,
                         tk.get_converter('convert_to_extras')],
             'privacy_sorn_number': [tk.get_validator('ignore_missing'),
-                        v.input_value_validator,
-                        tk.get_converter('convert_to_extras')],
-            'relevant_governing_documents': [tk.get_validator('ignore_missing'),
                         v.input_value_validator,
                         tk.get_converter('convert_to_extras')],
             'dig_id': [tk.get_validator('ignore_missing'),
@@ -126,6 +145,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'procurement_document_id': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
 
+        })
+        schema.update({
+            'relevant_governing_documents': [
+                tk.get_validator('ignore_missing'),
+                tk.get_converter('convert_to_tags')('relevant_governing_documents')
+            ]
         })
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
@@ -221,8 +246,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                   tk.get_validator('ignore_missing')],
             'privacy_sorn_number': [tk.get_converter('convert_from_extras'),
                                     tk.get_validator('ignore_missing')],
-            'relevant_governing_documents': [tk.get_converter('convert_from_extras'),
-                                             tk.get_validator('ignore_missing')],
             'dig_id': [tk.get_converter('convert_from_extras'),
                        tk.get_validator('ignore_missing')],
             'usage_restrictions' : [tk.get_converter('convert_from_extras'),
@@ -241,6 +264,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
+        schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
+        schema.update({
+            'relevant_governing_documents': [
+                tk.get_converter('convert_from_tags')('relevant_governing_documents'),
+                tk.get_validator('ignore_missing')]
+            })
         return schema
 
     def is_fallback(self):

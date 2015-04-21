@@ -7,19 +7,17 @@ def Invalid(message):
 
 def dedupe_unordered(items):
     return list(set(items))
-
-def is_alphanumeric_plus(str):
-    '''Check that all characters are alphanumeric or [space,_,-,.,/,:].'''
-    return re.match('^[-.:/\w ]+$', ''.join(str)) is not None
-#def contains_bad_chars(str):
-#    ''' contains "{},'''
-#    return re.match('^[-.:/\w ]+$', ''.join(str)) is not None
-
+def contains_bad_chars(str):
+    ''' contains \"{},'''
+    test = False
+    for c in ['\"','{','}',',']:
+        test = test or (c in str)
+    return test
 def input_value_validator(value):
     if "__Other" in value :
         Invalid("'Other, please specify' is not a valid option")
-    if not is_alphanumeric_plus(value):
-        Invalid('multi-select fields cannot contain commas or quotation marks')
+#    if contains_bad_chars(value):
+#        Invalid('multi-select fields cannot contain commas, {}, or double-quotes')
     # assume that duplicates are mistakes continue quietly
     if not isinstance(value, basestring):
         value = dedupe_unordered(value)
