@@ -14,6 +14,7 @@ def contains_bad_chars(str):
         test = test or (c in str)
     return test
 def input_value_validator(value):
+    # __Other option is the option that triggers a js event for user-specified option creation
     if "__Other" in value :
         Invalid("'Other, please specify' is not a valid option")
 #    if contains_bad_chars(value):
@@ -25,8 +26,8 @@ def input_value_validator(value):
 
 # check multiple fields at once
 # http://docs.ckan.org/en/latest/extensions/adding-custom-fields.html#custom-validators
-def check_all(key, flattened_data, errors, context):
-    return
+#def check_all_validator(key, flattened_data, errors, context):
+#    return
 
 def pra_control_num_validator(value):
     PRA_CONTROL_NUM_REGEX = re.compile('^\d{4}-\d{4}$')
@@ -39,7 +40,6 @@ def dig_id_validator(value):
     if value and not DIG_ID_REGEX.match(value):
         Invalid("Must be in the format DI#####")
     return value
-
 
 def positive_number_validator(value):
     # feels incredibly verbose... requires code review
@@ -68,4 +68,3 @@ def reasonable_date_validator(value):
         except ValueError:
             Invalid("Please ensure date is in yyyy-mm-dd format.")
     return value
-

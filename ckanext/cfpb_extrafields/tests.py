@@ -8,6 +8,27 @@ import validators as v
 
 
 class TestValidators(unittest.TestCase):
+    
+    @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
+    def test_input_value_validator(self, input):
+        assert_equal(input, v.input_value_validator(input))
+    @parameterized.expand([("__Other",), ])
+    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
+    def test_input_value_validator_invalid(self, input, mi):
+        mi.side_effect = Exception("")
+        with self.assertRaises(Exception):
+            v.input_value_validator(input)
+
+#    @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
+#    def test_check_all_validator(self, input):
+#        assert_equal(input, v.check_all_validator(input))
+#    @parameterized.expand([("__Other",), ])
+#    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
+#    def test_check_all_validator_invalid(self, input, mi):
+#        mi.side_effect = Exception("")
+#        with self.assertRaises(Exception):
+#            v.check_all_validator(input)
+    
     @parameterized.expand(
         [(.1,), (.0001,), (1,), (1000000,), (9999.9999999,), ]
     )
