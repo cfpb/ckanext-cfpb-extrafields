@@ -36,7 +36,7 @@ class TestValidators(unittest.TestCase):
     @parameterized.expand([("2010-10-01",), ("1995-01-01",), ("2100-10-20",), ])
     def test_reasonable_date_validator(self, input):
         assert_equal(input, v.reasonable_date_validator(input))
-    @parameterized.expand([("1500-01-01",), ("27901-01-01",), ("a",), ])
+    @parameterized.expand([("a",), ("1500-01-01",), ("27901-01-01",), ("2012/12/21",), ("2012/1/1",), ("2012-21-01",), ("2012-10-1",), ("2012-10-a1",), ])
     @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
     def test_reasonable_date_validator(self, input, mi):
         mi.side_effect = Exception("")

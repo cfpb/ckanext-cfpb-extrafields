@@ -136,9 +136,9 @@ options_defaults=h.options_pra_exclusion(),
 error=errors.pra_exclusion,) }}
 
 
-{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 12/21/2012", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
+{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
 
-{{ form.input('pra_omb_expiration_date', type='date', label=_("PRA: OMB Expiration Date"), placeholder="eg 12/21/2012", value=data.pra_omb_expiration_date, error=errors.pra_omb_expiration_date) }}
+{{ form.input('pra_omb_expiration_date', type='date', label=_("PRA: OMB Expiration Date"), placeholder="eg 2012-12-21", value=data.pra_omb_expiration_date, error=errors.pra_omb_expiration_date) }}
 
 {{ form_custom.radio('privacy_has_privacy_act_statement', 
 label=_('Privacy: Has Privacy Act Statement'),

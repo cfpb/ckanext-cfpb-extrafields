@@ -54,8 +54,18 @@ def positive_number_validator(value):
 def reasonable_date_validator(value):
     ''' check the year is between 1700 and 2300 '''
     if value:
-        date = int(value.replace('-',''))
-        if date < 1700*10000 or date > 2300*10000:
-            Invalid("The chosen year is out of range.")
+        try:
+            date = int(value.replace('-',''))
+            (y,m,d) = [int(i) for i in value.split('-')]
+            if y < 1700 or y > 2300:
+                Invalid("The chosen year is out of range (>1700, <2300).")
+            if m < 1 or m > 12:
+                Invalid("The chosen month is out of range.")
+            if d < 1 or d > 31:
+                Invalid("The chosen day is out of range.")
+            if date < 1700*10000 or date > 2300*10000:
+                Invalid("Please ensure date is in yyyy-mm-dd format.")
+        except ValueError:
+            Invalid("Please ensure date is in yyyy-mm-dd format.")
     return value
 
