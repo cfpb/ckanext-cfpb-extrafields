@@ -14,7 +14,6 @@ class TestValidators(unittest.TestCase):
     def test_positive_number_validator_valid(self, input):
         result = v.positive_number_validator(input)
         assert_equal(input, result)
-
     @parameterized.expand(
         [("a",), ("<script>alert('hi');</script>",), (-.01,), (-1,), (-1000000,), (-9999.9999999,), ]
     )
@@ -24,11 +23,29 @@ class TestValidators(unittest.TestCase):
         with self.assertRaises(Exception):
             v.positive_number_validator(input)
 
+    @parameterized.expand([("DI66666",), ("DI00001",), ])
+    def test_dig_id_validator(self, input):
+        assert_equal(input, v.dig_id_validator(input))
+    @parameterized.expand([("a",), ("64444",), ("DI7777",), ("DI-12345",), ("DI1234",), ])
+    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
+    def test_dig_id_validator_invalid(self, input, mi):
+        mi.side_effect = Exception("")
+        with self.assertRaises(Exception):
+            v.dig_id_validator(input)
+
+    @parameterized.expand([("2010-10-01",), ("1995-01-01",), ("2100-10-20",), ])
+    def test_reasonable_date_validator(self, input):
+        assert_equal(input, v.reasonable_date_validator(input))
+    @parameterized.expand([("1500-01-01",), ("27901-01-01",), ("a",), ])
+    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
+    def test_reasonable_date_validator(self, input, mi):
+        mi.side_effect = Exception("")
+        with self.assertRaises(Exception):
+            v.reasonable_date_validator(input)
 
     @parameterized.expand([("5555-6666",), ("6666-4444",), ])
     def test_pra_control_num_validator_valid(self, input):
         assert_equal(input, v.pra_control_num_validator(input))
-
     @parameterized.expand([("a",), ("a666-4444",), ("7777-a888",), ("aaaa-bbbb",), ("77778888",), ])
     @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
     def test_pra_control_num_validator_invalid(self, input, mi):

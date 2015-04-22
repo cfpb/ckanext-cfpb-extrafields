@@ -53,14 +53,9 @@ def positive_number_validator(value):
 
 def reasonable_date_validator(value):
     ''' check the year is between 1700 and 2300 '''
-# TODO: this doesn't work as expected. Feels like a CKAN bug with custom resource fields.
-#     if value:
-#         date = int(value.replace('-',''))
-#         if date < 1700*10000 or date > 2300*10000:
-#             print 'this does not work!'+str(date)+value
-#             Invalid("The chosen year is out of range.")
-#         return value
-#     else: 
-#         return value
+    if value:
+        date = int(value.replace('-',''))
+        if date < 1700*10000 or date > 2300*10000:
+            Invalid("The chosen year is out of range.")
     return value
 

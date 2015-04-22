@@ -14,6 +14,7 @@
 	<td class="dataset-details">{{ pkg_dict.id }} </td>
   </tr>
   <!-- Core -->
+  
   {% if pkg_dict.source_names %}
   {% endif %}
   <tr> 
@@ -161,6 +162,12 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
       <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
+    </tr>
+  {% if pkg_dict.dataset_last_modified_date %} 
+  {% endif %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Dataset Last Modified Date") }}</th>
+      <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
     </tr>
   {% if pkg_dict.pra_exclusion %} 
   {% endif %}
