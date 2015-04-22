@@ -21,25 +21,23 @@
                 <th scope="row">{{ _('Metadata Last updated') }}</th>
                 <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
-
               <tr>
                 <th scope="row">{{ _('Format') }}</th>
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
               </tr>
-
               <!-- new core fields -->
               {% if res.content_temporal_range_end %}
-              {% endif %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range End") }} </th>
 	            <td class="dataset-details">{{ res.content_temporal_range_end }} </td>
               </tr>
-              {% if res.content_temporal_range_start %}
               {% endif %}
+              {% if res.content_temporal_range_start %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range Start") }} </th>
 	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
               </tr>
+              {% endif %}
               {% if res.storage_location or res.storage_location_path %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
@@ -50,11 +48,11 @@
               {% endif %}
               </tr>
               {% if res.sensitivity_level %}
-              {% endif %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
 	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
               </tr>
+              {% endif %}
               {% if res.privacy_contains_pii %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PII") }} </th>
@@ -66,37 +64,36 @@
                 <td class="dataset-details"><br> </td>
               </tr>
               {% if res.intake_date %} 
-              {% endif %}
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Intake Date") }}</th>
                 <td class="dataset-details">{{ res.intake_date }}</td>
               </tr>
-              {% if res.update_size %} 
               {% endif %}
+              {% if res.update_size %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Update: Size") }}</th>
                 <td class="dataset-details">{{ res.update_size }}</td>
               </tr>
-              {% if res.approximate_total_size %} 
               {% endif %}
+              {% if res.approximate_total_size %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Approximate Total Size") }}</th>
                 <td class="dataset-details">{{ res.approximate_total_size }}</td>
               </tr>
-              {% if res.resource_type %} 
               {% endif %}
+              {% if res.resource_type %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Resource Type") }}</th>
                 <td class="dataset-details">{{ res.resource_type }}</td>
               </tr>
+              {% endif %}
               {% if res.privacy_has_direct_identifiers %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
                 <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
               </tr>
               {% endif %}
-
-                    
+              
             </tbody>
           </table>
         </div>
