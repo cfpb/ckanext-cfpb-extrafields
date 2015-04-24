@@ -19,7 +19,7 @@ error=errors.format,) }}
 
 <!-- custom version of select one with extra field -->
 <div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
-  <label class="control-label" for="storage_location">storage_location</label>
+  <label class="control-label" for="storage_location">Storage Location</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
 	<select id="storage_location" name="storage_location">
     {# move previously selected elements to the top and select #}
@@ -64,6 +64,9 @@ error=errors.privacy_contains_pii)}}
 {{ form_custom.radio('privacy_has_direct_identifiers',
 label=_('Privacy: Has Direct Identifiers?'),
 current_value=data.privacy_has_direct_identifiers)}}
+
+
+{{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('Cleansing Rules Used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 
 <!-------------------- js adds one to select --------------------->
 <!-- TO DO: add the jquery js to static -->

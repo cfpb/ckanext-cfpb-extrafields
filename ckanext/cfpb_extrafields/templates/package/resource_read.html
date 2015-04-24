@@ -14,6 +14,10 @@
             </thead>
             <tbody>
               <tr>
+                <th scope="row">{{ _('Metadata Resource ID') }}</th>
+                <td>{{ res.id or _('unknown') }}</td>
+              </tr>
+              <tr>
                 <th scope="row">{{ _('Metadata Resource Created') }}</th>
                 <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
@@ -91,6 +95,12 @@
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
                 <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
+              </tr>
+              {% endif %}
+              {% if res.cleansing_rules_used %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Cleansing Rules Used") }}</th>
+                <td class="dataset-details">{{ res.cleansing_rules_used }}</td>
               </tr>
               {% endif %}
               
