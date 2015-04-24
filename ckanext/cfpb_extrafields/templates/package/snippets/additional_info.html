@@ -42,7 +42,7 @@
   {% if pkg_dict.legal_authority_for_collection %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Legal Authority for Collection") }} </th>
-	<td class="dataset-details">{{ pkg_dict.legal_authority_for_collection}} </td>
+	<td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.legal_authority_for_collection) %} {{i}}; {% endfor %}  </td>
   </tr>
   {% endif %}
   {% if pkg_dict.pra_omb_control_number %}
@@ -54,19 +54,19 @@
   {% if pkg_dict.privacy_pia_title %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Privacy: PIA Title") }} </th>
-	<td class="dataset-details">{{ pkg_dict.privacy_pia_title }} </td>
+	<td class="dataset-details"> {% for i in h.clean_select_multi(pkg_dict.privacy_pia_title) %} {{i}}; {% endfor %} </td>
   </tr>
   {% endif %}
   {% if pkg_dict.privacy_sorn_number %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Privacy: SORN Number") }} </th>
-	<td class="dataset-details">{{ pkg_dict.privacy_sorn_number }} </td>
+	<td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.privacy_sorn_number) %} {{i}}; {% endfor %}</td>
   </tr>
   {% endif %}
   {% if pkg_dict.relevant_governing_documents %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("Relevant Governing Documents") }} </th>
-	<td class="dataset-details">{% for i in pkg_dict.relevant_governing_documents %} {{i}}, {% endfor %} </td>
+	<td class="dataset-details">{% for i in pkg_dict.relevant_governing_documents %} {{i}}; {% endfor %} </td>
   </tr>
   {% endif %}
   {% if pkg_dict.dig_id %}
@@ -138,7 +138,7 @@
   {% if pkg_dict.content_spatial %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("Content: Spatial") }}</th>
-      <td class="dataset-details">{{ pkg_dict.content_spatial }}</td>
+      <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.content_spatial) %} {{i}}; {% endfor %}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.website_url %} 
