@@ -9,6 +9,18 @@ import validators as v
 
 class TestValidators(unittest.TestCase):
     
+# tests for clean_select_multi
+#    print f(u'"asdf","asdf,asdf"')==[u'asdf', u'asdf,asdf']
+#    print f(u'asdf')==[u'asdf']
+#    print f(u'a')==[u'a']
+#    print f(u'a')==[u'a']
+#    print f(u'{"blah blah","blah asdf",asdf}')==[u'blah blah', u'blah asdf', u'asdf']
+#    print f(u'{asdf,asdf}')==[u'asdf', u'asdf']
+#    print f(u'{"asdf,asdf",asdf}')==[u'asdf,asdf', u'asdf']
+#    print f(u'{"asdf,asdf","asdf asdf"}')==[u'asdf,asdf',u'asdf asdf']
+#    print f(u'{asdf,"asdf asdf"}')==[u'asdf', u'asdf asdf']
+#    print f(u'{a,"f d",d}')==[u'a', u'f d', u'd']
+    
     @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
     def test_input_value_validator(self, input):
         assert_equal(input, v.input_value_validator(input))
