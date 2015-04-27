@@ -44,7 +44,7 @@ error=errors.relevant_governing_documents,
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
 
 {% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="") %} {# this is just for clicking #}
-    <input id="field-contact_primary_name" type="text" placeholder=_("enter last name, first name")  value="{{data.contact_primary_name}}" name="contact_primary_name" />
+<input id="field-contact_primary_name" type="text" placeholder={{_('enter last name, first name')}}  value="{{data.contact_primary_name}}" name="contact_primary_name" />
     <input id="field-contact_primary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_primary_email}}" name="contact_primary_email" />
 {% endcall %}
 

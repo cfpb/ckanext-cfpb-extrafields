@@ -150,8 +150,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         })
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
+                'content_temporal_range_end' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),], 
+                'content_temporal_range_start' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'cleansing_rules_used' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'privacy_contains_pii' : [tk.get_validator('ignore_missing'),],
@@ -252,9 +252,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
                 'cleansing_rules_used' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
-                'intake_date' : [v.reasonable_date_validator,  tk.get_validator('ignore_missing'),],
+                'content_temporal_range_end' : [tk.get_validator('ignore_missing'),],
+                'content_temporal_range_start' : [tk.get_validator('ignore_missing'),],
+                'intake_date' : [tk.get_validator('ignore_missing'),],
                 'privacy_contains_pii' : [ tk.get_validator('ignore_missing'),],
                 'privacy_has_direct_identifiers' : [ tk.get_validator('ignore_missing'),],
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
@@ -263,6 +263,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
+
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         schema.update({
             'relevant_governing_documents': [
