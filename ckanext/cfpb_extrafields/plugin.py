@@ -26,53 +26,13 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
-# select multis are contained in unicode strings that look like: 
-# u'{"blah blah","blah asdf",asdf}' ; u'{asdf,asdf}' ; u'asdf' (see also tests.py)
-def clean_select_multi0(a):
-    ''' parses the results of an html form select-multi '''
-    # this solution doesn't accomodate commas in select-multi fields
-    # and validation preventing users from entering commas is not straightforward.
-    return a.replace('{', "").replace("}", "").replace("\"","").split(",")
-def clean_select_multi(s):
-    ''' parses the results of an html form select-multi '''
-    # This solution allows commas, but is unpythonic
-    if not s:
-        return []
-    s = s.lstrip('{').rstrip('}')
-    clean = []
-    left = 0
-    right = 1
-    while right < len(s):
-        if s[left]=="\"":
-            if right+1<len(s) and s[right]=="\"" and s[right+1]==",":
-                # reached the end of the quoted patch; append and skip
-                clean.append(s[left+1:right])
-                left = right+2
-                right = right+3
-            else:
-                right = right+1
-        else:
-            if s[right]==",":
-                # hit a comma: append and skip the comma 
-                clean.append(s[left:right])
-                left = right+1
-                right = right+2
-            else:
-                right = right+1
-    if s[left]=="\"":
-        # reached the end with a closing quote (don't save the quotes)
-        clean.append(s[left+1:-1])
-    else:
-        clean.append(s[left:])
-    return clean
-    
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers)
 
     def get_helpers(self):
-        return {'clean_select_multi': clean_select_multi,
+        return {'clean_select_multi': v.clean_select_multi,
                 'options_format': opts.format,
                 'options_storage_location': opts.storage_location,
                 'options_legal_authority_for_collection': opts.legal_authority_for_collection,

@@ -5,36 +5,25 @@ from nose.tools import assert_equal
 import mock
 
 import validators as v
-import plugins as p
 
 
 class TestValidators(unittest.TestCase):
     
-# tests for clean_select_multi
-#    print f(u'"asdf","asdf,asdf"')==[u'asdf', u'asdf,asdf']
-#    print f(u'asdf')==[u'asdf']
-#    print f(u'a')==[u'a']
-#    print f(u'a')==[u'a']
-#    print f(u'{"blah blah","blah asdf",asdf}')==[u'blah blah', u'blah asdf', u'asdf']
-#    print f(u'{asdf,asdf}')==[u'asdf', u'asdf']
-#    print f(u'{"asdf,asdf",asdf}')==[u'asdf,asdf', u'asdf']
-#    print f(u'{"asdf,asdf","asdf asdf"}')==[u'asdf,asdf',u'asdf asdf']
-#    print f(u'{asdf,"asdf asdf"}')==[u'asdf', u'asdf asdf']
-#    print f(u'{a,"f d",d}')==[u'a', u'f d', u'd']
-   @parameterized([
-       (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
-       (u'asdf',[u'asdf']),
-       (u'a',[u'a']),
-       (u'a',[u'a']),
-       (u'{"blah blah","blah asdf",asdf}',[u'blah blah', u'blah asdf', u'asdf']),
-       (u'{asdf,asdf}',[u'asdf', u'asdf']),
-       (u'{"asdf,asdf",asdf}',[u'asdf,asdf', u'asdf']),
-       (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
-       (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
-       (u'{a,"f d",d}',[u'a', u'f d', u'd']),
-   ])
-   def test_clean_select_multi(ms, expected):
-       assert_equal(p.clean_select_multi(ms), expected)
+    @parameterized.expand([
+        (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
+        (u'asdf',[u'asdf']),
+        (u'a',[u'a']),
+        (u'{"blah blah","blah asdf",asdf}',[u'blah blah', u'blah asdf', u'asdf']),
+        (u'{asdf,asdf}',[u'asdf', u'asdf']),
+        (u'{"asdf,asdf",asdf}',[u'asdf,asdf', u'asdf']),
+        (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
+        (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
+        (u'{a,"f d",d}',[u'a', u'f d', u'd']),
+    ]) 
+    def test_clean_select_multi(self, ms, expected):
+        print ms
+        print expected
+        assert_equal(v.clean_select_multi(ms), expected)
     
     @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
     def test_input_value_validator(self, input):
@@ -46,16 +35,6 @@ class TestValidators(unittest.TestCase):
         with self.assertRaises(Exception):
             v.input_value_validator(input)
 
-#    @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
-#    def test_check_all_validator(self, input):
-#        assert_equal(input, v.check_all_validator(input))
-#    @parameterized.expand([("__Other",), ])
-#    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
-#    def test_check_all_validator_invalid(self, input, mi):
-#        mi.side_effect = Exception("")
-#        with self.assertRaises(Exception):
-#            v.check_all_validator(input)
-    
     @parameterized.expand(
         [(.1,), (.0001,), (1,), (1000000,), (9999.9999999,), ]
     )
