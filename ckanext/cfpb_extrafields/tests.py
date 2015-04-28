@@ -5,6 +5,7 @@ from nose.tools import assert_equal
 import mock
 
 import validators as v
+import plugins as p
 
 
 class TestValidators(unittest.TestCase):
@@ -20,6 +21,20 @@ class TestValidators(unittest.TestCase):
 #    print f(u'{"asdf,asdf","asdf asdf"}')==[u'asdf,asdf',u'asdf asdf']
 #    print f(u'{asdf,"asdf asdf"}')==[u'asdf', u'asdf asdf']
 #    print f(u'{a,"f d",d}')==[u'a', u'f d', u'd']
+   @parameterized([
+       (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
+       (u'asdf',[u'asdf']),
+       (u'a',[u'a']),
+       (u'a',[u'a']),
+       (u'{"blah blah","blah asdf",asdf}',[u'blah blah', u'blah asdf', u'asdf']),
+       (u'{asdf,asdf}',[u'asdf', u'asdf']),
+       (u'{"asdf,asdf",asdf}',[u'asdf,asdf', u'asdf']),
+       (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
+       (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
+       (u'{a,"f d",d}',[u'a', u'f d', u'd']),
+   ])
+   def test_clean_select_multi(ms, expected):
+       assert_equal(p.clean_select_multi(ms), expected)
     
     @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
     def test_input_value_validator(self, input):
