@@ -1,6 +1,5 @@
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
-import pprint
 import validators as v
 import options as opts
 
@@ -134,6 +133,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
 
         })
+        # now modify tag fields and convert_to_tags
         schema.update({
             'relevant_governing_documents': [
                 tk.get_validator('ignore_missing'),
@@ -154,7 +154,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [tk.get_validator('ignore_missing'),],
                 'update_size' : [tk.get_validator('ignore_missing'),],
         })
-#        pprint.pprint(schema)
         return schema
 
     def create_package_schema(self):
@@ -255,8 +254,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
-
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
+        # now show tag fields and convert_from_tags
         schema.update({
             'relevant_governing_documents': [
                 tk.get_converter('convert_from_tags')('relevant_governing_documents'),
