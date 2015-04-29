@@ -8,7 +8,7 @@ def Invalid(message):
 def dedupe_unordered(items):
     return list(set(items))
 def contains_bad_chars(str):
-    ''' contains \"{},'''
+    ''' contains <>'''
     test = False
     for c in ['>','<']:
         test = test or (c in str)
@@ -97,6 +97,8 @@ def clean_select_multi(s):
     # This solution allows commas, but is unpythonic
     if not s:
         return []
+    if not isinstance(s, basestring):
+        return s
     s = s.lstrip('{').rstrip('}')
     clean = []
     left = 0
