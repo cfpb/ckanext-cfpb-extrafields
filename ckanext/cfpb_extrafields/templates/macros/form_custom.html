@@ -1,0 +1,63 @@
+{# pick-one list with specified other option #}
+{% macro select_one_with_other(name, label='', current_value="", options_defaults=[], extra_html="", error='' ) %}
+<div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+    <label class="control-label" for="{{ name }}">{{label}}</label>
+    <div class="controls{{ " " ~ control_classes | join(' ') }}">
+    <select id={{name}} name={{name}} width="400" style="width: 400px">
+    {# provide nothing as an option #}
+    <option value=""></option>
+    {# move previously selected elements to the top and select #}
+    {% if current_value %}<option value="{{current_value}}" selected="selected">{{current_value}}</option>{% endif %}
+    {# provide the default options but don't duplicate if they were selected above #}
+    {% for e in options_defaults %}
+        {% if e != current_value %}
+            <option value="{{e}}">{{e}}</option>
+        {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other">Other, please specify</option>
+    </select>
+    {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>
+    {% elif error %} {{error}} {% endif %}
+    {{ extra_html }}
+    </div>
+</div>
+{% endmacro %}
+
+{# select multiple list with specified other option #}
+{% macro select_multi_with_other(name, label='', current_values=[], size="400", options_defaults=[], extra_html="", error='') %}
+<div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+    <label class="control-label" for="{{ name }}">{{label}}</label>
+    <div class="controls{{ " " ~ control_classes | join(' ') }}">
+    <select id={{name}} name={{name}} width={{size}} style="width:{{size}}px" multiple>
+    {# move previously selected elements to the top and select #}
+    {% for e in current_values %}
+        {% if e %}
+        <option value="{{e}}" selected="selected">{{e}}</option>
+        {% endif %}
+    {% endfor %}
+    {# provide the default options but don't duplicate if they were selected above #}
+    {% for e in options_defaults %}
+        {% if e not in current_values %}
+            <option value="{{e}}">{{e}}</option>
+        {% endif %}
+    {% endfor %}
+    {# provide an option for javascript to use to create new fields #}
+    <option value="__Other">Other, please specify</option>
+    </select>
+    {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>
+    {% elif error %} {{error}} {% endif %}
+    {{ extra_html }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro radio(name, label='', current_value='no', error='') %}
+  <div class="control-group ">
+    <label class="control-label">{{label}}</label>
+    <div class="controls ">
+        <input id={{name}} type="radio" name={{name}} value='yes' placeholder="Yes" {% if current_value == 'yes' %}checked{% endif %}>Yes</input>
+        <input id={{name}} type="radio" name={{name}} value='no' placeholder="No"  {% if current_value != 'yes' %}checked{% endif %}>No</input>
+    </div>
+  </div>
+{% endmacro %}

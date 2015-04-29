@@ -1,0 +1,112 @@
+{% ckan_extends %}
+{% block resource_additional_information %}
+    {% if res %}
+{#{ res }#}
+      <section class="module">
+        <div class="module-content">
+          <h2>{{ _('Additional Information') }}</h2>
+          <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+            <thead>
+              <tr>
+                <th scope="col">{{ _('Field') }}</th>
+                <th scope="col">{{ _('Value') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">{{ _('Metadata Resource ID') }}</th>
+                <td>{{ res.id or _('unknown') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">{{ _('Metadata Resource Created') }}</th>
+                <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">{{ _('Metadata Last updated') }}</th>
+                <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">{{ _('Format') }}</th>
+                <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
+              </tr>
+              <!-- new core fields -->
+              {% if res.content_temporal_range_end %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range End") }} </th>
+	            <td class="dataset-details">{{ res.content_temporal_range_end }} </td>
+              </tr>
+              {% endif %}
+              {% if res.content_temporal_range_start %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range Start") }} </th>
+	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
+              </tr>
+              {% endif %}
+              {% if res.storage_location or res.storage_location_path %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
+	            <td class="dataset-details">
+                  <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
+                             <td>{{ res.storage_location_path }}</td>
+                         </tr></table> </td>
+              {% endif %}
+              </tr>
+              {% if res.sensitivity_level %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
+	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
+              </tr>
+              {% endif %}
+              {% if res.privacy_contains_pii %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PII") }} </th>
+	            <td class="dataset-details">{{ res.privacy_contains_pii}} </td>
+              </tr>
+              {% endif %}
+              <tr>
+                <th scope="row" class="dataset-label"><br> </th>
+                <td class="dataset-details"><br> </td>
+              </tr>
+              {% if res.intake_date %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Intake Date") }}</th>
+                <td class="dataset-details">{{ res.intake_date }}</td>
+              </tr>
+              {% endif %}
+              {% if res.update_size %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Update: Size") }}</th>
+                <td class="dataset-details">{{ res.update_size }}</td>
+              </tr>
+              {% endif %}
+              {% if res.approximate_total_size %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Approximate Total Size") }}</th>
+                <td class="dataset-details">{{ res.approximate_total_size }}</td>
+              </tr>
+              {% endif %}
+              {% if res.resource_type %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Resource Type") }}</th>
+                <td class="dataset-details">{{ res.resource_type }}</td>
+              </tr>
+              {% endif %}
+              {% if res.privacy_has_direct_identifiers %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
+                <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
+              </tr>
+              {% endif %}
+              {% if res.cleansing_rules_used %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Cleansing Rules Used") }}</th>
+                <td class="dataset-details">{{ res.cleansing_rules_used }}</td>
+              </tr>
+              {% endif %}
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    {% endif %}
+{% endblock %}
