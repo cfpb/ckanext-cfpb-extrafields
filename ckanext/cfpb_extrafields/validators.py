@@ -1,4 +1,5 @@
 import re
+import datetime
 
 # Abstracted to simplify unit testing via mock
 def Invalid(message):
@@ -24,25 +25,6 @@ def input_value_validator(value):
         value = dedupe_unordered(value)
     return value
 
-# check multiple fields at once
-# http://docs.ckan.org/en/latest/extensions/adding-custom-fields.html#custom-validators
-def date_to_int(str_date):
-    try:
-        date = int(str_date.replace('-',''))
-    except ValueError:
-        Invalid("Please ensure date is in yyyy-mm-dd format!")
-    return date
-def end_after_start_validator(key, flattened_data, errors, context):
-    # errors contains a list of validation errors
-    # context has things like 'session' (sqlalchemy session) or 'user' (username of logged-in user)
-    for i in range(flattened_data[('__extras',)].get('num_resources',1)):
-        start_str = flattened_data.get(('resources', i, 'content_temporal_range_start'),'0')
-        end_str = flattened_data.get(('resources', i, 'content_temporal_range_end'),'1')
-        if start_str and end_str:
-            if date_to_int(start_str) > date_to_int(end_str):
-                Invalid("content start date occurs after end date")
-    return
-
 def pra_control_num_validator(value):
     PRA_CONTROL_NUM_REGEX = re.compile('^\d{4}-\d{4}$')
     if value and not PRA_CONTROL_NUM_REGEX.match(value):
@@ -65,10 +47,10 @@ def positive_number_validator(value):
             Invalid("Must be a positive number")
     return value
 
-#ckan.logic.validators.isodate(value, context)
 def reasonable_date_validator(value):
     ''' check the year is yyyy-mm-dd and between 1700 and 2300 '''
-    import datetime
+    if not value:
+        return
     try:
         parsed_date = datetime.datetime.strptime(value, '%Y-%m-%d')
         if parsed_date.year < 1700 or parsed_date.year > 2300:
@@ -76,6 +58,26 @@ def reasonable_date_validator(value):
     except ValueError:
             Invalid("Please ensure date is in yyyy-mm-dd format.")
     return value
+
+# check multiple fields at once
+# http://docs.ckan.org/en/latest/extensions/adding-custom-fields.html#custom-validators
+def to_datetime(value):
+    if not value:
+        return
+    try:
+        parsed_date = datetime.datetime.strptime(value, '%Y-%m-%d')
+    except ValueError:
+        Invalid("Please ensure date is in yyyy-mm-dd format!")
+    return parsed_date
+def end_after_start_validator(key, flattened_data, errors, context):
+    for i in range(flattened_data[('__extras',)].get('num_resources',1)):
+        start_str = flattened_data.get(('resources', i, 'content_temporal_range_start'),None)
+        end_str =  flattened_data.get(('resources', i, 'content_temporal_range_end'),None)
+        if start_str and end_str:
+            if to_datetime(start_str) > to_datetime(end_str): 
+                Invalid("content start date occurs after end date")
+    return
+
 
 # select multis are contained in unicode strings that look like:
 # u'{"blah blah","blah asdf",asdf}' ; u'{asdf,asdf}' ; u'asdf' (see also tests.py)
