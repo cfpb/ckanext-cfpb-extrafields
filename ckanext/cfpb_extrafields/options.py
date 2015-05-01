@@ -30,7 +30,7 @@ def legal_authority_for_collection():
     return ["Market Monitoring", "Supervision", "Enforcement", "Consumer Response"]
 def privacy_pia_title():
     return ["CFPB Business Intelligence Tool",
-            "Certain Supervision  Enforcement and Fair Lending Data used for Market Research",
+            "Certain Supervision, Enforcement, and Fair Lending Data used for Market Research",
             "Civil Penalty Fund PIA",
             "Compliance Analysis Toolkit (CAT) PIA",
             "Consumer Education PIA ",
@@ -41,7 +41,7 @@ def privacy_pia_title():
             "Extranet PIA",
             "Freedom of Information Act/Privacy Act System",
             "HUD Counselor Tool PIA",
-            "Industry  Expert and Community Input and Engagement PIA",
+            "Industry, Expert, and Community Input and Engagement PIA",
             "Litigation and Investigation Support Toolset (LIST) PIA",
             "Market Analysis of Administrative Data Under Research Authorities PIA",
             "Market Research in the Field PIA ",
