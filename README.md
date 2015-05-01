@@ -50,7 +50,7 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 
 ## Getting involved
 
-General instructions on _how_ to contribute should be stated with a link to [CONTRIBUTING](CONTRIBUTING.md).
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ----
 
