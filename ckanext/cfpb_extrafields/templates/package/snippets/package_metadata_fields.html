@@ -4,7 +4,6 @@
 
 {% block package_metadata_fields %}
 
-
 {#
 { form_custom.select_multi_with_other('relevant_governing_documents', 
 label=_('Relevant Governing Documents'),  
@@ -14,10 +13,10 @@ error=errors.relevant_governing_documents,
 ) }
 #}
 
-  <div class="control-group">
+  <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
     <div class="controls">
-      <select id="field-relevant_governing_documents" name="relevant_governing_documents" data-module="autocomplete" multiple>
+      <select name="relevant_governing_documents" data-module="autocomplete" multiple>
         {% for op in h.tag_relevant_governing_documents()  %}
           <option value="{{ op }}" {% if op in data.get('relevant_governing_documents', []) %}selected="selected"{% endif %}>{{ op }}</option>
         {% endfor %}
@@ -25,6 +24,8 @@ error=errors.relevant_governing_documents,
     </div>
   </div>
   {{super()}}
+<script> document.getElementById("field-relevant_governing_documents").title = "{{ h.popup_relevant_governing_documents() }}";</script>
+
 {% endblock %}
 
 {% block package_metadata_fields_url %}
@@ -39,7 +40,7 @@ error=errors.relevant_governing_documents,
 {% block custom_fields %}
 
 {{ form.markdown('source_names', id='field-source_names', label=_('Source Names'), placeholder=_('e.g., vendor-one'), value=data.source_names, error=errors.source_names) }}
-{#{ form.input('source_names', label=_("Source Names"), placeholder=_('description of dataset sources'), value=data.source_names, error=errors.source_names) }#}
+<script> document.getElementById("field-source_names").title = "{{ h.popup_source_names() }}";</script>
 
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
 

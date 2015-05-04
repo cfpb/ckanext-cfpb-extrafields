@@ -25,6 +25,12 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
+# these go into a new popup module if there are more than 2 fields
+def popup_relevant_governing_documents():
+    return "insert purpose of relevant_governing_documents field"
+def popup_source_names():
+    return "insert purpose of source names field"
+
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
     p.implements(p.IConfigurer)
@@ -50,6 +56,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_update_size': opts.update_size,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
+
+                'popup_relevant_governing_documents': popup_relevant_governing_documents,
+                'popup_source_names': popup_source_names,
                 }
 
     def _modify_package_schema(self, schema):
