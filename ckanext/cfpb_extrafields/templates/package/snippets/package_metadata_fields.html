@@ -42,6 +42,12 @@ error=errors.relevant_governing_documents,
 {{ form.markdown('source_names', id='field-source_names', label=_('Source Names'), placeholder=_('e.g., vendor-one'), value=data.source_names, error=errors.source_names) }}
 <script> document.getElementById("field-source_names").title = "{{ h.popup_source_names() }}";</script>
 
+{{ form_custom.select_one_with_other('acquisition_method',
+label=_('Acquisition Method'),
+current_value=data.get('acquisition_method', ''),
+options_defaults=h.options_acquisition_method(),
+error=errors.acquisition_method,) }}
+
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
 
 {% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="") %} {# this is just for clicking #}
@@ -124,12 +130,6 @@ error=errors.content_spatial,
     <input id="field-contact_secondary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_secondary_name}}" name="contact_secondary_name" />
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
-
-{{ form_custom.select_one_with_other('acquisition_method', 
-label=_('Acquisition Method'),  
-current_value=data.get('acquisition_method', ''), 
-options_defaults=h.options_acquisition_method(), 
-error=errors.acquisition_method,) }}
 
 {{ form_custom.select_one_with_other('pra_exclusion', 
 label=_('PRA Exclusion'),  

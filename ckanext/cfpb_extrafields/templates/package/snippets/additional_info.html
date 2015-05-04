@@ -21,6 +21,12 @@
 	<td class="dataset-details">{{ pkg_dict.source_names }} </td>
   </tr>
   {% endif %}
+  {% if pkg_dict.acquisition_method %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
+      <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
+    </tr>
+  {% endif %}
   {% if pkg_dict.access_restrictions %}
   <tr>
 	<th scope="row" class="dataset-label">{{ _("Access: Restrictions") }} </th>
@@ -151,12 +157,6 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("Wiki Link") }}</th>
       <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">CFPB wiki article</a></td>
-    </tr>
-  {% endif %}
-  {% if pkg_dict.acquisition_method %} 
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
-      <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.dataset_last_modified_date %} 
