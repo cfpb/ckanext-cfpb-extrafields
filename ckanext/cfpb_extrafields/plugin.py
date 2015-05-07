@@ -26,11 +26,13 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
-# these go into a new popup module if there are more than 2 fields
+# these go into a new popup module if there are more than a few fields
 def popup_relevant_governing_documents():
-    return "insert purpose of relevant_governing_documents field"
+    return "Insert purpose of relevant_governing_documents field."
 def popup_source_names():
-    return "insert purpose of source names field"
+    return "Insert purpose of source names field."
+def popup_usage_restrictions():
+    return "Enter instructions for what users can and cannot do with the data."
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
@@ -60,6 +62,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
                 'popup_source_names': popup_source_names,
+                'popup_usage_restrictions': popup_usage_restrictions,
                 }
 
     def _modify_package_schema(self, schema):

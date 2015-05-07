@@ -77,6 +77,7 @@ size="550",
 
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
 label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
+<script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
 
 <!-- non-core fields --><hr>
 
