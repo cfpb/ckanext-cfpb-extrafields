@@ -67,6 +67,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     def _modify_package_schema(self, schema):
         schema.update({
+            # notes is the "Descriptions" built-in field.
+            'notes': [v.required_field],
             'source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_restrictions': [tk.get_validator('ignore_missing'),
@@ -181,6 +183,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def show_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
+            # notes is the "Descriptions" built-in field.
+            'notes': [v.required_field],
             'source_names': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'access_restrictions': [tk.get_converter('convert_from_extras'),

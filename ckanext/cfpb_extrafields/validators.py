@@ -9,7 +9,7 @@ def Invalid(message):
 def required_field(value):
     if not value:
         Invalid('field is required')
-    return
+    return value
 
 def dedupe_unordered(items):
     return list(set(items))
