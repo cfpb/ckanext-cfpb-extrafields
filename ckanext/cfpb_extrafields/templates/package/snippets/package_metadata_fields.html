@@ -4,6 +4,9 @@
 
 {% block package_metadata_fields %}
 
+{% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+{{ form.input('subject_matter', id='field-subject_matter', label=_('Subject Matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
+
   <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
     <div class="controls">
