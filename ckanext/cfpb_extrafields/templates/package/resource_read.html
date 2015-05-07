@@ -67,12 +67,6 @@
                 <th scope="row" class="dataset-label"><br> </th>
                 <td class="dataset-details"><br> </td>
               </tr>
-              {% if res.privacy_contains_pifi %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PIFI") }} </th>
-	            <td class="dataset-details">{{ res.privacy_contains_pifi}} </td>
-              </tr>
-              {% endif %}
               {% if res.intake_date %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Intake Date") }}</th>

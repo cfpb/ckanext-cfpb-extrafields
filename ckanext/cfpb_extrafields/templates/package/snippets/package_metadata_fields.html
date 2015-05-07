@@ -4,15 +4,6 @@
 
 {% block package_metadata_fields %}
 
-{#
-{ form_custom.select_multi_with_other('relevant_governing_documents', 
-label=_('Relevant Governing Documents'),  
-current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
-options_defaults=h.options_relevant_governing_documents(), 
-error=errors.relevant_governing_documents,
-) }
-#}
-
   <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
     <div class="controls">
