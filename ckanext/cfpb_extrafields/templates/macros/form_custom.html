@@ -52,12 +52,13 @@
 </div>
 {% endmacro %}
 
-{% macro radio(name, label='', current_value='no', error='') %}
+{% macro radio(name, label='', current_value='TBD', error='') %}
   <div class="control-group ">
     <label class="control-label">{{label}}</label>
     <div class="controls ">
         <input id={{name}} type="radio" name={{name}} value='yes' placeholder="Yes" {% if current_value == 'yes' %}checked{% endif %}>Yes</input>
-        <input id={{name}} type="radio" name={{name}} value='no' placeholder="No"  {% if current_value != 'yes' %}checked{% endif %}>No</input>
+        <input id={{name}} type="radio" name={{name}} value='no' placeholder="No"  {% if current_value == 'no' %}checked{% endif %}>No</input>
+        <input id={{name}} type="radio" name={{name}} value='' placeholder=""  {% if current_value != 'yes' and current_value != 'no' %}checked{% endif %}>tbd</input>
     </div>
   </div>
 {% endmacro %}
