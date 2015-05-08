@@ -13,6 +13,12 @@
 	<td class="dataset-details">{{ pkg_dict.id }} </td>
   </tr>
   {% endif %}
+  {% if pkg_dict.subject_matter %}
+  <tr> 
+	<th scope="row" class="dataset-label">{{ _("Subject Matter") }} </th>
+	<td class="dataset-details">{{ pkg_dict.subject_matter }} </td>
+  </tr>
+  {% endif %}
   <!-- Core -->
   
   {% if pkg_dict.source_names %}
@@ -20,6 +26,12 @@
 	<th scope="row" class="dataset-label">{{ _("Source Names") }} </th>
 	<td class="dataset-details">{{ pkg_dict.source_names }} </td>
   </tr>
+  {% endif %}
+  {% if pkg_dict.acquisition_method %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
+      <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
+    </tr>
   {% endif %}
   {% if pkg_dict.access_restrictions %}
   <tr>
@@ -151,12 +163,6 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("Wiki Link") }}</th>
       <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">CFPB wiki article</a></td>
-    </tr>
-  {% endif %}
-  {% if pkg_dict.acquisition_method %} 
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("Acquisition Method") }}</th>
-      <td class="dataset-details">{{ pkg_dict.acquisition_method }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.dataset_last_modified_date %} 

@@ -4,20 +4,13 @@
 
 {% block package_metadata_fields %}
 
+{% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+{{ form.input('subject_matter', id='field-subject_matter', label=_('Subject Matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
 
-{#
-{ form_custom.select_multi_with_other('relevant_governing_documents', 
-label=_('Relevant Governing Documents'),  
-current_values=h.clean_select_multi(data.get('relevant_governing_documents', '')), 
-options_defaults=h.options_relevant_governing_documents(), 
-error=errors.relevant_governing_documents,
-) }
-#}
-
-  <div class="control-group">
+  <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
     <div class="controls">
-      <select id="field-relevant_governing_documents" name="relevant_governing_documents" data-module="autocomplete" multiple>
+      <select name="relevant_governing_documents" data-module="autocomplete" multiple>
         {% for op in h.tag_relevant_governing_documents()  %}
           <option value="{{ op }}" {% if op in data.get('relevant_governing_documents', []) %}selected="selected"{% endif %}>{{ op }}</option>
         {% endfor %}
@@ -25,6 +18,8 @@ error=errors.relevant_governing_documents,
     </div>
   </div>
   {{super()}}
+<script> document.getElementById("field-relevant_governing_documents").title = "{{ h.popup_relevant_governing_documents() }}";</script>
+
 {% endblock %}
 
 {% block package_metadata_fields_url %}
@@ -39,12 +34,18 @@ error=errors.relevant_governing_documents,
 {% block custom_fields %}
 
 {{ form.markdown('source_names', id='field-source_names', label=_('Source Names'), placeholder=_('e.g., vendor-one'), value=data.source_names, error=errors.source_names) }}
-{#{ form.input('source_names', label=_("Source Names"), placeholder=_('description of dataset sources'), value=data.source_names, error=errors.source_names) }#}
+<script> document.getElementById("field-source_names").title = "{{ h.popup_source_names() }}";</script>
+
+{{ form_custom.select_one_with_other('acquisition_method',
+label=_('Acquisition Method'),
+current_value=data.get('acquisition_method', ''),
+options_defaults=h.options_acquisition_method(),
+error=errors.acquisition_method,) }}
 
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
 
-{% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="") %} {# this is just for clicking #}
-<input id="field-contact_primary_name" type="text" placeholder={{_('enter last name, first name')}}  value="{{data.contact_primary_name}}" name="contact_primary_name" />
+{% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="", is_required=true) %} {# this is just for clicking #}
+<input id="field-contact_primary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_primary_name}}" name="contact_primary_name" required/>
     <input id="field-contact_primary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_primary_email}}" name="contact_primary_email" />
 {% endcall %}
 
@@ -79,6 +80,7 @@ size="550",
 
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
 label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
+<script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
 
 <!-- non-core fields --><hr>
 
@@ -120,15 +122,9 @@ error=errors.content_spatial,
 {{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('Dataset: Notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
 
 {% call form.input_block("field-contact_secondary_name",_("Contact: Secondary"), error="") %} {# this is just for clicking #}
-    <input id="field-contact_secondary_name" type="text" placeholder="last name, first name"  value="{{data.contact_secondary_name}}" name="contact_secondary_name" />
+    <input id="field-contact_secondary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_secondary_name}}" name="contact_secondary_name" />
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
-
-{{ form_custom.select_one_with_other('acquisition_method', 
-label=_('Acquisition Method'),  
-current_value=data.get('acquisition_method', ''), 
-options_defaults=h.options_acquisition_method(), 
-error=errors.acquisition_method,) }}
 
 {{ form_custom.select_one_with_other('pra_exclusion', 
 label=_('PRA Exclusion'),  

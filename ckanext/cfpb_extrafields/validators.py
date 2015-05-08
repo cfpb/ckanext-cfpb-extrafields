@@ -6,6 +6,11 @@ def Invalid(message):
     import ckan.plugins.toolkit as tk
     raise tk.Invalid(message)
 
+def required_field(value):
+    if not value:
+        Invalid('field is required')
+    return value
+
 def dedupe_unordered(items):
     return list(set(items))
 def contains_bad_chars(str):

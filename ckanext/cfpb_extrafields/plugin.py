@@ -2,6 +2,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import validators as v
 import options as opts
+import collections
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -24,6 +25,14 @@ def tag_relevant_governing_documents():
         return tags
     except tk.ObjectNotFound:
         return None
+
+# these go into a new popup module if there are more than a few fields
+def popup_relevant_governing_documents():
+    return "Insert purpose of relevant_governing_documents field."
+def popup_source_names():
+    return "Insert purpose of source names field."
+def popup_usage_restrictions():
+    return "Enter instructions for what users can and cannot do with the data."
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
@@ -50,16 +59,22 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_update_size': opts.update_size,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
+
+                'popup_relevant_governing_documents': popup_relevant_governing_documents,
+                'popup_source_names': popup_source_names,
+                'popup_usage_restrictions': popup_usage_restrictions,
                 }
 
     def _modify_package_schema(self, schema):
         schema.update({
+            # notes is the "Descriptions" built-in field.
+            'notes': [v.required_field],
             'source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_restrictions': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
-            'contact_primary_name': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
+            'contact_primary_name': [tk.get_converter('convert_to_extras'),
+                                     v.required_field],
             'contact_primary_email': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'contact_secondary_name': [tk.get_validator('ignore_missing'),
@@ -137,8 +152,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
             'relevant_governing_documents': [
                 tk.get_validator('ignore_missing'),
-                tk.get_converter('convert_to_tags')('relevant_governing_documents')
-            ]
+                tk.get_converter('convert_to_tags')('relevant_governing_documents')]
         })
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
@@ -169,13 +183,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def show_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
+            # notes is the "Descriptions" built-in field.
+            'notes': [v.required_field],
             'source_names': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'access_restrictions': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
+            'contact_primary_name': [tk.get_converter('convert_from_extras'),],
             'contact_primary_email': [tk.get_converter('convert_from_extras'),
-                        tk.get_validator('ignore_missing')],
-            'contact_primary_name': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'contact_secondary_email': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
@@ -277,3 +292,21 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
         tk.add_template_directory(config, 'templates')
+
+    p.implements(p.IFacets)
+    def change_facets(self, facets_dict):
+        dummy_facets = facets_dict
+        facets_dict = collections.OrderedDict()
+        # example facet added
+        facets_dict['acquisition_method'] = p.toolkit._('Acquisition Method')
+        for key in dummy_facets.keys():
+            facets_dict[key] = dummy_facets[key]
+        # hide License facet because it is not used by cfpb
+        facets_dict.pop('license_id', None)
+        return facets_dict
+    def dataset_facets(self, facets_dict, package_type):
+        return self.change_facets(facets_dict)
+    def group_facets(self, facets_dict, group_type, package_type):
+        return self.change_facets(facets_dict)
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        return self.change_facets(facets_dict)
