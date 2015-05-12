@@ -66,13 +66,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
-            'notes': [v.required_field],
+            'notes': [tk.get_validator('not_empty')],
             'source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_restrictions': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'contact_primary_name': [tk.get_converter('convert_to_extras'),
-                                     v.required_field],
+                                     tk.get_validator('not_empty')],
             'contact_primary_email': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'contact_secondary_name': [tk.get_validator('ignore_missing'),
@@ -181,9 +181,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
             # notes is the "Descriptions" built-in field.
-            'notes': [v.required_field],
-            'source_names': [tk.get_converter('convert_from_extras'),
-                        tk.get_validator('ignore_missing')],
+            'notes': [tk.get_validator('not_empty')],
+            'source_names': [tk.get_validator('ignore_missing'),
+                        tk.get_converter('convert_from_extras'),],
             'access_restrictions': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'contact_primary_name': [tk.get_converter('convert_from_extras'),],
