@@ -33,8 +33,8 @@
 
 {% block custom_fields %}
 
-{{ form.markdown('source_names', id='field-source_names', label=_('Source Names'), placeholder=_('e.g., vendor-one'), value=data.source_names, error=errors.source_names) }}
-<script> document.getElementById("field-source_names").title = "{{ h.popup_source_names() }}";</script>
+{{ form.markdown('data_source_names', id='field-data_source_names', label=_('Data Source Names'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
+<script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
 
 {{ form_custom.select_one_with_other('acquisition_method',
 label=_('Acquisition Method'),

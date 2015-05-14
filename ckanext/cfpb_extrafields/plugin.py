@@ -29,7 +29,7 @@ def tag_relevant_governing_documents():
 # these go into a new popup module if there are more than a few fields
 def popup_relevant_governing_documents():
     return "Insert purpose of relevant_governing_documents field."
-def popup_source_names():
+def popup_data_source_names():
     return "Insert purpose of source names field."
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
@@ -60,14 +60,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_resource_type': opts.resource_type,
 
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
-                'popup_source_names': popup_source_names,
+                'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
                 }
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
             'notes': [tk.get_validator('not_empty')],
-            'source_names': [tk.get_validator('ignore_missing'),
+            'data_source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_restrictions': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
@@ -182,7 +182,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
             # notes is the "Descriptions" built-in field.
             'notes': [tk.get_validator('not_empty')],
-            'source_names': [tk.get_validator('ignore_missing'),
+            'data_source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_from_extras'),],
             'access_restrictions': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
