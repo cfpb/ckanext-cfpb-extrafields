@@ -182,8 +182,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
             # notes is the "Descriptions" built-in field.
             'notes': [tk.get_validator('not_empty')],
-            'data_source_names': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_from_extras'),],
+            'data_source_names': [tk.get_converter('convert_from_extras'),],
             'access_restrictions': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'contact_primary_name': [tk.get_converter('convert_from_extras'),],
