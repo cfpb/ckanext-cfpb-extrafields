@@ -6,11 +6,6 @@ def Invalid(message):
     import ckan.plugins.toolkit as tk
     raise tk.Invalid(message)
 
-def required_field(value):
-    if not value:
-        Invalid('field is required')
-    return value
-
 def dedupe_unordered(items):
     return list(set(items))
 def contains_bad_chars(str):
@@ -86,11 +81,6 @@ def end_after_start_validator(key, flattened_data, errors, context):
 
 # select multis are contained in unicode strings that look like:
 # u'{"blah blah","blah asdf",asdf}' ; u'{asdf,asdf}' ; u'asdf' (see also tests.py)
-def clean_select_multi0(a):
-    ''' parses the results of an html form select-multi '''
-    # this solution doesn't accomodate commas in select-multi fields
-    # and validation preventing users from entering commas is not straightforward.
-    return a.replace('{', "").replace("}", "").replace("\"","").split(",")
 def clean_select_multi(s):
     ''' parses the results of an html form select-multi '''
     # This solution allows commas, but is unpythonic

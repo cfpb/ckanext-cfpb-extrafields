@@ -29,7 +29,7 @@ def tag_relevant_governing_documents():
 # these go into a new popup module if there are more than a few fields
 def popup_relevant_governing_documents():
     return "Insert purpose of relevant_governing_documents field."
-def popup_source_names():
+def popup_data_source_names():
     return "Insert purpose of source names field."
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
@@ -38,7 +38,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers)
-
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
                 'options_format': opts.format,
@@ -61,20 +60,19 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_resource_type': opts.resource_type,
 
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
-                'popup_source_names': popup_source_names,
+                'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
                 }
-
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
-            'notes': [v.required_field],
-            'source_names': [tk.get_validator('ignore_missing'),
+            'notes': [tk.get_validator('not_empty')],
+            'data_source_names': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_restrictions': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'contact_primary_name': [tk.get_converter('convert_to_extras'),
-                                     v.required_field],
+                                     tk.get_validator('not_empty')],
             'contact_primary_email': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'contact_secondary_name': [tk.get_validator('ignore_missing'),
@@ -148,6 +146,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
 
         })
+        # this update is for special fields that become free tags AND normal fields.
+        schema.update({'subject_matter': [tk.get_converter('tag_string_convert'),tk.get_converter('convert_to_extras'),]})
         # now modify tag fields and convert_to_tags
         schema.update({
             'relevant_governing_documents': [
@@ -169,24 +169,21 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'update_size' : [tk.get_validator('ignore_missing'),],
         })
         return schema
-
     def create_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).create_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
-
     def update_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).update_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
-
     def show_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
             # notes is the "Descriptions" built-in field.
-            'notes': [v.required_field],
-            'source_names': [tk.get_converter('convert_from_extras'),
-                        tk.get_validator('ignore_missing')],
+            'notes': [tk.get_validator('not_empty')],
+            'data_source_names': [tk.get_validator('ignore_missing'),
+                        tk.get_converter('convert_from_extras'),],
             'access_restrictions': [tk.get_converter('convert_from_extras'),
                         tk.get_validator('ignore_missing')],
             'contact_primary_name': [tk.get_converter('convert_from_extras'),],
@@ -269,6 +266,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
+        # this update is for special fields that become free tags AND normal fields.
+        schema.update({'subject_matter': [tk.get_converter('convert_from_extras'),]})
+        # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         # now show tag fields and convert_from_tags
         schema.update({
@@ -277,17 +277,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 tk.get_validator('ignore_missing')]
             })
         return schema
-
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
         # package types not handled by any other IDatasetForm plugin.
         return True
-
     def package_types(self):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
-
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
