@@ -4,9 +4,12 @@
 
 {% block package_metadata_fields %}
 
+<div id="core-field">
 {% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
 {{ form.input('subject_matter', id='field-subject_matter', label=_('Subject Matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
+</div>
 
+<div id="core-field">
   <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
     <div class="controls">
@@ -17,8 +20,10 @@
       </select>
     </div>
   </div>
-  {{super()}}
+</div>
 <script> document.getElementById("field-relevant_governing_documents").title = "{{ h.popup_relevant_governing_documents() }}";</script>
+
+{{super()}}
 
 {% endblock %}
 
@@ -33,33 +38,50 @@
 
 {% block custom_fields %}
 
+<div id="core-field">
 {{ form.markdown('data_source_names', id='field-data_source_names', label=_('Data Source Names'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
 <script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
+</div>
 
+<div id="core-field">
 {{ form_custom.select_one_with_other('acquisition_method',
 label=_('Acquisition Method'),
 current_value=data.get('acquisition_method', ''),
 options_defaults=h.options_acquisition_method(),
 error=errors.acquisition_method,) }}
+</div>
 
+<div id="core-field">
 {{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
+</div>
 
-{% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="", is_required=true) %} {# this is just for clicking #}
-<input id="field-contact_primary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_primary_name}}" name="contact_primary_name" required/>
+<div id="core-field">
+  <div id="field-contact_primary">
+    {% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="", is_required=true) %} {# this is just for clicking #}
+    <input id="field-contact_primary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_primary_name}}" name="contact_primary_name" required/>
     <input id="field-contact_primary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_primary_email}}" name="contact_primary_email" />
-{% endcall %}
+    {% endcall %}
+  </div>
+</div>
 
+<div id="core-field">
 {{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('Initial Purpose for Intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
+</div>
 
+<div id="core-field">
 {{ form_custom.select_multi_with_other('legal_authority_for_collection', 
 label=_('Legal Authority for Collection'),  
 current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')), 
 options_defaults=h.options_legal_authority_for_collection(), 
 error=errors.legal_authority_for_collection,
 ) }}
+</div>
 
+<div id="core-field">
 {{ form.input('pra_omb_control_number', label=_("PRA: OMB Control Number"), placeholder="####-####", value=data.pra_omb_control_number, error=errors.pra_omb_control_number) }}
+</div>
 
+<div id="core-field">
 {{ form_custom.select_multi_with_other('privacy_pia_title', 
 label=_('Privacy: PIA Title'),  
 current_values=h.clean_select_multi(data.get('privacy_pia_title', '')), 
@@ -67,7 +89,9 @@ options_defaults=h.options_privacy_pia_title(),
 error=errors.privacy_pia_title,
 size="550",
 ) }}
+</div>
 
+<div id="core-field">
 {{ form_custom.select_multi_with_other('privacy_sorn_number', 
 label=_('Privacy: SORN number'),  
 current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')), 
@@ -75,12 +99,17 @@ options_defaults=h.options_privacy_sorn_number(),
 error=errors.privacy_sorn_number,
 size="550",
 ) }}
+</div>
 
+<div id="core-field">
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
+</div>
 
+<div id="core-field">
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
 label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 <script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
+</div>
 
 <!-- non-core fields --><hr>
 
@@ -172,4 +201,5 @@ $(function() {
     });
 });
 </script>
+<style>#core-field{ background-color: #F0FFF0;}</style>
 {% endblock %}
