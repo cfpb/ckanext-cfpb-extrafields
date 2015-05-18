@@ -8,14 +8,14 @@
 {% block metadata_fields %}
 {% import 'macros/form_custom.html' as form_custom %}
 
-<div id='core-field'>
+<div class='core-field'>
 {{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
 </div>
-<div id='core-field'>
+<div class='core-field'>
 {{ form.input('content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
 </div>
 
-<div id='core-field'>
+<div class='core-field'>
 {{ form_custom.select_one_with_other('format', 
 label=_('Format'),  
 current_value=data.get('format', ''), 
@@ -24,7 +24,7 @@ error=errors.format,) }}
 </div>
 
 <!-- custom version of select one with extra field -->
-<div id='core-field'>
+<div class='core-field'>
 <div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
   <label class="control-label" for="storage_location">Storage Location</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
@@ -52,11 +52,11 @@ error=errors.format,) }}
 </div>
 </div>
 
-<div id='core-field'>
+<div class='core-field'>
 {{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=h.options_sensitivity_level(), selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
 </div>
 
-<div id='core-field'>
+<div class='core-field'>
 {{ form_custom.radio('privacy_contains_pii',
 label=_('Privacy: Contains PII?'),
 current_value=data.privacy_contains_pii,
@@ -99,6 +99,6 @@ $(function() {
     });
 });
 </script>
-<style>#core-field{ background-color: #F0FFF0;}</style>
+<style>.core-field{ background-color: #F0FFF0;}</style>
 {% endblock %}
 
