@@ -3,6 +3,7 @@
 {% import 'macros/form_custom.html' as form_custom %}
 
 {% block package_metadata_fields %}
+{% resource 'cfpb_extrafields/otherspecify.js' %}
 
 <div class="core-field">
 {% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
@@ -180,26 +181,4 @@ error=errors.privacy_pia_notes,) }}
 
 {{ form.input('procurement_document_id', label=_("Procurement Document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
-
-<!-------------------- js adds one to select --------------------->
-<!-- TO DO: add the jquery js to static -->
-<!-- use CKAN for javascript: http://docs.ckan.org/en/latest/theming/javascript.html -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
-$(function() {
-    $('select').change( function() { <!--select#type_of_entries-->
-        var value = $(this).val();
-        if (value == "__Other") {
-           var custom = prompt( "Please enter custom value:" );
-           if (!custom) return false;
-           <!-- clear selections -->
-           $(this).find($('option')).attr('selected',false)
-           <!-- add and select new option -->
-           $(this).prepend('<option value="' + custom + '" selected="selected">' + custom
-                             + '</option>');
-        }
-    });
-});
-</script>
-<style>.core-field{ background-color: #F0FFF0;}</style>
 {% endblock %}

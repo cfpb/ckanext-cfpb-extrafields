@@ -2,10 +2,11 @@
 
 {% block package_basic_fields_license %}
 {% endblock %}
-    {% block basic_fields_format %}
-    {% endblock %}
+{% block basic_fields_format %}
+{% endblock %}
 
 {% block metadata_fields %}
+{% resource 'cfpb_extrafields/otherspecify.js' %}
 {% import 'macros/form_custom.html' as form_custom %}
 
 <div class='core-field'>
@@ -79,26 +80,4 @@ current_value=data.privacy_has_direct_identifiers)}}
 
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('Cleansing Rules Used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 
-<!-------------------- js adds one to select --------------------->
-<!-- TO DO: add the jquery js to static -->
-<!-- use CKAN for javascript: http://docs.ckan.org/en/latest/theming/javascript.html -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
-$(function() {
-    $('select').change( function() { <!--select#type_of_entries-->
-        var value = $(this).val();
-        if (value == "__Other") {
-           var custom = prompt( "Please enter custom value:" );
-           if (!custom) return false;
-           <!-- clear selections -->
-           $(this).find($('option')).attr('selected',false) 
-           <!-- add and select new option -->
-           $(this).prepend('<option value="' + custom + '" selected="selected">' + custom
-                             + '</option>');
-        }
-    });
-});
-</script>
-<style>.core-field{ background-color: #F0FFF0;}</style>
 {% endblock %}
-
