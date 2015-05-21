@@ -2,14 +2,14 @@
 
 
 {% block package_basic_fields_tags %} {# unchanged#}
-<div id="core-field">
+<div class="core-field">
 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
 {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
 </div>
 {% endblock %}
 
 {% block package_basic_fields_description %}
-<div id="core-field">
+<div class="core-field">
   {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes, is_required=true) }}
 </div>
 {% endblock %}
