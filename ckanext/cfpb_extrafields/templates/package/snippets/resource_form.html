@@ -5,11 +5,32 @@
 {% block basic_fields_format %}
 {% endblock %}
 
+
+{% block basic_fields_url %}
+<div class='core-field'>
+  {{ super()}}
+</div>
+{% endblock %}
+
+{% block basic_fields_name %}
+<div class='core-field'>
+  {{ super()}}
+</div>
+{% endblock %}
+
+{% block basic_fields_description %}
+<div class='core-field'>
+  {{ super()}}
+</div>
+{% endblock %}
+
 {% block metadata_fields %}
 {% resource 'cfpb_extrafields/otherspecify.js' %}
 {% resource 'cfpb_extrafields/popover.js' %}
 {% resource 'cfpb_extrafields/popover.css' %}
 {% import 'macros/form_custom.html' as form_custom %}
+
+
 
 <div class='core-field'>
 {{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
