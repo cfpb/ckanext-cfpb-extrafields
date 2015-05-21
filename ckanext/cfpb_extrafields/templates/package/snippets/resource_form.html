@@ -7,6 +7,8 @@
 
 {% block metadata_fields %}
 {% resource 'cfpb_extrafields/otherspecify.js' %}
+{% resource 'cfpb_extrafields/popover.js' %}
+{% resource 'cfpb_extrafields/popover.css' %}
 {% import 'macros/form_custom.html' as form_custom %}
 
 <div class='core-field'>
@@ -54,6 +56,11 @@ error=errors.format,) }}
 </div>
 
 <div class='core-field'>
+  <button type="button" data-module="popover"
+          data-module-html="sensitivity_popover.html"
+          data-module-title="{{ _('Sensitivity Level') }}"
+          <i class="icon-info-sign"></i>
+  </button>
 {{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=h.options_sensitivity_level(), selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
 </div>
 
