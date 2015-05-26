@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block styles %}
+{{ super() }}
+
+{# Import css using Fanstatic.
+'cfpb_extrafields/' is the name that the cfpb_extrafields/fanstatic directory
+was registered with when the toolkit.add_resource() function was called.
+'corefields.css' is the path to the CSS file, relative to the root of
+the fanstatic directory. #}
+
+{% resource 'cfpb_extrafields/corefields.css' %}
+
+{% endblock %}
