@@ -1,4 +1,9 @@
 {% ckan_extends %}
+{% block resource_content %}
+{{super()}}
+<script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
+{% endblock %}
+
 {% block resource_additional_information %}
     {% if res %}
 {#{ res }#}
@@ -108,5 +113,7 @@
           </table>
         </div>
       </section>
-    {% endif %}
+
+      <script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
+      {% endif %}
 {% endblock %}
