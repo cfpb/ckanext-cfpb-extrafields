@@ -4,23 +4,33 @@
 
 {% block package_additional_info %}
 {% block extras %}
-{% resource 'cfpb_extrafields/gists.js' %}
 
+{% resource 'cfpb_extrafields/gists.js' %}
 <p>
   We're going to now talk to the GitHub API. Ready?
   <a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to begin!</a>
 </p>
-
-    <p>
-      <label for="gistList">Gists</label>
-      <select id="gistList">
-        <option value="">Select a Gist</option>
-        <option value="906758">Get a Twitter user's avatar using PHP</option>
-        <option value="785770">How to PHP regex match an HTML document's title</option>
-        <option value="785766">How to PHP regex match an HTML document's meta description</option>
-      </select>
-    </p>
-    <div id="gistZone"></div>
+<p>
+  <label for="gistList">Gists</label>
+  <select id="gistList">
+    <option value="">Select a Gist</option>
+    <option value="906758">Get a Twitter user's avatar using PHP</option>
+    <option value="785770">How to PHP regex match an HTML document's title</option>
+    <option value="785766">How to PHP regex match an HTML document's meta description</option>
+  </select>
+</p>
+<div id="gistZone"></div>
+    
+{% resource 'cfpb_extrafields/ghapi.css' %}
+{% resource 'cfpb_extrafields/ghapi.js' %}
+    <div id="w">
+      <h1>Simple Github API Webapp</h1>
+      <p>Enter a single Github username below and click the button to display profile info via JSON.</p>
+      <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
+      <a href="#" id="ghsubmitbtn">Pull User Data</a>
+      <div id="ghapidata" class="clearfix"></div>
+    </div>
+    
 
 {#{pkg_dict}#}
 
