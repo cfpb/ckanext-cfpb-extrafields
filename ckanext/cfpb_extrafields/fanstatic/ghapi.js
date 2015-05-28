@@ -49,8 +49,7 @@ $( document ).ready(function(){
                 } // end outputPageContent()
             } // end else statement
         }); // end requestJSON Ajax call
-}); // end click event handler
-    
+    }); // end click event handler
     function requestJSON(url, callback) {
         $.ajax({
             url: url,

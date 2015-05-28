@@ -17,7 +17,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 html { overflow-y: scroll; }
 body {
-    background: #fafafa url('grey.png'); /* http://subtlepatterns.com/subtle-grey/ */
+    background: #fafafa url('/grey.png'); /* http://subtlepatterns.com/subtle-grey/ */
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 62.5%;
     line-height: 1;
@@ -77,7 +77,7 @@ a:hover {
 
 
 /* page structure */
-#w {
+.w {
     display: block;
     width: 800px;
     margin: 0 auto;
@@ -174,7 +174,7 @@ a:hover {
 }
 
 /* input field */
-#ghusername {
+.longfield {
     display: block;
     padding: 5px 8px;
     font-size: 1.4em;
@@ -183,7 +183,7 @@ a:hover {
     margin-bottom: 15px;
 }
 
-#ghsubmitbtn {
+.ghsubmitbtn {
     display: inline-block;
     padding: 8px 18px;
     font-size: 14px;
@@ -204,7 +204,7 @@ a:hover {
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-#ghsubmitbtn:hover {
+.ghsubmitbtn:hover {
     background-color: #dadada;
     background-image: -webkit-linear-gradient(#eaeaea, #dadada);
     background-image: -moz-linear-gradient(#eaeaea, #dadada);
@@ -213,7 +213,7 @@ a:hover {
     background-image: linear-gradient(#eaeaea, #dadada);
     border-color: #ccc #ccc #b5b5b5;
 }
-#ghsubmitbtn:active {
+.ghsubmitbtn:active {
     background-color:#dadada;
     background-image: none;
     border-color: #b5b5b5;

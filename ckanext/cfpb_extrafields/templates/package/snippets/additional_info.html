@@ -5,7 +5,8 @@
 {% block package_additional_info %}
 {% block extras %}
 
-{% resource 'cfpb_extrafields/gists.js' %}
+<!-- gist dropdown  -->
+{% resource 'cfpb_extrafields/select_gist.js' %}
 <p>
   We're going to now talk to the GitHub API. Ready?
   <a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to begin!</a>
@@ -20,17 +21,53 @@
   </select>
 </p>
 <div id="gistZone"></div>
+<!-- gist dropdown  -->
     
-{% resource 'cfpb_extrafields/ghapi.css' %}
+{#% resource 'cfpb_extrafields/ghapi.css' %#}
+{% resource 'cfpb_extrafields/ghapiauth.js' %}
+    <div class="w">
+      <h1>Github sign-on</h1>
+      <p>Enter a Github username and password.</p>
+      <input type="text" name="gauthusername" id="gauthusername" placeholder="Github username...">
+      <input type="text" name="gauthpassword" id="gauthpassword" placeholder="Github password...">
+      <a href="#" id="gauthsubmitbtn" class="ghsubmitbtn">get token</a>
+      <div id="gauthapidata" class="clearfix"></div>
+    </div>
 {% resource 'cfpb_extrafields/ghapi.js' %}
-    <div id="w">
+    <div class="w">
       <h1>Simple Github API Webapp</h1>
       <p>Enter a single Github username below and click the button to display profile info via JSON.</p>
-      <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
-      <a href="#" id="ghsubmitbtn">Pull User Data</a>
+      <input type="text" name="ghusername" id="ghusername" class="longfield" placeholder="Github username...">
+      <a href="#" id="ghsubmitbtn" class="ghsubmitbtn">Pull User Data</a>
       <div id="ghapidata" class="clearfix"></div>
     </div>
-    
+{% resource 'cfpb_extrafields/anongist.js' %}
+    <div class="w">
+      <h1>Submit anonymous gist</h1>
+      <p>Click to post the input text to an anonymous public gist. Returned JSON contains links to the gist that get processed. </p>
+      <input type="text" name="anongist" id="anongist" class="longfield" placeholder="Text of anonymous gist...">
+      <a href="#" id="anongistsubmitbtn" class="ghsubmitbtn">Post anonymous gist</a>
+      <div id="anongistdata" class="clearfix"></div>
+    </div>
+
+
+    <h1>Ace editor</h1>
+    {% resource 'cfpb_extrafields/root_ace.css' %}
+    <!-- NOTE don't understand why static js works -->
+    {#% resource 'cfpb_extrafields/ace-builds/src-noconflict/ace.js' %#}
+    <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
+    <div id="editor">
+function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}
+    </div>
+    <script>
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/twilight");
+      editor.getSession().setMode("ace/mode/javascript");
+    </script>
+    <p> </p>
 
 {#{pkg_dict}#}
 
