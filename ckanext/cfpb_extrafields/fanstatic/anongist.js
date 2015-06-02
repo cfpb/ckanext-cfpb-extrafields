@@ -7,7 +7,7 @@ $( document ).ready(function(){
         var textgist = $('#anongist').val();
         var gistenturl   = 'https://github.cfpb.gov/api/v3/gists';
         
-        requestJSON(gistenturl, function(json) {
+        requestJSON(gistenturl,textgist, function(json) {
             console.log(json);
             if(json.message == "Not Found" || gistenturl == '') {
                 $('#anongistdata').html("<h2>No User Info Found</h2>");
@@ -25,30 +25,26 @@ $( document ).ready(function(){
                 outhtml = outhtml + '<div class="ghcontent"><div class="avi"><a href="'+link+'" target="_blank">'+user+'></a></div>';
                 outhtml = outhtml + '<p>Comments: '+ncomments+'<br>id: '+id+'</p></div>';
                 outhtml = outhtml + '<div class="repolist clearfix">';
-                
-                outputPageContent();    
-                function outputPageContent() {
-                    console.log('id lenght=0?',id.length);
-                    if(id.length == 0) {
-                        outhtml = outhtml + '<p>No id!</p></div>'; }
-                    else {
-                        outhtml = outhtml + '<p><strong>id:</strong></p> <ul>';
-                        outhtml = outhtml + '</ul></div>';
-                    }
-                    $('#anongistdata').html(outhtml);
-                } // end outputPageContent()
+                $('#anongistdata').html(outhtml);
+
+                //snl you need an ifram from select_gist here!
+                var container= document.getElementById("containeranon"); 
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js';
+                container.appendChild(script);
             } // end else statement
         }); // end requestJSON Ajax call
     }); // end click event handler
-    function requestJSON(url, callback) {
-        console.log('hi');
+    function requestJSON(url, text, callback) {
+        console.log('snl debug: "'+text);
         $.ajax({
             url: url,
             type: 'POST',
             complete: function(xhr) {
                 callback.call(null, xhr.responseJSON);
             },
-            data: '{"description": "the description for this gist","public": true,"files": {"file.py": {"content": "def blah(x): x"}}}'
+            data: '{"description": "the description for this gist","public": true,"files": {"file.py": {"content": "'+text+'"}}}'
         }).done(function(response) {
             console.log("snl view response:");
             console.log(response);

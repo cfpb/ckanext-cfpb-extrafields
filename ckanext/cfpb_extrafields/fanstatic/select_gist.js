@@ -38,21 +38,3 @@ function adjustIframeSize(newHeight) {
     console.log("size adjusted", newHeight);
 }
 
-
-//
-//    <!--
-//document.getElementById("gistList").onchange = function(e) { //function loadGist(element, gistId) {
-//    var callbackName = "gist_callback";
-//    window[callbackName] = function (gistData) {
-//        delete window[callbackName];
-//        var html = '<link rel="stylesheet" href="' + $( gistData.stylesheet).text() + '"></link>';
-//        html += gistData.div;
-//        e.innerHTML = html;
-//        script.parentNode.removeChild(script);
-//    };
-//    var script = document.createElement("script");
-//    script.setAttribute("src", "https://gist.github.com/" + e.target.value + ".json?callback=" + callbackName);
-//    document.body.appendChild(script);
-//}
-//-->
-

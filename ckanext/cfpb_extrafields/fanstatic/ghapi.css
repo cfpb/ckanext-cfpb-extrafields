@@ -79,7 +79,7 @@ a:hover {
 /* page structure */
 .w {
     display: block;
-    width: 800px;
+/*    width: 550px;*/
     margin: 0 auto;
     background: #fff;
     padding: 15px 25px;
@@ -179,7 +179,7 @@ a:hover {
     padding: 5px 8px;
     font-size: 1.4em;
     color: #666;
-    width: 550px;
+    width: 400px;
     margin-bottom: 15px;
 }
 

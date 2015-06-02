@@ -8,11 +8,10 @@
 <!-- gist dropdown  -->
 {% resource 'cfpb_extrafields/select_gist.js' %}
 <p>
-  We're going to now talk to the GitHub API. Ready?
-  <a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to begin!</a>
+  <a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to talk to GitHub API</a>
 </p>
 <p>
-  <label for="gistList">Gists</label>
+  <label for="gistList"><h2>Gists</h2></label>
   <select id="gistList">
     <option value="">Select a Gist</option>
     <option value="906758">Get a Twitter user's avatar using PHP</option>
@@ -22,51 +21,72 @@
 </p>
 <div id="gistZone"></div>
 <!-- gist dropdown  -->
-    
-{#% resource 'cfpb_extrafields/ghapi.css' %#}
+
+{% resource 'cfpb_extrafields/ghapi.css' %}
 {% resource 'cfpb_extrafields/ghapiauth.js' %}
-    <div class="w">
-      <h1>Github sign-on</h1>
+    <div>
+<!--
+      <h1>Github Authentication</h1>
       <p>Enter a Github username and password.</p>
       <input type="text" name="gauthusername" id="gauthusername" placeholder="Github username...">
       <input type="text" name="gauthpassword" id="gauthpassword" placeholder="Github password...">
       <a href="#" id="gauthsubmitbtn" class="ghsubmitbtn">get token</a>
       <div id="gauthapidata" class="clearfix"></div>
-    </div>
-{% resource 'cfpb_extrafields/ghapi.js' %}
-    <div class="w">
+      {% resource 'cfpb_extrafields/ghapi.js' %}
       <h1>Simple Github API Webapp</h1>
       <p>Enter a single Github username below and click the button to display profile info via JSON.</p>
       <input type="text" name="ghusername" id="ghusername" class="longfield" placeholder="Github username...">
       <a href="#" id="ghsubmitbtn" class="ghsubmitbtn">Pull User Data</a>
       <div id="ghapidata" class="clearfix"></div>
-    </div>
-{% resource 'cfpb_extrafields/anongist.js' %}
-    <div class="w">
+      {% resource 'cfpb_extrafields/anongist.js' %}
       <h1>Submit anonymous gist</h1>
       <p>Click to post the input text to an anonymous public gist. Returned JSON contains links to the gist that get processed. </p>
       <input type="text" name="anongist" id="anongist" class="longfield" placeholder="Text of anonymous gist...">
       <a href="#" id="anongistsubmitbtn" class="ghsubmitbtn">Post anonymous gist</a>
       <div id="anongistdata" class="clearfix"></div>
+      <div id="containeranon"></div>
     </div>
+-->
 
 
-    <h1>Ace editor</h1>
-    {% resource 'cfpb_extrafields/root_ace.css' %}
-    <!-- NOTE don't understand why static js works -->
-    {#% resource 'cfpb_extrafields/ace-builds/src-noconflict/ace.js' %#}
-    <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
-    <div id="editor">
-function foo(items) {
+    <div class="w" id="ace_editor">
+      <h2>Create anonymous gist with ACE</h2>
+      {% resource 'cfpb_extrafields/root_ace.css' %}
+      <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
+      {% resource 'cfpb_extrafields/root_ace.js' %}
+      <input type="text" name="gist-description" id="gist-description" placeholder="short gist description" class="longfield">
+      <select id="gisttype">
+        <option value="">Select a gist type</option>
+        <option value="py">python</option>
+        <option value="javascript">javascript</option>
+        <option value="C">C</option>
+      </select>
+      <div id="editor_div">function foo(items) {
     var x = "All this is syntax highlighted";
     return x;
 }
+      </div>
+      <a href="#ace_editor" id="acesubmitbtn" class="ghsubmitbtn">Post to gist</a>
+      <a href="#ace_editor" id="saveposted" class="ghsubmitbtn">Save</a>
+      <form action="https://github.cfpb.gov/api/v3/gists" method="post">
+        <br>
+      <textarea name="editor"></textarea>
+        <input type="submit" value="Submit" id='submit'>
+</form>
+
+      <div id="ace_output"></div>
+      <!--
+          <label for="gistpost"><h2>Posted Gist</h2></label>
+          <select id="gistpost">
+            <option value="">Select a Gist</option>
+            <option value="906758">Get a Twitter user's avatar using PHP</option>
+            <option value="785770">How to PHP regex match an HTML document's title</option>
+            <option value="785766">How to PHP regex match an HTML document's meta description</option>
+          </select>
+      <div id="postedZone"></div>
+          -->
+    
     </div>
-    <script>
-      var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/twilight");
-      editor.getSession().setMode("ace/mode/javascript");
-    </script>
     <p> </p>
 
 {#{pkg_dict}#}

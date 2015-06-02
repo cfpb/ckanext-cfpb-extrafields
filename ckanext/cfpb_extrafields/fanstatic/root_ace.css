@@ -1,5 +1,15 @@
-#editor {
-    width: 500px;
-    height: 400px;
+#editor_div {
+    display: block;
+    width: 600px;
+    height: 300px;
     position: relative;
+/*    margin: auto;*/
+    margin:0 ;
+    border: 1px solid #888;
+}
+textarea {
+    display: block;
+    margin: auto;
+    width: 500px;
+    height: 300px;
 }
