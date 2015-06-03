@@ -4,6 +4,26 @@
 
 {% block package_additional_info %}
 {% block extras %}
+<!--    
+http://docs.ckan.org/en/ckan-2.3/api/index.html?highlight=related#ckan.logic.action.get.related_list
+    ckan.logic.action.get.related_list(context, data_dict=None)
+    id or name of the dataset can be an argument
+http://docs.ckan.org/en/ckan-2.3/api/index.html?highlight=related#ckan.logic.action.create.related_create
+    ckan.logic.action.create.related_create(context, data_dict)
+-->
+{% resource 'cfpb_extrafields/listrelated.js' %}
+<div class="w" id="listrelated">
+  <div id="datasetid" data-id="{{ pkg_dict.id }}"></div>
+  <a href="#listrelated" id="listrelated_btn" class="ghsubmitbtn">related</a>
+  <div id="listrelated_output"></div>
+</div>
+
+{% resource 'cfpb_extrafields/related_create.js' %}
+<div class="w" id="createrelated">
+  <div id="datasetid" data-id="{{ pkg_dict.id }}"></div>
+  <a href="#createrelated" id="createrelated_btn" class="ghsubmitbtn">related</a>
+  <div id="createrelated_output"></div>
+</div>
 
 <!-- gist dropdown  -->
 {% resource 'cfpb_extrafields/select_gist.js' %}
@@ -89,7 +109,7 @@
     </div>
     <p> </p>
 
-{#{pkg_dict}#}
+{{pkg_dict}}
 
   {% if pkg_dict.id %}
   <tr> 
