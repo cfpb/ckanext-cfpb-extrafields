@@ -1,0 +1,18 @@
+<div class="context-info">
+  <div class="fullwords">
+    <dl>
+      
+      <dt>{{ _('Public') }}</dt>
+      
+    <dd> {{newthing}}
+      {{ _('Data available to the general public by legal means with no restrictions regarding access or use (e.g., publicly released macroeconomic data such as employment statistics, GDP).') }}
+    </dd>
+    <dd>{{ h.get_action('dataset_follower_count', {'id': dataset_id }) }}</dd> {{resource_id}} //'239b3982-5c83-4a48-b9e0-f45474a90126'
+    <dd>{{ h.get_action('related_create', {'title': 'snl0', 'type':'Post', 'url':'http://www.google.com', 'dataset_id':dataset_id, 'description':'related resource: '+resource_id}) }}
+    {#
+    <dd>{{ h.get_action('related_create', {'title': 'snl0', 'type':'Idea'}) }}</dd> 
+    {% ckan_extends %}#}
+    
+    </dl>
+  </div>
+</div>
