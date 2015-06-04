@@ -1,3 +1,5 @@
+"use strict";
+
 $( document ).ready(function(){
     var editor = ace.edit("editor_div");
     /*<script src="src/theme-xcode.js" type="text/javascript" charset="utf-8"></script> //snl: theme needs to be included */

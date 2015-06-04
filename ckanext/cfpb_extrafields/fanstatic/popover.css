@@ -1,3 +1,4 @@
 .fullwords {
+    /* Prevent words from being wrapped mid-word. */
     word-break: keep-all;
 }
