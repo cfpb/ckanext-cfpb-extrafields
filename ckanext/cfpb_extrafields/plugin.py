@@ -33,7 +33,16 @@ def popup_data_source_names():
     return "Insert purpose of source names field."
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
-
+def parse_resource_related_url(data_related_items, resource_id):
+    urls = []
+    if not data_related_items:
+        return ''
+    for item in data_related_items:
+        desc = item.get('description','')
+        if desc and resource_id in desc:
+            urls.append( {'title':item.get('title'),'url':item.get('url')} )
+    return urls
+            
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     p.implements(p.IDatasetForm)
     p.implements(p.IConfigurer)
@@ -62,7 +71,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
-                }
+                
+                'parse_resource_related_url': parse_resource_related_url,
+        }
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
