@@ -1,0 +1,9 @@
+<div class="context-info">
+    {{newthing}}
+    {#{ h.get_action('related_list', {'id': dataset_id }) }#}
+    <ul>
+      {% for item in h.parse_resource_related_url(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
+      <li>{{item.title}} {{item.url}}</li>
+      {% endfor %}
+    </ul>
+</div>

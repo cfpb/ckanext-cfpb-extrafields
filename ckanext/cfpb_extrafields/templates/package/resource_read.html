@@ -13,10 +13,25 @@ resource_id {{ res.id }}; package_id {{ res.package_id }}
   <button type="button" data-module="resrelated"
           data-module-dataset_id="{{ res.package_id }}"
           data-module-resource_id="{{ res.id }}"
+          data-module-resource_name="{{ res.name }}"
           data-module-html="resrelated.html"
           data-module-title="{{ _('Sensitivity Level') }}">
           <i class="icon-info-sign"></i>
   </button>
+
+  <div data-module="listrelated"
+          data-module-dataset_id="{{ res.package_id }}"
+          data-module-resource_id="{{ res.id }}"
+          data-module-resource_name="{{ res.name }}"
+          data-module-html="listrelated.html"
+    </div>
+    
+  {% resource 'cfpb_extrafields/listrelated.js' %}
+  <div class="w" id="listrelated">
+    <div id="datasetid" data-dataset_id="{{ res.package_id }}" data-resource_id="{{ res.id }}"></div>
+    <a href="#listrelated" id="listrelated_btn" class="ghsubmitbtn">related</a>
+    <div id="listrelated_output"></div>
+    </div>
 {% endblock %}
 
 {% block resource_additional_information %}
