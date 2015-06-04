@@ -1,12 +1,28 @@
 {% ckan_extends %}
 {% block resource_content %}
+{% resource 'cfpb_extrafields/resrelated.js' %}
 {{super()}}
+
 <script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
+resource_id {{ res.id }}; package_id {{ res.package_id }}
+<dd>{{ h.get_action('dataset_follower_count', {'id': res.package_id }) }}</dd>
+<dd>{{ h.get_action('dataset_follower_count', {'id': '239b3982-5c83-4a48-b9e0-f45474a90126' }) }}</dd>
+{#
+<dd>{{ h.get_action('related_create', {'title': "hi", 'type':"Post", 'url':"http://www.google.com", 'dataset_id': res.package_id }) }}</dd>
+#}
+  <button type="button" data-module="resrelated"
+          data-module-dataset_id="{{ res.package_id }}"
+          data-module-resource_id="{{ res.id }}"
+          data-module-html="resrelated.html"
+          data-module-title="{{ _('Sensitivity Level') }}">
+          <i class="icon-info-sign"></i>
+  </button>
 {% endblock %}
 
 {% block resource_additional_information %}
+  
     {% if res %}
-{#{ res }#}
+{{ res }}
       <section class="module">
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>
