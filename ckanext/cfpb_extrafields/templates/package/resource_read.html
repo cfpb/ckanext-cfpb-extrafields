@@ -10,7 +10,30 @@ resource_id {{ res.id }}; package_id {{ res.package_id }}
 <dd>{{ h.get_action('dataset_follower_count', {'id': '239b3982-5c83-4a48-b9e0-f45474a90126' }) }}</dd>
 <dd>{{ h.get_action('related_create', {'title': "hi", 'type':"Post", 'url':"http://www.google.com", 'dataset_id': res.package_id }) }}</dd>
 #}
-<h3> replace the info button with the ACE editor and a submit button </h3>
+
+<div class="w" id="ace_editor">
+  <h2>Create anonymous gist with ACE</h2>
+  {% resource 'cfpb_extrafields/root_ace.css' %}
+  <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
+  {% resource 'cfpb_extrafields/root_ace.js' %}
+  <input type="text" name="gist-description" id="gist-description" placeholder="short gist description" class="longfield">
+  <select id="gisttype">
+    <option value="">Select a gist type</option>
+    <option value="py">python</option>
+    <option value="javascript">javascript</option>
+    <option value="C">C</option>
+  </select>
+  <div id="editor_div">function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}
+  </div>
+  {#% resource 'cfpb_extrafields/ghapi.css' %#}
+  <a href="#ace_editor" id="acesubmitbtn" class="ghsubmitbtn">Post to gist</a>
+  <!-- <a href="#ace_editor" id="saveposted" class="ghsubmitbtn">Save</a> -->
+  
+  <div id="ace_output"></div>
+</div>
   <button type="button" data-module="resrelated"
           data-module-dataset_id="{{ res.package_id }}"
           data-module-resource_id="{{ res.id }}"
