@@ -1,10 +1,7 @@
-<select id="gistList">
-  <option value="">Select a Gist</option>
+<select id="gistselect">
+  <option value="">Display a code snippet</option>
   {% for item in h.parse_resource_related_gist(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
   <option value="{{ item.url }}">{{ item.title }}</option>
   {% endfor %}
 </select>
 
-{#% for item in h.parse_resource_related_gist(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
-<br>value="{{ item.url }}"  title={{ item.title }} <br>
-{% endfor %#}

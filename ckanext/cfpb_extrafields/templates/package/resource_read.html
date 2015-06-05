@@ -1,90 +1,20 @@
 {% ckan_extends %}
 {% block resource_content %}
-{% resource 'cfpb_extrafields/resrelated.js' %}
 {{super()}}
-
-{#
-<script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
-resource_id {{ res.id }}; package_id {{ res.package_id }}
-<dd>{{ h.get_action('dataset_follower_count', {'id': res.package_id }) }}</dd>
-<dd>{{ h.get_action('dataset_follower_count', {'id': '239b3982-5c83-4a48-b9e0-f45474a90126' }) }}</dd>
-<dd>{{ h.get_action('related_create', {'title': "hi", 'type':"Post", 'url':"http://www.google.com", 'dataset_id': res.package_id }) }}</dd>
-#}
-
-<div class="w" id="ace_editor">
-  <h2>Create anonymous gist with ACE</h2>
-  {% resource 'cfpb_extrafields/root_ace.css' %}
-  <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
-  {% resource 'cfpb_extrafields/root_ace.js' %}
-  <input type="text" name="gist-description" id="gist-description" placeholder="short gist description" class="longfield">
-  <select id="gisttype">
-    <option value="">Select a gist type</option>
-    <option value="py">python</option>
-    <option value="javascript">javascript</option>
-    <option value="C">C</option>
-  </select>
-  <div id="editor_div">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-}
-  </div>
-  {#% resource 'cfpb_extrafields/ghapi.css' %#}
-  <a href="#ace_editor" id="acesubmitbtn" class="ghsubmitbtn">Post to gist</a>
-  <!-- <a href="#ace_editor" id="saveposted" class="ghsubmitbtn">Save</a> -->
-  
-  <div id="ace_output"></div>
-</div>
-  <button type="button" data-module="resrelated"
-          data-module-dataset_id="{{ res.package_id }}"
-          data-module-resource_id="{{ res.id }}"
-          data-module-resource_name="{{ res.name }}"
-          data-module-html="resrelated.html"
-          data-module-title="{{ _('Sensitivity Level') }}">
-          <i class="icon-info-sign"></i>
-  </button>
-
-<h3> now provide a dropdown and show gists</h3>
-{% resource 'cfpb_extrafields/listrelated.js' %}
-  <div data-module="listrelated"
-          data-module-dataset_id="{{ res.package_id }}"
-          data-module-resource_id="{{ res.id }}"
-          data-module-resource_name="{{ res.name }}"
-          data-module-html="listrelated.html"
-    </div>
-<div class="w" id="listrelated">
-  
- <!--   <div id="datasetid" data-dataset_id="{{ res.package_id }}" data-resource_id="{{ res.id }}"></div>-->
- {% resource 'cfpb_extrafields/select_gist.js' %}
-    <!-- for js listening -->
-    <div id="gistList"> 
-      <!-- for select dropdown -->
-      <div id="listrelated_output"></div> 
-    </div>
-  </div>
-<div id="gistZone"></div> 
-  
-<!-- gist dropdown  -->
-<!--
-{#<p>
-  <label for="gistList"><h2>Gists</h2></label>
-  <select id="gistList">
-    <option value="">Select a Gist</option>
-    <option value="906758">Get a Twitter user's avatar using PHP</option>
-    <option value="785770">How to PHP regex match an HTML document's title</option>
-    <option value="785766">How to PHP regex match an HTML document's meta description</option>
-  </select>
-</p>#}
--->
+<script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
+{% resource 'cfpb_extrafields/root_ace.js' %}
+{% resource 'cfpb_extrafields/root_ace.css' %}
+{#% resource 'cfpb_extrafields/ghapi.css' %#}
 {% endblock %}
 
 {% block resource_additional_information %}
-  
-    {% if res %}
-{{ res }}
-      <section class="module">
-        <div class="module-content">
-          <h2>{{ _('Additional Information') }}</h2>
-          <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+{% if res %}
+{#{ res }#}
+          
+<section class="module">
+  <div class="module-content">
+    <h2>{{ _('Additional Information') }}</h2>
+    <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
                 <th scope="col">{{ _('Field') }}</th>
@@ -184,10 +114,55 @@ resource_id {{ res.id }}; package_id {{ res.package_id }}
               {% endif %}
               
             </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!--script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script-->
-      {% endif %}
+    </table>
+  </div>
+<!-- ============ SHARE ============= -->
+<!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
+          <div class="module-content">
+          <h2>{{ _('Contribute Related Code') }}</h2>
+{% resource 'cfpb_extrafields/resrelated.js' %}
+          <div id="ace_editor">
+            <input type="text" name="gist-description" id="gist-description" placeholder="required short description" class="longfield">
+            
+            <select id="gisttype">
+                <option value="">Select a type for highlighting</option>
+                <option value="py">python</option>
+                <option value="javascript">javascript</option>
+                <option value="C">C</option>
+            </select>
+            
+            <div id="editor_div">function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}</div>
+          </div>
+          <button type="button" data-module="resrelated"
+                  data-module-dataset_id="{{ res.package_id }}"
+                  data-module-resource_id="{{ res.id }}"
+                  data-module-resource_name="{{ res.name }}"
+                  data-module-html="resrelated.html"
+                  data-module-title="{{ _('posting code') }}">
+            Post code to GitHub
+          </button>
+          <div id="ace_output"></div>
+<!-- ============ SHARE ============= -->
+<!-- ============ VIEW ============= -->
+            <h2>{{ _('View Related Code') }}</h2>
+{% resource 'cfpb_extrafields/select_gist.js' %}
+{% resource 'cfpb_extrafields/listrelated.js' %}
+            <div data-module="listrelated"
+                 data-module-dataset_id="{{ res.package_id }}"
+                 data-module-resource_id="{{ res.id }}"
+                 data-module-resource_name="{{ res.name }}"
+                 data-module-html="listrelated.html">
+            </div>
+            <div id="gistList"><!-- for js listening -->
+              <div id="listrelated_output"></div> <!-- for select dropdown -->
+            </div>
+            <div id="gistZone"></div>
+          </div>
+<!-- ============ VIEW ============= -->
+</section>
+      
+  {% endif %}
 {% endblock %}
