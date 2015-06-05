@@ -3,13 +3,14 @@
 {% resource 'cfpb_extrafields/resrelated.js' %}
 {{super()}}
 
+{#
 <script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
 resource_id {{ res.id }}; package_id {{ res.package_id }}
 <dd>{{ h.get_action('dataset_follower_count', {'id': res.package_id }) }}</dd>
 <dd>{{ h.get_action('dataset_follower_count', {'id': '239b3982-5c83-4a48-b9e0-f45474a90126' }) }}</dd>
-{#
 <dd>{{ h.get_action('related_create', {'title': "hi", 'type':"Post", 'url':"http://www.google.com", 'dataset_id': res.package_id }) }}</dd>
 #}
+<h3> replace the info button with the ACE editor and a submit button </h3>
   <button type="button" data-module="resrelated"
           data-module-dataset_id="{{ res.package_id }}"
           data-module-resource_id="{{ res.id }}"
@@ -19,19 +20,38 @@ resource_id {{ res.id }}; package_id {{ res.package_id }}
           <i class="icon-info-sign"></i>
   </button>
 
+<h3> now provide a dropdown and show gists</h3>
+{% resource 'cfpb_extrafields/listrelated.js' %}
   <div data-module="listrelated"
           data-module-dataset_id="{{ res.package_id }}"
           data-module-resource_id="{{ res.id }}"
           data-module-resource_name="{{ res.name }}"
           data-module-html="listrelated.html"
     </div>
-    
-  {% resource 'cfpb_extrafields/listrelated.js' %}
-  <div class="w" id="listrelated">
-    <div id="datasetid" data-dataset_id="{{ res.package_id }}" data-resource_id="{{ res.id }}"></div>
-    <a href="#listrelated" id="listrelated_btn" class="ghsubmitbtn">related</a>
-    <div id="listrelated_output"></div>
+<div class="w" id="listrelated">
+  
+ <!--   <div id="datasetid" data-dataset_id="{{ res.package_id }}" data-resource_id="{{ res.id }}"></div>-->
+ {% resource 'cfpb_extrafields/select_gist.js' %}
+    <!-- for js listening -->
+    <div id="gistList"> 
+      <!-- for select dropdown -->
+      <div id="listrelated_output"></div> 
     </div>
+  </div>
+<div id="gistZone"></div> 
+  
+<!-- gist dropdown  -->
+<!--
+{#<p>
+  <label for="gistList"><h2>Gists</h2></label>
+  <select id="gistList">
+    <option value="">Select a Gist</option>
+    <option value="906758">Get a Twitter user's avatar using PHP</option>
+    <option value="785770">How to PHP regex match an HTML document's title</option>
+    <option value="785766">How to PHP regex match an HTML document's meta description</option>
+  </select>
+</p>#}
+-->
 {% endblock %}
 
 {% block resource_additional_information %}
@@ -145,6 +165,6 @@ resource_id {{ res.id }}; package_id {{ res.package_id }}
         </div>
       </section>
 
-      <script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script>
+      <!--script src="https://github.cfpb.gov/gist/leitners/e560a131d62d8bbe282f.js"></script-->
       {% endif %}
 {% endblock %}

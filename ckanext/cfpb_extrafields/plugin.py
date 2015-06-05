@@ -33,14 +33,18 @@ def popup_data_source_names():
     return "Insert purpose of source names field."
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
-def parse_resource_related_url(data_related_items, resource_id):
+def parse_resource_related_gist(data_related_items, resource_id):
     urls = []
     if not data_related_items:
         return ''
     for item in data_related_items:
         desc = item.get('description','')
-        if desc and resource_id in desc:
-            urls.append( {'title':item.get('title'),'url':item.get('url')} )
+        url = item.get('url')
+        title = item.get('title')
+        if desc and \
+           "https://github.cfpb.gov/gist" in url and \
+           resource_id in desc:
+            urls.append( {'title':title,'url':url} )
     return urls
             
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
@@ -72,7 +76,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
                 
-                'parse_resource_related_url': parse_resource_related_url,
+                'parse_resource_related_gist': parse_resource_related_gist,
         }
     def _modify_package_schema(self, schema):
         schema.update({

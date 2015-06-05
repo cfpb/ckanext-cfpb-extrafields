@@ -18,18 +18,9 @@ http://docs.ckan.org/en/ckan-2.3/api/index.html?highlight=related#ckan.logic.act
   <div id="listrelated_output"></div>
 </div>
 
-{% resource 'cfpb_extrafields/related_create.js' %}
-<div class="w" id="createrelated">
-  <div id="datasetid" data-id="{{ pkg_dict.id }}"></div>
-  <a href="#createrelated" id="createrelated_btn" class="ghsubmitbtn">related</a>
-  <div id="createrelated_output"></div>
-</div>
 
 <!-- gist dropdown  -->
 {% resource 'cfpb_extrafields/select_gist.js' %}
-<p>
-  <a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to talk to GitHub API</a>
-</p>
 <p>
   <label for="gistList"><h2>Gists</h2></label>
   <select id="gistList">
@@ -41,6 +32,7 @@ http://docs.ckan.org/en/ckan-2.3/api/index.html?highlight=related#ckan.logic.act
 </p>
 <div id="gistZone"></div>
 <!-- gist dropdown  -->
+<p><a href="https://github.cfpb.gov/login/oauth/authorize?scope=gist">Click here</a> to talk to GitHub API</a></p>
 
 {% resource 'cfpb_extrafields/ghapi.css' %}
 {% resource 'cfpb_extrafields/ghapiauth.js' %}

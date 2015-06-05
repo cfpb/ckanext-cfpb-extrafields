@@ -11,8 +11,8 @@ document.getElementById("gistList").onchange = function(e) {
         zone.appendChild(gistFrame);
         
         // Create the iframe's document
-        var gistFrameHTML = '<html><body onload="parent.adjustIframeSize(document.body.scrollHeight)"><scr'+'ipt type="text/javascript" src="https://gist.github.com/' + e.target.value + '.js"></sc'+'ript></b'+'ody></h'+'tml><base target="_parent" />';
-        
+        // var gistFrameHTML = '<html><body onload="parent.adjustIframeSize(document.body.scrollHeight)"><scr'+'ipt type="text/javascript" src="https://gist.github.com/' + e.target.value + '.js"></sc'+'ript></b'+'ody></h'+'tml><base target="_parent" />';
+        var gistFrameHTML = '<html><body onload="parent.adjustIframeSize(document.body.scrollHeight)"><scr'+'ipt type="text/javascript" src="' + e.target.value + '.js"></sc'+'ript></b'+'ody></h'+'tml><base target="_parent" />';
 
         // Set iframe's document with a trigger for this document to adjust the height
         var gistFrameDoc = gistFrame.document;
