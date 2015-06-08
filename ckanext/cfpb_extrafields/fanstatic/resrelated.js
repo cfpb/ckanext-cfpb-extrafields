@@ -32,7 +32,7 @@ ckan.module('resrelated', function ($, _) {
             this._postGIST(apiurl,textgist, function(json) {
                 if (!("html_url" in json)){
                     console.log("response JSON:",json);
-                    $('#ace_output').html("<h2>github post failed</h2>");
+                    $('#ace_output').html("<h2>github post failed</h2><br>",json);
                 }else {
                     var user   = json.user;
                     if(user == null) { user = "anonymous user"; }
@@ -77,7 +77,7 @@ ckan.module('resrelated', function ($, _) {
         _onReceiveSnippet: function(html) {
             this.el.popover('destroy');
             this.el.popover({title: this.options.title, html: true,
-                             content: html, placement: 'left'});
+                             content: html, placement: 'right'});
             this.el.popover('show');
         },
 
@@ -92,13 +92,12 @@ ckan.module('resrelated', function ($, _) {
         
         _postGIST: function(apiurl, basecontent, callback) {
             var mythis=this; // code review?
-            // snl: the description could be the title from the related-item.
             var description = mythis.options.gistdesc;
-            // snl: the extension for the file should be set elsewhere
-            var ext = "py";
-            var filename = "file."+ext;
+            var ext = $.parseJSON($('#gistType').val());
+            ext = ext.ext;
+            var fp= "file."+ext;
             var filedata = {"description": description, "public": true,
-                            "files": {filename : {"content": basecontent}}}; 
+                            "files": {"file" : {"filename" : fp, "content": basecontent}}}; 
             $.ajax({
                 type: 'POST',
                 data: JSON.stringify(filedata),
