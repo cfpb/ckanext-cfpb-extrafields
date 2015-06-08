@@ -12,6 +12,10 @@ ckan.module('resrelated', function ($, _) {
             this.options.gistdesc = $('#gist-description').val();
             if (this.options.gistdesc == ''){
                 this.options.gistdesc = "title of resource-related gist";
+                var outhtml = '<h3><font color="red">Fill in description field.</font></h3>';
+                $('#ace_output').html(outhtml);
+                $('#gist-description').focus();
+                return;
             }
             var textgist = editor.getSession().getValue();
             $('#ace_output').html('<div id="loader"><img src="/loader.gif" alt="loading..."></div>');
