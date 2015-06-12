@@ -1,6 +1,6 @@
 "use strict";
 
-ckan.module('resrelated', function ($, _) {
+ckan.module('post_related_gist', function ($, _) {
     return {
         initialize: function () {
             $.proxyAll(this, /_on/);

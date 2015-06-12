@@ -116,9 +116,9 @@
 <!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
           <div class="module-content">
           <h2>{{ _('Contribute Related Code') }}</h2>
-          {% resource 'cfpb_extrafields/resrelated.js' %}
-          {% resource 'cfpb_extrafields/root_ace.css' %}
-          {% resource 'cfpb_extrafields/root_ace.js' %}
+          {% resource 'cfpb_extrafields/post_related_gist.js' %}
+          {% resource 'cfpb_extrafields/ace_setup.css' %}
+          {% resource 'cfpb_extrafields/ace_setup.js' %}
 <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
           
           <div id="ace_editor">
@@ -151,11 +151,11 @@ function example_code_snippet(items) {
             
           </div>
           <br>
-          <button type="button" data-module="resrelated"
+          <button type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
                   data-module-resource_name="{{ res.name }}"
-                  data-module-html="resrelated.html"
+                  data-module-html="post_related_gist.html"
                   data-module-title="{{ _('posting code') }}">
             Post code to GitHub
           </button>
