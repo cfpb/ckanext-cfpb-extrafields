@@ -53,7 +53,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 print 'trigger a redirect in after_update: ', self.changed.get(i,'')
                 self.changed[i] = True
         return
-    def _email_field_change(field):
+    def _email_field_change(self, field):
         # if privacy fields have changed notify the relevant people
         if self.changed.get(field,False):
             print 'trigger email on change to '+field 
