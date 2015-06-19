@@ -25,11 +25,8 @@ ckan.module('post_related_gist', function ($, _) {
                 if (!("html_url" in json)){
                     $('#ace_output').html("<h2>github post failed</h2><br>",json);
                 }else {
-                    var user   = json.user;
-                    if(user == null) { user = "anonymous user"; }
                     this.options.gistlink = json.html_url;
                     var outhtml = '<h3>Posted a <a href="'+json.html_url+'">gist</a></h3>'; 
-                    $('#ace_output').html(''); //kill the loading gif
                     $('#ace_output').html(outhtml);
                     var option = $('<option></option>').attr("value", this.options.gistlink).text(this.options.gistdesc);
                     // append to list see listrelated.html for the id
@@ -37,7 +34,6 @@ ckan.module('post_related_gist', function ($, _) {
                     // both javascript functions (list_related and this one)
                     // should append to the template
                     $('#gistselect').append(option); 
-                    
                     
                     if (!this._snippetReceived) {
                         this.sandbox.client.getTemplate(this.options.html,
