@@ -36,6 +36,51 @@ def popup_usage_restrictions():
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
+    p.implements(p.IResourceController)
+    def before_create(self, context, resource):
+        return
+    def after_create(self, context, resource):
+        # must have changed['format'] when you created the resource
+        tk.redirect_to(controller='package',action='resource_edit',
+                       resource_id=resource['id'],id=resource['package_id'])
+    def before_update(self, context, current, resource):
+        # note keys that have changed
+        self.changed_keys = ['format', 'privacy_contains_pii']
+        self.changed = {}
+        for i in self.changed_keys:
+            self.changed[i] = False
+            if current.get(i,'') != resource.get(i,''):
+                print 'trigger a redirect in after_update: ', self.changed.get(i,'')
+                self.changed[i] = True
+        return
+    def _email_field_change(field):
+        # if privacy fields have changed notify the relevant people
+        if self.changed.get(field,False):
+            print 'trigger email on change to '+field 
+            # filter by dataset name?
+            # could get dataset followers list;
+            followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
+            for f in followers:
+                # filter by group
+                # get emails 
+                print tk.get_action('user_show')(context,{'id': f['id']})['email']
+            # send a notification of change by email
+    def after_update(self, context, resource):
+        self._email_field_change('privacy_contains_pii')
+        if self.changed.get('format',False):
+            tk.redirect_to(controller='package',action='resource_edit',
+                           resource_id=resource['id'],id=resource['package_id'])
+        for i in self.changed_keys:
+            self.changed[i] = False
+        return
+    def before_delete(self, context, resource, resources):
+        return
+    def after_delete(self, context, resources):
+        return
+    def before_show(self, resource_dict):
+        return
+
+
     p.implements(p.ITemplateHelpers)
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
