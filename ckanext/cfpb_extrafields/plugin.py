@@ -35,8 +35,7 @@ def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
-    p.implements(p.IDatasetForm)
-    p.implements(p.IConfigurer)
+
     p.implements(p.ITemplateHelpers)
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
@@ -63,6 +62,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
                 }
+    
+    p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
@@ -284,6 +285,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+    
+    p.implements(p.IConfigurer)
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
@@ -299,7 +302,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         tk.add_resource('fanstatic','cfpb_extrafields')
 
     p.implements(p.IFacets)
-    def change_facets(self, facets_dict):
+    def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
         # example facet added
@@ -310,8 +313,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict.pop('license_id', None)
         return facets_dict
     def dataset_facets(self, facets_dict, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def organization_facets(self, facets_dict, organization_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
