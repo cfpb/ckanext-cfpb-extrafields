@@ -11,7 +11,6 @@ ckan.module('post_related_gist', function ($, _) {
             var editor = ace.edit("editor_div");
             this.options.gistdesc = $('#gist-description').val();
             if (this.options.gistdesc == ''){
-                this.options.gistdesc = "title of resource-related gist";
                 var outhtml = '<h3><font color="red">Fill in description field.</font></h3>';
                 $('#ace_output').html(outhtml);
                 $('#gist-description').focus();
@@ -23,10 +22,10 @@ ckan.module('post_related_gist', function ($, _) {
             
             this._postGIST(apiurl,textgist, function(json) {
                 if (!("html_url" in json)){
-                    $('#ace_output').html("<h2>github post failed</h2><br>",json);
+                    $('#ace_output').html("<h2>GitHub post failed</h2><br>",json);
                 }else {
                     this.options.gistlink = json.html_url;
-                    var outhtml = '<h3>Posted a <a href="'+json.html_url+'">gist</a></h3>'; 
+                    var outhtml = '<h3>Posted a <a href="'+json.html_url+'">Gist</a></h3>';
                     $('#ace_output').html(outhtml);
                     var option = $('<option></option>').attr("value", this.options.gistlink).text(this.options.gistdesc);
                     // append to list see listrelated.html for the id

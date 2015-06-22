@@ -112,9 +112,9 @@
             </tbody>
     </table>
   </div>
+  <div class="module-content">
 <!-- ============ SHARE ============= -->
 <!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
-          <div class="module-content">
           <h2>{{ _('Contribute Related Code') }}</h2>
           {% resource 'cfpb_extrafields/post_related_gist.js' %}
           {% resource 'cfpb_extrafields/ace_setup.css' %}
@@ -122,7 +122,7 @@
 <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
           
           <div id="ace_editor">
-            <input type="text" name="gist-description" id="gist-description" placeholder="required short description" required class="longfield">
+            <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description to see a snippet editor." required class="longfield" style='width:350px'>
             
             <select id="gistType">
                 <option value='{"name":"javascript", "ext":"js"}'>Select a file-type (javascript)</option>
@@ -163,8 +163,8 @@ function example_code_snippet(items) {
 <!-- ============ SHARE ============= -->
 <!-- ============ VIEW ============= -->
             <h2>{{ _('View Related Code') }}</h2>
-{% resource 'cfpb_extrafields/select_gist.js' %}
-{% resource 'cfpb_extrafields/listrelated.js' %}
+            {% resource 'cfpb_extrafields/select_gist.js' %}
+            {% resource 'cfpb_extrafields/listrelated.js' %}
             <div data-module="listrelated"
                  data-module-dataset_id="{{ res.package_id }}"
                  data-module-resource_id="{{ res.id }}"
@@ -175,8 +175,8 @@ function example_code_snippet(items) {
               <div id="listrelated_output"></div> <!-- for select dropdown -->
             </div>
             <div id="gistZone"></div>
-          </div>
 <!-- ============ VIEW ============= -->
+          </div>
 </section>
       
   {% endif %}
