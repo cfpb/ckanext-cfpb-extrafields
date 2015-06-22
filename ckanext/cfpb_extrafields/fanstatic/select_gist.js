@@ -1,5 +1,5 @@
 //<!-- http://stackoverflow.com/questions/9154026/jquery-dynamically-load-a-gist-embed -->
-document.getElementById("gistList").onchange = function(e) {
+document.getElementById("gistselect").onchange = function(e) {
     if (e.target.value) {
         // Create an iframe, append it to this document where specified
         var gistFrame = document.createElement("iframe");

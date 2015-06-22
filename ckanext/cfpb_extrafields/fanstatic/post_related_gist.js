@@ -28,10 +28,6 @@ ckan.module('post_related_gist', function ($, _) {
                     var outhtml = '<h3>Posted a <a href="'+json.html_url+'">Gist</a></h3>';
                     $('#ace_output').html(outhtml);
                     var option = $('<option></option>').attr("value", this.options.gistlink).text(this.options.gistdesc);
-                    // append to list see listrelated.html for the id
-                    // snl: code review the select should be in the template, not the snippet
-                    // both javascript functions (list_related and this one)
-                    // should append to the template
                     $('#gistselect').append(option); 
                     
                     if (!this._snippetReceived) {

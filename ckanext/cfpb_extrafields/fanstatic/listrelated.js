@@ -27,7 +27,7 @@ ckan.module('listrelated', function ($, _) {
         },
 
         _onReceiveSnippet: function(outhtml) {
-            $('#listrelated_output').html(outhtml);
+            $('#gistselect').html(outhtml);
         },
 
         _onReceiveSnippetError: function(error) {

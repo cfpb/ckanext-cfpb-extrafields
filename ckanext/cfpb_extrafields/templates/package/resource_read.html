@@ -150,8 +150,7 @@ function example_code_snippet(items) {
 }</textarea>
             
           </div>
-          <br>
-          <button type="button" data-module="post_related_gist"
+          <button id="btn_post_related_gist" type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
                   data-module-resource_name="{{ res.name }}"
@@ -171,9 +170,7 @@ function example_code_snippet(items) {
                  data-module-resource_name="{{ res.name }}"
                  data-module-html="listrelated.html">
             </div>
-            <div id="gistList"><!-- for js listening -->
-              <div id="listrelated_output"></div> <!-- for select dropdown -->
-            </div>
+            <select id="gistselect" style='width:600px'></select>
             <div id="gistZone"></div>
 <!-- ============ VIEW ============= -->
           </div>
