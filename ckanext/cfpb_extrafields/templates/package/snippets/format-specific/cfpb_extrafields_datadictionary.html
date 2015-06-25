@@ -1,0 +1,44 @@
+<!-- 
+when you select datadictionary for the resource, change url field to http://_datastore_only_resource and submit?
+generally, create button that populates the url field? 
+-->
+<!-- 
+-->
+
+  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
+  create_datadict******<br> {{ h.create_datadict(data.id,'')}}<br>
+  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
+  create_generic******<br> {{ h.create_generic_json(data.id)}}<br>
+  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
+  get_datadict******<br> {{ h.get_datadict(data.id) }}<br>
+  delete datadict******<br> {{ h.delete_datadict(data.id) }}<br>
+  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
+  delete ALL******<br> {{ h.delete_datastore(data.id) }}<br>
+
+  <br>
+<br>
+h.datastore get() ..... json ..... html table 
+<br>
+.... datatables ....
+<br>
+button .... javascript .... jquery html table to json .... ajax snippet(json) .... POST to datastore (create? edit?)
+<br>
+
+{#}
+{{ data.package_id }}<br>
+{{ data.id }}<br>
+{{ data.name }}<br>
+#}
+
+
+{#
+<!--button id="btn_post_to_datastore" type="button" data-module="post_to_datastore"
+        data-module-dataset_id="{{ data.package_id }}"
+        data-module-resource_id="{{ res.id }}"
+        data-module-resource_name="{{ res.name }}"
+        data-module-html="post_related_gist.html"
+        data-module-title="{{ _('posting code') }}">
+  Post code to GitHub
+</button>
+          <div id="ace_output"></div-->
+#}
