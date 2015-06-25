@@ -40,7 +40,9 @@ def create_generic_json(rid, pkey='name',new_table='other' ):
 def get_datadict(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
-    data = {"resource_id" : rid,}
+    data = {"resource_id" : rid,     
+    "filters": {"name":"datadict"}
+    }
     try:
         ds = tk.get_action('datastore_search')(context, data)
         return 'found!!!!!!!!!!!!!'+str(ds)

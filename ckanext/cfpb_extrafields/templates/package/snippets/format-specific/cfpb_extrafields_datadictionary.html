@@ -2,9 +2,48 @@
 when you select datadictionary for the resource, change url field to http://_datastore_only_resource and submit?
 generally, create button that populates the url field? 
 -->
-<!-- 
--->
 
+{% resource 'cfpb_extrafields/datadict_setup.js' %}
+<table id='example-table'>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th data-override="Score">Points</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Jill</td>
+      <td>Smith</td>
+      <td data-override="disqualified">50</td></tr>
+    <tr>
+      <td>Eve</td>
+      <td>Jackson</td>
+      <td>94</td></tr>
+    <tr>
+      <td>John</td>
+      <td>Doe</td>
+      <td>80</td></tr>
+    <tr>
+      <td>Adam</td>
+      <td>Johnson</td>
+      <td>67</td></tr>
+  </tbody>
+</table>
+<button class="btn btn-primary" type='button' id="convert-table">Convert!</button>
+
+<textarea name='oldjson'>
+  [
+    {"model" : "Iphone 18", "name" : "iOS", "share" : 57.56},
+    {"model" : "Nexus 23", "name" : "Android", "share" : 24.66},
+    {"model" : "Tom-tom", "name" : "Java ME", "share" : 10.72},
+    {"model" : "Nokia 66610", "name" : "Symbian", "share" : 2.49},
+    {"model" : "Blackberry", "name" : "Blackberry", "share" : 2.26},
+    {"model" : "Lumia", "name" : "Windows Phone", "share" : 1.33}
+]
+</textarea>
+
+<br>==============================<br>
   get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
   create_datadict******<br> {{ h.create_datadict(data.id,'')}}<br>
   get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
@@ -16,13 +55,6 @@ generally, create button that populates the url field?
   delete ALL******<br> {{ h.delete_datastore(data.id) }}<br>
 
   <br>
-<br>
-h.datastore get() ..... json ..... html table 
-<br>
-.... datatables ....
-<br>
-button .... javascript .... jquery html table to json .... ajax snippet(json) .... POST to datastore (create? edit?)
-<br>
 
 {#}
 {{ data.package_id }}<br>
