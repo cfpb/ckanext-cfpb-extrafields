@@ -2,6 +2,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import validators as v
 import options as opts
+import datastore_actions as ds
 import collections
 
 # if tag usage is going to be expanded, the following should be generalized.
@@ -106,6 +107,16 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
+
+                'create_datadict':ds.create_datadict,
+                'create_generic_json':ds.create_generic_json,
+                'get_datadict':ds.get_datadict,                
+                'update_datadict':ds.update_datadict,
+                'delete_datadict':ds.delete_datadict,
+                'get_datastore':ds.get_datastore,
+                'delete_datastore':ds.delete_datastore,
+
+                
                 }
     
     p.implements(p.IDatasetForm)

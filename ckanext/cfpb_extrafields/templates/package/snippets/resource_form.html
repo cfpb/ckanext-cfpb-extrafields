@@ -42,12 +42,20 @@
 {% resource 'cfpb_extrafields/popover.css' %}
 {% import 'macros/form_custom.html' as form_custom %}
 
-#########Example SQL snippet######################
+{#{data}#}
+{#% if h.contains(data.format,[''])  %} {% endif %#}
+<br>#########Example DATADICTIONARY snippet######################<br>
+{% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name %}
+<br>#########Example JSON snippet######################<br>
+{% if data.format == 'JSON'  %}
+{% endif %}
+<br>#########Example snippet######################<br>
+<br>#########Example SQL snippet######################<br>
 {#% if h.contains(data.format,[''])  %} {% endif %#}
 {% if data.format == 'SQL'  %}
 {% snippet 'package/snippets/format-specific/cfpb_extrafields_sql.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% endif %}
-#########Example snippet######################
+<br>###############################<br>
 
 <div class='core-field'>
 {{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
