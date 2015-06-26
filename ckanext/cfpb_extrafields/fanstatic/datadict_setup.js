@@ -1,34 +1,62 @@
-//create an html table from json in Datastore
-$( document ).ready(function(){
-    //first get the json if it exists in the data store 
-    // {{ h.get_datastore(data.id) }}
-    // then convert it to HTML
-    // http://www.jqueryscript.net/table/jQuery-Plugin-For-Converting-JSON-Data-To-A-Table-jsonTable.html
-    // https://github.com/omkarkhair/jsonTable
-    //innerhtml -> textarea
-    var textarea = $('textarea[name="oldjson"]').hide();    
-    //$("#example-table").jsonTableUpdate(textarea.val());
-    console.log('ready');
+
+var $TABLE = $('#table');
+var $BTN = $('#export-btn');
+var $EXPORT = $('#export');
+
+$('.table-add').click(function () {
+  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+  $TABLE.find('table').append($clone);
 });
 
-//manipulate the html table using whatever magic datatables and onchanges
-
-
-// Now convert html table back to json and post it to datastore through an html template
-// delete the original first? or upsert.
-$('#convert-table').click( function() {
-  //var table = $('#example-table').tableToJSON(); // Convert the table into a javascript object
-  //console.log(table);
-  //alert(JSON.stringify(table));
-  alert('submitting new table... are you sure you want to replace?');
+$('.table-remove').click(function () {
+  $(this).parents('tr').detach();
 });
-// http://lightswitch05.github.io/table-to-json/
-// Ansible https://github.com/lightswitch05/table-to-json
-/*
-Install Node.js.
-this will also the npm package manager.
-run npm install from app root directory.
-This installs grunt and other dependencies See package.json for a full list.
-run npm install -g grunt-cli.
-run grunt to run tests and create a new build in /lib.
-*/
+
+$('.table-up').click(function () {
+  var $row = $(this).parents('tr');
+  if ($row.index() === 1) return; // Don't go above the header
+  $row.prev().before($row.get(0));
+});
+
+$('.table-down').click(function () {
+  var $row = $(this).parents('tr');
+  $row.next().after($row.get(0));
+});
+
+// A few jQuery helpers for exporting only
+jQuery.fn.pop = [].pop;
+jQuery.fn.shift = [].shift;
+
+$BTN.click(function () {
+  var $rows = $TABLE.find('tr:not(:hidden)');
+  var header_keys = [];
+  var header_names=[]; //head
+  var data = [];
+  
+  // Get the headers (add special header logic here)
+  $($rows.shift()).find('th:not(:empty)').each(function () {
+    header_keys.push($(this).text().toLowerCase());
+    header_names.push($(this).text());
+
+  });
+
+  //header_names are the first element (and remain in an ordered array)
+  data.push(header_names);
+  data.push(header_keys);
+  // Turn all existing rows into a loopable array
+  $rows.each(function () {
+    var $td = $(this).find('td');
+    var h = {};
+    
+    // Use the header_keys from earlier to name our hash keys
+    header_keys.forEach(function (header_key, i) {
+      h[header_key] = $td.eq(i).text();   
+    });
+    
+    data.push(h);
+  });
+  
+  // Output the result
+  $EXPORT.text(JSON.stringify(data));
+});
+

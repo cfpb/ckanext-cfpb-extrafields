@@ -16,10 +16,9 @@ def create_datadict(rid, pkey=''):
     }
     try:
         ds = tk.get_action('datastore_create')(context, data)
-        return 'created!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        return 'created datadict!'
     except tk.ValidationError, err:
         return err.error_dict['info']
-    return 'fell through create_datadict****************'
 def create_generic_json(rid, pkey='name',new_table='other' ):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
@@ -32,11 +31,18 @@ def create_generic_json(rid, pkey='name',new_table='other' ):
     }
     try:
         ds = tk.get_action('datastore_create')(context, data)
-        return 'created generic!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        return 'created generic datastore!'
     except tk.ValidationError, err:
         return err.error_dict['info']
-    return 'fell through create_generic_json****************'
 
+def _find_json_in_ds(ds,name='datadict'):
+    recs = ds.get('records',[{}])
+    datadict=[{}]
+    for rec in recs:
+        if rec.get('name','0')==name:
+            print "rec.get('jtable','')",rec.get('jtable','')
+            datadict = rec.get('jtable','')
+    return datadict
 def get_datadict(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
@@ -45,21 +51,37 @@ def get_datadict(rid):
     }
     try:
         ds = tk.get_action('datastore_search')(context, data)
-        return 'found!!!!!!!!!!!!!'+str(ds)
+        _table = _find_json_in_ds(ds,name="datadict")
+        return 'found the datadict!<br>'+str(ds)+'=====record: '+str(_table)
     except tk.ObjectNotFound, err:
-#        return err.error_dict['info']
-        return str(err) 
-    return 'fell through get_datadict****************'
+        return str(err)
 def get_datastore(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     data = {"resource_id" : rid,}
     try:
         ds = tk.get_action('datastore_search')(context, data)
-        return 'found!!!!!!!!!!!!!'+str(ds)
+        _table=_find_json_in_ds(ds,name="other")
+        return 'found a datastore!'+str(ds)+'=====record other: '+str(_table)
     except tk.ObjectNotFound, err:
-#        return err.error_dict['info']
         return str(err) 
+
+def _convert_json_table(record):
+#    html_table = str(record)
+    return record
+def get_datadict_html(rid):
+    user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
+    context = {'user': user['name']}
+    data = {"resource_id" : rid,     
+    "filters": {"name":"datadict"}
+    }
+    try:
+        ds = tk.get_action('datastore_search')(context, data)
+        _table = _find_json_in_ds(ds,name="datadict")
+        return _convert_json_table(_table)
+    except tk.ObjectNotFound, err:
+        print str(err)
+        return None 
 
 def	update_datadict(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
@@ -72,7 +94,7 @@ def	update_datadict(rid):
     }
     try:
         ds = tk.get_action('datastore_upsert')(context, data)
-        return 'update datadict specifically!!!!!!!!!!!!!!!!!'
+        return 'update datadict specifically!'
     except tk.ObjectNotFound:
         return err.error_dict['info']
 
@@ -86,7 +108,7 @@ def delete_datadict(rid):
     }
     try:
         ds = tk.get_action('datastore_delete')(context, data)
-        return 'deleted datadict specifically!!!!!!!!!!!!!!!!!'
+        return 'deleted datadict!'
     except tk.ObjectNotFound:
         return err.error_dict['info']
 def delete_datastore(rid):
@@ -95,6 +117,6 @@ def delete_datastore(rid):
     data = {"resource_id" : rid,"force": "true",}
     try:
         ds = tk.get_action('datastore_delete')(context, data)
-        return 'deleted!!!!!!!!!!!!!!!!!'
+        return 'deleted datastore!'
     except tk.ObjectNotFound:
         return err.error_dict['info']

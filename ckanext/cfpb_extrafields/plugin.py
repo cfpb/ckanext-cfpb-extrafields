@@ -113,9 +113,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'get_datadict':ds.get_datadict,                
                 'update_datadict':ds.update_datadict,
                 'delete_datadict':ds.delete_datadict,
+
                 'get_datastore':ds.get_datastore,
                 'delete_datastore':ds.delete_datastore,
 
+                'get_datadict_html':ds.get_datadict_html,
                 
                 }
     
