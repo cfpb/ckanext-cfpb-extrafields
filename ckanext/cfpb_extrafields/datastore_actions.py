@@ -4,7 +4,7 @@ import ckan.plugins.toolkit as tk
 # should use duck-typing and not rely on datadict/generic functions.
 # will delete these comments before pull request as they are addressed.
 
-def create_datadict(rid, pkey=''):
+def create_datadict(rid, record=[{"i":1,"j":"xyz"}],pkey=''):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     data = {
@@ -12,7 +12,7 @@ def create_datadict(rid, pkey=''):
     "resource_id": rid,
     "primary_key": ["name"],
     "fields": [{"id": "name"},{"id": "jtable", "type": "json"}],
-    "records": [ {"name": "datadict", "jtable": [{"i":1,"j":"xyz"}]} ]
+    "records": [ {"name": "datadict", "jtable": record} ]
     }
     try:
         ds = tk.get_action('datastore_create')(context, data)

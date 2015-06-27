@@ -6,63 +6,7 @@ generally, create button that populates the url field?
 {#% resource 'cfpb_extrafields/bootstrap.glyph.css' %#}
 {% resource 'cfpb_extrafields/datadict_setup.css' %}
 {% resource 'cfpb_extrafields/datadict_setup.js' %}
-
-<div id="table2" class="table-editable">    
-
-    <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
-    <table class="table">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Datatype</th>
-        <th>Size</th>
-        <th></th>
-        <th></th>
-      </tr>
-      <tr>
-        <td contenteditable="true">people population</td>
-        <td contenteditable="true">number of people</td>
-        <td contenteditable="true">integer</td>
-        <td contenteditable="true">8 bytes</td>
-        <td>
-          <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
-        </td>
-        <td>
-          <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
-          <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
-        </td>
-      </tr>
-      <tr>
-        <td contenteditable="true">cat population</td>
-        <td contenteditable="true">number of cats</td>
-        <td contenteditable="true">integer</td>
-        <td contenteditable="true">16 bytes</td>
-        <td>
-          <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
-        </td>
-        <td>
-          <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
-          <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
-        </td>
-     <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true"></td>
-        <td contenteditable="true"></td>
-        <td>
-          <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
-        </td>
-        <td>
-          <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
-          <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
-        </td>
-      </tr>
- 
-
-    </table>
-  </div>
-
+{% resource 'cfpb_extrafields/datadict_post.js' %}
 
 <br>==============================<br>
 {#
@@ -73,7 +17,6 @@ generally, create button that populates the url field?
 #}
 
 
-<br>*************<br>
  {% set dd = h.get_datadict_html(data.id) %}
  {% if dd %}
     debug: Data dictionary read! {{dd}}
@@ -88,11 +31,9 @@ generally, create button that populates the url field?
     {% set header_keys = dd[1] %}
     {% set nkeys = range(dd[1]|length) %}
     {% set nrows = dd|length-2 %}
-    snl{{nrows}}
  {% endif %}
 
 
-<br>*************<br>
  <div id="table" class="table-editable">    
     <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
     <table class="table">
