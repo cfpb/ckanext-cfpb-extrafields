@@ -64,9 +64,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 print 'trigger a redirect in after_update: ', self.changed.get(i,'')
                 self.changed[i] = True
         # mimic a new controller for data dictionary field
-        print 'The indicator for datadictionary is JSON!' 
-        print 'This is the WRONG way to choose datadictionary'
-        if current.get('format','0') == 'JSON' and resource.get('format','1') == 'JSON':
+        if current.get('format','0') == 'Data Dictionary' and resource.get('format','1') == 'Data Dictionary':
             self._control_datadict(resource)
 
     def _email_on_change(self, context, resource, field):

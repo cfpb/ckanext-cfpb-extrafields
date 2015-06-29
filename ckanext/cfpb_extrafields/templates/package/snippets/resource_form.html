@@ -44,8 +44,8 @@
 
 {#{data}#}
 {#% if h.contains(data.format,[''])  %} {% endif %#}
-<br>Data Dictionary / "JSON" placeholder snippet<br>
-{% if data.format == 'JSON'  %}
+<br>Data Dictionary placeholder snippet<br>
+{% if data.format == 'Data Dictionary'  %}
 {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% endif %}
 <br>end snippet<br>
