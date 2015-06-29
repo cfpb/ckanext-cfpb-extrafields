@@ -18,23 +18,29 @@ generally, create button that populates the url field?
 
 
  {% set dd = h.get_datadict_html(data.id) %}
- {% if dd %}
-    debug: Data dictionary read! {{dd}}
- {% else %}
+
+  {% if dd %}
+    old Data dictionary read ({{dd}})!<br>
+    {#% set dd = [ ["Name","Description","Datatype","Size"],
+    ["name","description","datatype","size"],
+    {"name":"1","description":"2","datatype":"3","size":"4"},
+    {"name":"1","description":"2","datatype":"3","size":"4"}
+    ]%#}
+  {% else %}
     debug: Data dictionary new! {{dd}}
     {% set dd = [ ["Name","Description","Datatype","Size"],
     ["name","description","datatype","size"],
     {"name":"1","description":"2","datatype":"3","size":"4"},
     {"name":"1","description":"2","datatype":"3","size":"4"}
     ]%}
-    {% set header_names = dd[0] %}
-    {% set header_keys = dd[1] %}
-    {% set nkeys = range(dd[1]|length) %}
-    {% set nrows = dd|length-2 %}
- {% endif %}
+  {% endif %}
+  {% set header_names = dd[0] %}
+  {% set header_keys = dd[1] %}
+  {% set nkeys = range(dd[1]|length) %}
+  {% set nrows = dd|length-2 %}
 
 
- <div id="table" class="table-editable">    
+  <div id="table" class="table-editable">    
     <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
     <table class="table">
       <tr>
@@ -75,10 +81,20 @@ generally, create button that populates the url field?
     </table>
   </div>
   
-  <button id="export-btn" type='button' class="btn btn-primary">Export Data</button>
-  <p id="export"></p>
+  <input type="hidden" id="field-datadict" name="datadict">
+
+  <button id="datadict_post" type="button" class="btn btn-primary"
+    data-module="datadict_post"
+    data-module-dataset_id="{{ data.package_id }}"
+    data-module-resource_id="{{ data.id }}"
+    data-module-resource_name="{{ data.name }}"
+    Post Data Dictionary
+  </button>
 
 
+  <!--
+  <button id="export-btn" type='button' class="btn btn-primary">Export Data</button> 
+-->
 
 
   get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
@@ -89,6 +105,7 @@ generally, create button that populates the url field?
   get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
   delete ALL******<br> {{ h.delete_datastore(data.id) }}<br>
   <br>
+  <p id="export"></p>
 
 {#
 {{ data.package_id }}<br>

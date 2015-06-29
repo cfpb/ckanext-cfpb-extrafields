@@ -53,6 +53,16 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             if current.get(i,'') != resource.get(i,''):
                 print 'trigger a redirect in after_update: ', self.changed.get(i,'')
                 self.changed[i] = True
+
+
+        record = eval(resource.get('datadict',''))
+        if record:
+            ds.delete_datadict(resource['id']) 
+            ds.create_datadict(resource['id'],record,'')
+            print ds.get_datadict(resource['id'])
+        resource.pop('datadict', None)
+
+
         return
     def _email_field_change(self, field):
         # if privacy fields have changed notify the relevant people
