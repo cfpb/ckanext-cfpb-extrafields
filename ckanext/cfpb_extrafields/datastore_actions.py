@@ -95,7 +95,7 @@ def	update_datadict(rid):
     try:
         ds = tk.get_action('datastore_upsert')(context, data)
         return 'update datadict specifically!'
-    except tk.ObjectNotFound:
+    except tk.ObjectNotFound, err:
         return err.error_dict['info']
 
 def delete_datadict(rid):
@@ -109,14 +109,14 @@ def delete_datadict(rid):
     try:
         ds = tk.get_action('datastore_delete')(context, data)
         return 'deleted datadict!'
-    except tk.ObjectNotFound:
-        return err.error_dict['info']
+    except tk.ObjectNotFound, err:
+        return str(err)
 def delete_datastore(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     data = {"resource_id" : rid,"force": "true",}
     try:
         ds = tk.get_action('datastore_delete')(context, data)
-        return 'deleted datastore!'
-    except tk.ObjectNotFound:
-        return err.error_dict['info']
+        return 'deleted datastore'
+    except tk.ObjectNotFound, err:
+        return str(err)
