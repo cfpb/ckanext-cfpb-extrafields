@@ -3,35 +3,16 @@ when you select datadictionary for the resource, change url field to http://_dat
 generally, create button that populates the url field? 
 -->
 
-{#% resource 'cfpb_extrafields/bootstrap.glyph.css' %#}
 {% resource 'cfpb_extrafields/datadict_setup.css' %}
 {% resource 'cfpb_extrafields/datadict_setup.js' %}
 {% resource 'cfpb_extrafields/datadict_post.js' %}
 
-<br>==============================<br>
-{#
-  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
-  create_datadict******<br> {{ h.create_datadict(data.id,'')}}<br>
-  get_datadict******<br> {{ h.get_datadict(data.id) }}<br>
-  get_datadict_html******<br> {{ h.get_datadict_html(data.id) }}<br>
-#}
 
-
- {% set dd = h.get_datadict_html(data.id) %}
-
-  {% if dd %}
-    old Data dictionary read ({{dd}})!<br>
-    {#% set dd = [ ["Name","Description","Datatype","Size"],
-    ["name","description","datatype","size"],
-    {"name":"1","description":"2","datatype":"3","size":"4"},
-    {"name":"1","description":"2","datatype":"3","size":"4"}
-    ]%#}
-  {% else %}
-    debug: Data dictionary new! {{dd}}
+  {% set dd = h.get_datadict_html(data.id) %}
+  {% if not dd %}
     {% set dd = [ ["Name","Description","Datatype","Size"],
     ["name","description","datatype","size"],
-    {"name":"1","description":"2","datatype":"3","size":"4"},
-    {"name":"1","description":"2","datatype":"3","size":"4"}
+    {"name":"-","description":"-","datatype":"-","size":"-"},
     ]%}
   {% endif %}
   {% set header_names = dd[0] %}
@@ -68,10 +49,10 @@ generally, create button that populates the url field?
      <!-- This is our clonable table line -->
       <tr class="hide">
         {% for item in header_names %}
-          <th contenteditable="true"></th>
+          <td contenteditable="true">-</td>
         {% endfor %}
         <td>
-          <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
+          <span class="table-remove"><button type='button' class="btn btn-danger">X</button></span>
         </td>
         <td>
           <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
@@ -87,24 +68,9 @@ generally, create button that populates the url field?
     data-module="datadict_post"
     data-module-dataset_id="{{ data.package_id }}"
     data-module-resource_id="{{ data.id }}"
-    data-module-resource_name="{{ data.name }}"
+    data-module-resource_name="{{ data.name }}">
     Post Data Dictionary
   </button>
-
-
-  <!--
-  <button id="export-btn" type='button' class="btn btn-primary">Export Data</button> 
--->
-
-
-  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
-  create_generic******<br> {{ h.create_generic_json(data.id)}}<br>
-  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
-  get_datadict******<br> {{ h.get_datadict(data.id) }}<br>
-  delete datadict******<br> {{ h.delete_datadict(data.id) }}<br>
-  get_datastore******<br> {{ h.get_datastore(data.id) }}<br>
-  delete ALL******<br> {{ h.delete_datastore(data.id) }}<br>
-  <br>
   <p id="export"></p>
 
 {#

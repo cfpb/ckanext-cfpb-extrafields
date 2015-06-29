@@ -11,15 +11,6 @@ ckan.module('datadict_post', function ($, _) {
           this.el.on('click', this._onClick);
     },
     _onClick: function(event) {
-/*            this.options.gistdesc = $('#gist-description').val();
-      if (this.options.gistdesc == ''){
-          var outhtml = '<h3><font color="red">Fill in description field.</font></h3>';
-          $('#ace_output').html(outhtml);
-          $('#gist-description').focus();
-          return;
-      }
-      */
-  ///////////////////////
       var $rows = $TABLE.find('tr:not(:hidden)');
       var header_keys = [];
       var header_names=[]; //head
