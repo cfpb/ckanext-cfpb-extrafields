@@ -21,17 +21,20 @@
   <table class="table">
     <tr>
       {% for item in header_names %}
-        <th contenteditable="true">{{ item }}</th>
+        <th contenteditable={{editable}}>{{ item }}</th>
       {% endfor %}
+      {% if editable == "true" %}
       <th></th>
       <th></th>
+      {% endif %}
     </tr>
   {% for irow in range(2,nrows+2) %}
     <tr>
       {% for i in nkeys %}
         {% set key = header_keys[i]%}
-          <td contenteditable="true">{{ dd[irow][key] }}</td>
+          <td contenteditable={{editable}}>{{ dd[irow][key] }}</td>
         {% endfor %}
+      {% if editable == "true" %}
       <td>
         <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
       </td>
@@ -39,12 +42,13 @@
         <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
         <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
       </td>
+      {% endif %}
     </tr>
   {%endfor%}
    <!-- This is our clonable table line -->
     <tr class="hide">
       {% for item in header_names %}
-        <td contenteditable="true">-</td>
+        <td contenteditable={{editable}}>-</td>
       {% endfor %}
       <td>
         <span class="table-remove"><button type='button' class="btn btn-danger">X</button></span>

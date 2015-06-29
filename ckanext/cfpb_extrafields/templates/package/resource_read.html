@@ -2,6 +2,10 @@
 {% block resource_additional_information %}
     {% if res %}
 {#{ res }#}
+
+{% if res.format == 'Data Dictionary'  %}
+{% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
+{% endif %}
       <section class="module">
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>
