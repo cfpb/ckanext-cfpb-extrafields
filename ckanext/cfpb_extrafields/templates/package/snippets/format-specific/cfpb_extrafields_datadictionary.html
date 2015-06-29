@@ -1,82 +1,66 @@
-<!-- 
-when you select datadictionary for the resource, change url field to http://_datastore_only_resource and submit?
-generally, create button that populates the url field? 
--->
-
 {% resource 'cfpb_extrafields/datadict_setup.css' %}
 {% resource 'cfpb_extrafields/datadict_setup.js' %}
 {% resource 'cfpb_extrafields/datadict_post.js' %}
 
 
-  {% set dd = h.get_datadict_html(data.id) %}
-  {% if not dd %}
-    {% set dd = [ ["Name","Description","Datatype","Size"],
-    ["name","description","datatype","size"],
-    {"name":"-","description":"-","datatype":"-","size":"-"},
-    ]%}
-  {% endif %}
-  {% set header_names = dd[0] %}
-  {% set header_keys = dd[1] %}
-  {% set nkeys = range(dd[1]|length) %}
-  {% set nrows = dd|length-2 %}
+{% set dd = h.get_datadict_html(data.id) %}
+{% if not dd %}
+  {% set dd = [ ["Name","Description","Datatype","Size"],
+  ["name","description","datatype","size"],
+  {"name":"-","description":"-","datatype":"-","size":"-"},
+  ]%}
+{% endif %}
+{% set header_names = dd[0] %}
+{% set header_keys = dd[1] %}
+{% set nkeys = range(dd[1]|length) %}
+{% set nrows = dd|length-2 %}
 
 
-  <div id="table" class="table-editable">    
-    <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
-    <table class="table">
-      <tr>
-        {% for item in header_names %}
-          <th contenteditable="true">{{ item }}</th>
+<div id="table" class="table-editable">    
+  <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
+  <table class="table">
+    <tr>
+      {% for item in header_names %}
+        <th contenteditable="true">{{ item }}</th>
+      {% endfor %}
+      <th></th>
+      <th></th>
+    </tr>
+  {% for irow in range(2,nrows+2) %}
+    <tr>
+      {% for i in nkeys %}
+        {% set key = header_keys[i]%}
+          <td contenteditable="true">{{ dd[irow][key] }}</td>
         {% endfor %}
-        <th></th>
-        <th></th>
-      </tr>
-    {% for irow in range(2,nrows+2) %}
-      <tr>
-        {% for i in nkeys %}
-          {% set key = header_keys[i]%}
-            <td contenteditable="true">{{ dd[irow][key] }}</td>
-          {% endfor %}
-        <td>
-          <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
-        </td>
-        <td>
-          <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
-          <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
-        </td>
-      </tr>
-    {%endfor%}
-     <!-- This is our clonable table line -->
-      <tr class="hide">
-        {% for item in header_names %}
-          <td contenteditable="true">-</td>
-        {% endfor %}
-        <td>
-          <span class="table-remove"><button type='button' class="btn btn-danger">X</button></span>
-        </td>
-        <td>
-          <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
-          <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
-        </td>
-      </tr>
-    </table>
-  </div>
-  
-  <input type="hidden" id="field-datadict" name="datadict">
+      <td>
+        <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
+      </td>
+    </tr>
+  {%endfor%}
+   <!-- This is our clonable table line -->
+    <tr class="hide">
+      {% for item in header_names %}
+        <td contenteditable="true">-</td>
+      {% endfor %}
+      <td>
+        <span class="table-remove"><button type='button' class="btn btn-danger">X</button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
+      </td>
+    </tr>
+  </table>
+</div>
 
-  <button id="datadict_post" type="button" class="btn btn-primary"
-    data-module="datadict_post"
-    data-module-dataset_id="{{ data.package_id }}"
-    data-module-resource_id="{{ data.id }}"
-    data-module-resource_name="{{ data.name }}">
-    Post Data Dictionary
-  </button>
-  <p id="export"></p>
+<input type="hidden" id="field-datadict" name="datadict">
 
 {#
 {{ data.package_id }}<br>
 {{ data.id }}<br>
 {{ data.name }}<br>
 #}
-
-

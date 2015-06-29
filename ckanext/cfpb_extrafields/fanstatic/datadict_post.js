@@ -2,7 +2,6 @@
 
 ckan.module('datadict_post', function ($, _) {
   // A few jQuery helpers for exporting only
-  var $EXPORT = $('#export');
   jQuery.fn.pop = [].pop;
   jQuery.fn.shift = [].shift;
   return {
@@ -40,18 +39,8 @@ ckan.module('datadict_post', function ($, _) {
       
       // Output the result
       record = JSON.stringify(record);
-      $EXPORT.text(record);
+      //console.log(record);
       $( "input:hidden[name=datadict]" ).val(record);
     },
   }
 });
-
-    ///////////////////////
-
-
-// var $BTN = $('#export-btn');
-// $BTN.click(function () {
-                                 
-
-
-

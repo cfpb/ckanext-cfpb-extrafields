@@ -127,3 +127,11 @@ current_value=data.privacy_has_direct_identifiers)}}
 {% endif %}{# format selected? #} 
 {% endblock %}
 
+{% block save_button %}
+<button class="btn btn-primary" name="save" value="go-metadata" type="submit"
+    id="datadict_post" 
+    data-module="datadict_post"
+    data-module-dataset_id="{{ data.package_id }}"
+    data-module-resource_id="{{ data.id }}"
+    data-module-resource_name="{{ data.name }}">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
+{% endblock %}
