@@ -2,13 +2,20 @@
 
 {% block resource_view_content %}
 
-{% if res.format == 'SQL'  %}
-  {% snippet 'package/snippets/format-specific/cfpb_extrafields_SQL.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
-{% endif %}
+{% if res.format == 'SQL' or 
+      res.format == 'Data Dictionary' %}
 
-{% if res.format == 'Data Dictionary'  %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
-{% endif %}
+    {% if res.format == 'SQL' %}
+      {% snippet 'package/snippets/format-specific/cfpb_extrafields_SQL.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
+    {% endif %}
+
+    {% if res.format == 'Data Dictionary'  %}
+      {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
+    {% endif %}
+
+  {%else%}
+    {{super()}}
+  {% endif %}
 
 {% endblock %}
 
