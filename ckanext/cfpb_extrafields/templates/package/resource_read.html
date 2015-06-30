@@ -1,11 +1,20 @@
 {% ckan_extends %}
-{% block resource_additional_information %}
-    {% if res %}
-{#{ res }#}
+
+{% block resource_view_content %}
+
+{% if res.format == 'SQL'  %}
+  {% snippet 'package/snippets/format-specific/cfpb_extrafields_SQL.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
+{% endif %}
 
 {% if res.format == 'Data Dictionary'  %}
 {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
 {% endif %}
+
+{% endblock %}
+
+{% block resource_additional_information %}
+    {% if res %}
+      {#{ res }#}
       <section class="module">
         <div class="module-content">
           <h2>{{ _('Additional Information') }}</h2>

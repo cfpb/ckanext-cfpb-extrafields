@@ -43,7 +43,11 @@
 {% import 'macros/form_custom.html' as form_custom %}
 
 {#{data}#}
-{#% if h.contains(data.format,[''])  %} {% endif %#}
+{# not sure how you want to filter default fields per resource type 
+  long term, but something like a contains might make sense...
+  {% if h.contains(data.format,[''])  %} {% endif %}
+#}
+
 <br>Data Dictionary placeholder snippet<br>
 {% if data.format == 'Data Dictionary'  %}
 {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
@@ -51,7 +55,6 @@
 <br>end snippet<br>
 
 <br>SQL placeholder snippet<br>
-{#% if h.contains(data.format,[''])  %} {% endif %#}
 {% if data.format == 'SQL'  %}
 {% snippet 'package/snippets/format-specific/cfpb_extrafields_sql.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% endif %}
