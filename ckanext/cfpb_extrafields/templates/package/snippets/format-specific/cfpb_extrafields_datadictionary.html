@@ -17,7 +17,9 @@
 
 
 <div id="table" class="table-editable">    
+  {% if editable == "true" %}
   <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
+  {% endif %}
   <table class="table">
     <tr>
       {% for item in header_names %}
