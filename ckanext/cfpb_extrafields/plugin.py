@@ -2,6 +2,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import validators as v
 import options as opts
+import datastore_actions as ds
 import collections
 
 # if tag usage is going to be expanded, the following should be generalized.
@@ -35,8 +36,69 @@ def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
-    p.implements(p.IDatasetForm)
-    p.implements(p.IConfigurer)
+
+    p.implements(p.IResourceController)
+    def before_create(self, context, resource):
+        return
+    def after_create(self, context, resource):
+        # must have changed['format'] when you created the resource
+        tk.redirect_to(controller='package',action='resource_edit',
+                       resource_id=resource['id'],id=resource['package_id'])
+
+    def _control_datadict(self, resource):
+        record = resource.get('datadict','')
+        if record:
+            resource.pop('datadict', None)
+            record = eval(record) 
+            print 'delete dict: ', ds.delete_datadict(resource['id']) 
+            print 'create datadict: ', ds.create_datadict(resource['id'],record,'')
+            print 'created successful datadict? ', ds.get_datadict(resource['id'])
+        return
+    def before_update(self, context, current, resource):
+        # note keys that have changed (resource is new current is old)
+        self.changed_keys = ['format', 'privacy_contains_pii']
+        self.changed = {}
+        for i in self.changed_keys:
+            self.changed[i] = False
+            if resource.get(i,'0') != current.get(i,'1'):
+                print 'trigger a redirect in after_update: ', self.changed.get(i,'')
+                self.changed[i] = True
+        # mimic a new controller for data dictionary field
+        if current.get('format','0') == 'Data Dictionary' and resource.get('format','1') == 'Data Dictionary':
+            self._control_datadict(resource)
+
+    def _email_on_change(self, context, resource, field):
+        # if privacy fields have changed notify the relevant people
+        if self.changed.get(field,False):
+            print 'trigger email on change to '+field 
+            # filter by dataset name?
+            # could get dataset followers list;
+            followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
+            for f in followers:
+                # filter by group
+                # get emails 
+                print tk.get_action('user_show')(context,{'id': f['id']})['email']
+            # send a notification of change by email
+    def _redirect_on_change(self, resource, field):
+        if self.changed.get('format',False):
+            tk.redirect_to(controller='package', action='resource_edit',
+                           resource_id=resource['id'],id=resource['package_id'])
+    def after_update(self, context, resource):
+        # do things on field changes
+        self._email_on_change(context,resource,'privacy_contains_pii')
+        self._redirect_on_change(resource,'format')
+        # reset monitored keys 
+        for i in self.changed_keys:
+            self.changed[i] = False
+        return
+    def before_delete(self, context, resource, resources):
+        return
+    def after_delete(self, context, resources):
+        return
+    def before_show(self, resource_dict):
+        return
+
+
     p.implements(p.ITemplateHelpers)
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
@@ -62,7 +124,21 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
+
+                'create_datadict':ds.create_datadict,
+                'create_generic_json':ds.create_generic_json,
+                'get_datadict':ds.get_datadict,                
+                'update_datadict':ds.update_datadict,
+                'delete_datadict':ds.delete_datadict,
+
+                'get_datastore':ds.get_datastore,
+                'delete_datastore':ds.delete_datastore,
+
+                'get_datadict_html':ds.get_datadict_html,
+                
                 }
+    
+    p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
@@ -284,6 +360,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+    
+    p.implements(p.IConfigurer)
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
@@ -299,7 +377,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         tk.add_resource('fanstatic','cfpb_extrafields')
 
     p.implements(p.IFacets)
-    def change_facets(self, facets_dict):
+    def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
         # example facet added
@@ -310,8 +388,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict.pop('license_id', None)
         return facets_dict
     def dataset_facets(self, facets_dict, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def organization_facets(self, facets_dict, organization_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)

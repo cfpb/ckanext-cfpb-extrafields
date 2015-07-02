@@ -6,7 +6,7 @@ def form_select_format(l):
 
 # resources 
 def format():
-    return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
+    return ["Data Dictionary", "CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
            "excel", "TXT", "TAB", "JSON"] #+other
 def storage_location():
     return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",

@@ -1,0 +1,72 @@
+{% resource 'cfpb_extrafields/datadict_setup.css' %}
+{% resource 'cfpb_extrafields/datadict_setup.js' %}
+{% resource 'cfpb_extrafields/datadict_post.js' %}
+
+
+{% set dd = h.get_datadict_html(data.id) %}
+{% if not dd %}
+  {% set dd = [ ["Name","Description","Datatype","Size"],
+  ["name","description","datatype","size"],
+  {"name":"-","description":"-","datatype":"-","size":"-"},
+  ]%}
+{% endif %}
+{% set header_names = dd[0] %}
+{% set header_keys = dd[1] %}
+{% set nkeys = range(dd[1]|length) %}
+{% set nrows = dd|length-2 %}
+
+
+<div id="table" class="table-editable">    
+  {% if editable == "true" %}
+  <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
+  {% endif %}
+  <table class="table">
+    <tr>
+      {% for item in header_names %}
+        <th contenteditable={{editable}}>{{ item }}</th>
+      {% endfor %}
+      {% if editable == "true" %}
+      <th></th>
+      <th></th>
+      {% endif %}
+    </tr>
+  {% for irow in range(2,nrows+2) %}
+    <tr>
+      {% for i in nkeys %}
+        {% set key = header_keys[i]%}
+          <td contenteditable={{editable}}>{{ dd[irow][key] }}</td>
+        {% endfor %}
+      {% if editable == "true" %}
+      <td>
+        <span class="table-remove"> <button type='button' class="btn btn-danger">X</button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
+      </td>
+      {% endif %}
+    </tr>
+  {%endfor%}
+   <!-- This is our clonable table line -->
+    <tr class="hide">
+      {% for item in header_names %}
+        <td contenteditable={{editable}}>-</td>
+      {% endfor %}
+      <td>
+        <span class="table-remove"><button type='button' class="btn btn-danger">X</button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary">^</button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary">v</button></span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<input type="hidden" id="field-datadict" name="datadict">
+
+{#
+{{ data.package_id }}<br>
+{{ data.id }}<br>
+{{ data.name }}<br>
+#}
