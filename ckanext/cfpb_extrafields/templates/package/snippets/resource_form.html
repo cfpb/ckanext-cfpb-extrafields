@@ -33,14 +33,15 @@
 
 
 <div class='core-field'>
-{{ form.input('content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
+{{ form.input('content_temporal_range_start', id='field-content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
 </div>
 <div class='core-field'>
-{{ form.input('content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
+{{ form.input('content_temporal_range_end', id='field-content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
 </div>
 
 <div class='core-field'>
-{{ form_custom.select_one_with_other('format', 
+{{ form_custom.select_one_with_other('format',
+id='field-format',
 label=_('Format'),  
 current_value=data.get('format', ''), 
 options_defaults=h.options_format(), 
@@ -77,13 +78,16 @@ error=errors.format,) }}
 </div>
 
 <div class='core-field'>
-  <button type="button" data-module="popover"
-          data-module-html="sensitivity_popover.html"
-          data-module-title="{{ _('Sensitivity Level') }}">
-          <i class="icon-info-sign"></i>
-  </button>
-{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity-level', options=h.options_sensitivity_level(), selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
+{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity_level', options=h.options_sensitivity_level(), selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
 </div>
+<script>
+  var b='<button type="button" data-module="popover" \
+          data-module-html="sensitivity_popover.html" \
+          data-module-title="{{ _('Sensitivity Level') }}" \
+          <i class="icon-info-sign"></i>\
+  </button>'
+  document.getElementById('field-sensitivity_level').parentNode.insertAdjacentHTML("beforeend",b);
+</script>
 
 <div class='core-field'>
 {{ form_custom.radio('privacy_contains_pii',
