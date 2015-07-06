@@ -14,6 +14,9 @@
   options_defaults=h.options_format(), 
   error=errors.format,) }}
 </div>
+
+{{ form.select('resource_type', label=_('Resource Type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
+
 <div class='core-field'>
   {{ super()}}
 </div>
@@ -119,8 +122,6 @@ current_value=data.privacy_has_direct_identifiers)}}
 
 {{ form.select('update_size', label=_('Update: Size'), id='field-update_size', options=h.options_update_size(), selected=data.update_size, error=errors.update_size, classes=['control-medium']) }}
 {{ form.select('approximate_total_size', label=_('Approximate Total Size'), id='field-approximate_total_size', options=h.options_approximate_total_size(), selected=data.approximate_total_size, error=errors.approximate_total_size, classes=['control-medium']) }}
-
-{{ form.select('resource_type', label=_('Resource Type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
 
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('Cleansing Rules Used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 
