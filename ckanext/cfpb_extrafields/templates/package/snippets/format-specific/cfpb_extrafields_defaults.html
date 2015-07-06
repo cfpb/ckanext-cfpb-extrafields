@@ -1,0 +1,71 @@
+{% resource 'cfpb_extrafields/otherspecify.js' %}
+{% resource 'cfpb_extrafields/popover.js' %}
+{% resource 'cfpb_extrafields/popover.css' %}
+{% import 'macros/form_custom.html' as form_custom %}
+{% import 'macros/form.html' as form %}
+
+<div class='core-field'>
+{{ form.input('content_temporal_range_start', id='field-content_temporal_range_start', type='date', label=_("Temporal Range Start Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
+</div>
+<div class='core-field'>
+{{ form.input('content_temporal_range_end', id='field-content_temporal_range_end', type='date', label=_("Temporal Range End Date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
+</div>
+
+{{ form.input('intake_date', type='date', label=_("Intake Date"), placeholder="eg 2012-12-21", value=data.intake_date, error=errors.intake_date) }}
+
+<!-- custom version of select one with extra field -->
+<div class='core-field'>
+<div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
+  <label class="control-label" for="storage_location">Storage Location</label>
+  <div class="controls{{ " " ~ control_classes | join(' ') }}">
+    <select id="storage_location" name="storage_location">
+      {# move previously selected elements to the top and select #}
+      {# provide nothing as an option #}
+      <option value=""></option>
+      {% for e in [data.get('storage_location', '')] %}
+      {% if e %}
+      <option value="{{e}}" selected="selected">{{e}}</option>
+      {% endif %}
+      {% endfor %}
+      {# provide the default options but don't duplicate if they were selected above #}
+      {% for e in h.options_storage_location() %}
+      {% if e != data.get('storage_location', '') %}
+      <option value="{{e}}">{{e}}</option>
+      {% endif %}
+      {% endfor %}
+      {# provide an option for javascript to use to create new fields #}
+      <option value="__Other">Other, please specify</option>
+    </select>
+    path: <input id="field-storage_location_path" placeholder="eg http://..., D:\path\" value="{{data.storage_location_path}}" name="storage_location_path"/>
+    {% if errors.storage_location and errors.storage_location is iterable %}<span class="error-block">{{ errors.storage_location|join(', ') }}</span>{% endif %}
+  </div>
+</div>
+</div>
+<div class='core-field'>
+{{ form.select('sensitivity_level', label=_('Sensitivity Level'), id='field-sensitivity_level', options=h.options_sensitivity_level(), selected=data.sensitivity_level, error=errors.sensitivity_level, classes=['control-medium']) }}
+</div>
+<script>
+  var b='<button type="button" data-module="popover" \
+          data-module-html="sensitivity_popover.html" \
+          data-module-title="{{ _('Sensitivity Level') }}" \
+          <i class="icon-info-sign"></i>\
+  </button>'
+  document.getElementById('field-sensitivity_level').parentNode.insertAdjacentHTML("beforeend",b);
+</script>
+
+<div class='core-field'>
+{{ form_custom.radio('privacy_contains_pii',
+label=_('Privacy: Contains PII?'),
+current_value=data.privacy_contains_pii,
+error=errors.privacy_contains_pii)}}
+</div>
+
+{{ form_custom.radio('privacy_has_direct_identifiers',
+label=_('Privacy: Has Direct Identifiers?'),
+current_value=data.privacy_has_direct_identifiers)}}
+
+{{ form.select('update_size', label=_('Update: Size'), id='field-update_size', options=h.options_update_size(), selected=data.update_size, error=errors.update_size, classes=['control-medium']) }}
+{{ form.select('approximate_total_size', label=_('Approximate Total Size'), id='field-approximate_total_size', options=h.options_approximate_total_size(), selected=data.approximate_total_size, error=errors.approximate_total_size, classes=['control-medium']) }}
+
+{{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('Cleansing Rules Used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
+
