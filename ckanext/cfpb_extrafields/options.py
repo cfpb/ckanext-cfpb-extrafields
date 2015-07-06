@@ -22,7 +22,7 @@ def update_size():
 def approximate_total_size():
     return file_sizes()
 def resource_type():
-    a = ["Canonical","Extract","Documentation","Data Dictionary","Other"]
+    a = ["Canonical","Extract","Documentation","Other"]  #,"Data Dictionary"
     return form_select_format(a)
 
 # datasets
