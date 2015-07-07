@@ -99,11 +99,6 @@ def content_periodicity():
     return frequency_standards()
 def update_frequency():
     return frequency_standards()
-def acquisition_method():
-    return ["commercial purchase", "custom purchase", "public download", 
-            "received from government agency", "received from third party", 
-            "complaint database", "direct collection", "supervision examination", 
-            "enforcement investigation", "mandatory collection through order",]
 def pra_exclusion():
     return ["5 C.F.R. 1320.3(h)(1)",
             "5 C.F.R. 1320.3(h)(2)",

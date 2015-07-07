@@ -50,7 +50,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_content_periodicity': opts.content_periodicity,
                 'options_update_frequency': opts.update_frequency,
                 'options_content_spatial': opts.content_spatial,
-                'options_acquisition_method': opts.acquisition_method,
                 'options_pra_exclusion': opts.pra_exclusion,
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
@@ -125,8 +124,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'dataset_notes': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'access_notes': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
-            'acquisition_method': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'pra_exclusion': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
@@ -225,8 +222,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                              tk.get_validator('ignore_missing')],
             'access_notes': [tk.get_converter('convert_from_extras'),
                              tk.get_validator('ignore_missing')],
-            'acquisition_method': [tk.get_converter('convert_from_extras'),
-                                    tk.get_validator('ignore_missing')],
             'pra_exclusion': [tk.get_converter('convert_from_extras'),
                               tk.get_validator('ignore_missing')],
             'dataset_last_modified_date': [tk.get_converter('convert_from_extras'),
@@ -303,7 +298,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
         # example facet added
-        facets_dict['acquisition_method'] = p.toolkit._('Acquisition Method')
+        facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
