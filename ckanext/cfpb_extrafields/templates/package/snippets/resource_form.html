@@ -19,7 +19,7 @@
   error=errors.format,) }}
 </div>
 
-{{ form.select('resource_type', label=_('Resource Type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
+{{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
 
 <div class='core-field'>
   {{ super()}}
@@ -67,16 +67,16 @@
 {% endblock %}
 
 
-
 {% block save_button %}
 {% if data.format == 'Data Dictionary' -%}
-<button class="btn btn-primary" name="save" value="go-metadata" type="submit"
-    id="datadict_post" 
+  <button class="btn btn-primary" name="save" value="go-metadata" type="submit"
+    id="resource_save" 
     data-module="datadict_post"
     data-module-dataset_id="{{ data.package_id }}"
     data-module-resource_id="{{ data.id }}"
-    data-module-resource_name="{{ data.name }}">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
+    data-module-resource_name="{{ data.name }}">
 {% else %}
-<button class="btn btn-primary" name="save" value="go-metadata" type="submit">
+  <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">
+{% endif %}
   {% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
 {% endblock %}

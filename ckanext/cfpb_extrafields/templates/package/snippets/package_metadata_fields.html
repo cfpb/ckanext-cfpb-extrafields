@@ -6,14 +6,14 @@
 {% resource 'cfpb_extrafields/otherspecify.js' %}
 <div class="core-field">
   <div id="field-contact_primary">
-    {% call form.input_block("field-contact_primary_name",_("Contact: Primary"), error="", is_required=true) %} {# this is just for clicking #}
+    {% call form.input_block("field-contact_primary_name",_("contact: primary"), error="", is_required=true) %} {# this is just for clicking #}
     <input id="field-contact_primary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_primary_name}}" name="contact_primary_name" required/>
     <input id="field-contact_primary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_primary_email}}" name="contact_primary_email" />
     {% endcall %}
   </div>
 </div>
 
-{% call form.input_block("field-contact_secondary_name",_("Contact: Secondary"), error="") %} {# this is just for clicking #}
+{% call form.input_block("field-contact_secondary_name",_("contact: secondary"), error="") %} {# this is just for clicking #}
     <input id="field-contact_secondary_name" type="text" placeholder='{{ _("last name, first name") }}' value="{{data.contact_secondary_name}}" name="contact_secondary_name" />
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
@@ -22,12 +22,12 @@
 
 <div class="core-field">
 {% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('subject_matter', id='field-subject_matter', label=_('Subject Matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
+{{ form.input('subject_matter', id='field-subject_matter', label=_('subject matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
 </div>
 
 <div class="core-field">
   <div class="control-group" id="field-relevant_governing_documents" >
-    <label class="control-label" for="field-relevant_governing_documents">{{ _("Relevant Governing Documents") }}</label>
+    <label class="control-label" for="field-relevant_governing_documents">{{ _("relevant governing documents") }}</label>
     <div class="controls">
       <select name="relevant_governing_documents" data-module="autocomplete" multiple>
         {% for op in h.tag_relevant_governing_documents()  %}
@@ -39,7 +39,7 @@
 </div>
 <script> document.getElementById("field-relevant_governing_documents").title = "{{ h.popup_relevant_governing_documents() }}";</script>
 
-{{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('Dataset: Notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
+{{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('dataset: notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
 
 
 {{super()}}
@@ -58,25 +58,17 @@
 {% block custom_fields %}
 
 <div class="core-field">
-{{ form.markdown('data_source_names', id='field-data_source_names', label=_('Data Source Names'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
+{{ form.markdown('data_source_names', id='field-data_source_names', label=_('source'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
 <script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
 </div>
 
 <div class="core-field">
-{{ form_custom.select_one_with_other('acquisition_method',
-label=_('Acquisition Method'),
-current_value=data.get('acquisition_method', ''),
-options_defaults=h.options_acquisition_method(),
-error=errors.acquisition_method,) }}
-</div>
-
-<div class="core-field">
-{{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('Initial Purpose for Intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
+{{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('initial purpose for intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
 </div>
 
 <div class="core-field">
 {{ form_custom.select_multi_with_other('legal_authority_for_collection', 
-label=_('Legal Authority for Collection'),  
+label=_('legal authority for collection'),  
 current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')), 
 options_defaults=h.options_legal_authority_for_collection(), 
 error=errors.legal_authority_for_collection,
@@ -84,31 +76,31 @@ error=errors.legal_authority_for_collection,
 </div>
 
 <div class="core-field">
-{{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('Access Restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
+{{ form.markdown('access_restrictions', id='field-access_restrictions', label=_('access restrictions'), placeholder=_(''), value=data.access_restrictions, error=errors.access_restrictions) }}
 </div>
 
 <div class="core-field">
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
-label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
+label=_('usage restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 <script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
 </div>
 
 <div class="core-field">
-{{ form.input('pra_omb_control_number', label=_("PRA: OMB Control Number"), placeholder="####-####", value=data.pra_omb_control_number, error=errors.pra_omb_control_number) }}
+{{ form.input('pra_omb_control_number', label=_("PRA: OMB control number"), placeholder="####-####", value=data.pra_omb_control_number, error=errors.pra_omb_control_number) }}
 </div>
 
 {{ form_custom.select_one_with_other('pra_exclusion', 
-label=_('PRA Exclusion'),  
+label=_('PRA exclusion'),  
 current_value=data.get('pra_exclusion', ''), 
 options_defaults=h.options_pra_exclusion(), 
 error=errors.pra_exclusion,) }}
 
-{{ form.input('pra_omb_expiration_date', type='date', label=_("PRA: OMB Expiration Date"), placeholder="eg 2012-12-21", value=data.pra_omb_expiration_date, error=errors.pra_omb_expiration_date) }}
+{{ form.input('pra_omb_expiration_date', type='date', label=_("PRA: OMB expiration date"), placeholder="eg 2012-12-21", value=data.pra_omb_expiration_date, error=errors.pra_omb_expiration_date) }}
 
 
 <div class="core-field">
 {{ form_custom.select_multi_with_other('privacy_pia_title', 
-label=_('Privacy: PIA Title'),  
+label=_('privacy: PIA title'),  
 current_values=h.clean_select_multi(data.get('privacy_pia_title', '')), 
 options_defaults=h.options_privacy_pia_title(), 
 error=errors.privacy_pia_title,
@@ -118,7 +110,7 @@ size="550",
 
 <div class="core-field">
 {{ form_custom.select_multi_with_other('privacy_sorn_number', 
-label=_('Privacy: SORN number'),  
+label=_('privacy: SORN number'),  
 current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')), 
 options_defaults=h.options_privacy_sorn_number(), 
 error=errors.privacy_sorn_number,
@@ -127,55 +119,54 @@ size="550",
 </div>
 
 {{ form_custom.radio('privacy_has_privacy_act_statement', 
-label=_('Privacy: Has Privacy Act Statement'),
+label=_('privacy: has Privacy Act statement'),
 current_value=data.privacy_has_privacy_act_statement)}}
 
 {{ form_custom.select_one_with_other('privacy_pia_notes', 
-label=_('Privacy: PIA Notes'),  
+label=_('privacy: PIA notes'),  
 current_value=data.get('privacy_pia_notes', ''), 
 options_defaults=h.options_privacy_pia_notes(), 
 error=errors.privacy_pia_notes,) }}
 
-{{ form.markdown('access_notes', id='field-access_notes', label=_('Access: Notes'), placeholder=_(''), value=data.access_notes, error=errors.access_notes) }}
+{{ form.markdown('access_notes', id='field-access_notes', label=_('access: notes'), placeholder=_(''), value=data.access_notes, error=errors.access_notes) }}
 
 <div class="core-field">
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
 </div>
 
-{{ form.input('procurement_document_id', label=_("Procurement Document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
+{{ form.input('procurement_document_id', label=_("procurement document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
-{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
+{{ form.input('dataset_last_modified_date', type='date', label=_("dataset last modified date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
 
-{{ form.select('update_frequency', label=_('Update: Frequency'), id='field-update_frequency', options=h.options_update_frequency(), selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
+{{ form.select('update_frequency', label=_('update: frequency'), id='field-update_frequency', options=h.options_update_frequency(), selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
-{{ form.select('content_periodicity', label=_('Content: Periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
+{{ form.select('content_periodicity', label=_('content: periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
-{{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('Records Retention Schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
+{{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('records retention schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
 
-{{ form.input('transfer_initial_size', label=_("Transfer: Initial Size (MB)"), placeholder="eg 1.2", value=data.transfer_initial_size, error=errors.transfer_initial_size) }}
+{{ form.input('transfer_initial_size', label=_("transfer: initial size (mb)"), placeholder="eg 1.2", value=data.transfer_initial_size, error=errors.transfer_initial_size) }}
 
-{{ form.select('transfer_method', label=_('Transfer: Method'), id='field-transfer_method', options=h.options_transfer_method(), selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
+{{ form.select('transfer_method', label=_('transfer: method'), id='field-transfer_method', options=h.options_transfer_method(), selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
 
 {{ form.markdown('transfer_details', id='field-transfer_details', 
-label=_('Transfer Details'), placeholder=_('enter text'), value=data.transfer_details, error=errors.transfer_details) }}
+label=_('transfer details'), placeholder=_('enter text'), value=data.transfer_details, error=errors.transfer_details) }}
 
 {{ form_custom.radio('obfuscated_title', 
-label=_('Obfuscated Title'),
+label=_('obfuscated title'),
 current_value=data.obfuscated_title)}}
 
 {{ form.markdown('also_known_as', id='field-also_known_as', 
-label=_('Also Known As'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
+label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
 
-{% call form.input_block("field-website_url",_("Website URL"), error="") %} {# this is just for clicking #}
+{% call form.input_block("field-website_url",_("website URL"), error="") %} {# this is just for clicking #}
     <input id="field-website_url" type="url" placeholder="http://www..."  value="{{data.website_url}}" name="website_url" />
     <input id="field-website_name" type="text" placeholder="name" value="{{data.website_name}}" name="website_name" />
 {% endcall %}
 
-{{ form.input('wiki_link', label=_("Wiki Link"), placeholder="http://cfpb.local/...", type="url", value=data.wiki_link, error=errors.wiki_link) }}
-
+{{ form.input('wiki_link', label=_("wiki link"), placeholder="http://cfpb.local/...", type="url", value=data.wiki_link, error=errors.wiki_link) }}
 
 {#{ form_custom.select_multi_with_other('content_spatial', 
-label=_('Content: Spatial'),  
+label=_('content: spatial'),  
 current_values=h.clean_select_multi(data.get('content_spatial', '')), 
 options_defaults=h.options_content_spatial(), 
 error=errors.content_spatial,
