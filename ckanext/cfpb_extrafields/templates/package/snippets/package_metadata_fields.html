@@ -18,13 +18,6 @@
     <input id="field-contact_secondary_email" type="email" placeholder="contact@domain.gov" value="{{data.contact_secondary_email}}" name="contact_secondary_email" />
 {% endcall %}
 
-
-
-<div class="core-field">
-{% set subject_matter_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('subject_matter', id='field-subject_matter', label=_('subject matter'), placeholder=_('eg. Fair Lending, HMDA, Compliance'), value=data.subject_matter, error=errors.subject_matter, classes=['control-full'], attrs=subject_matter_attrs) }}
-</div>
-
 <div class="core-field">
   <div class="control-group" id="field-relevant_governing_documents" >
     <label class="control-label" for="field-relevant_governing_documents">{{ _("relevant governing documents") }}</label>

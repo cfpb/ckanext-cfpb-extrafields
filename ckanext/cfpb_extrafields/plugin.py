@@ -219,8 +219,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
 
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('tag_string_convert'),tk.get_converter('convert_to_extras'),]})
         # now modify tag fields and convert_to_tags
         schema.update({
             'relevant_governing_documents': [
@@ -336,8 +334,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('convert_from_extras'),]})
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         # now show tag fields and convert_from_tags
