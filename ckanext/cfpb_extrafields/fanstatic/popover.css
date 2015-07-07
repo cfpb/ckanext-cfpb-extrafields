@@ -1,3 +1,3 @@
 .fullwords {
-    word-break: keep-all;
+    word-break: break-word;
 }

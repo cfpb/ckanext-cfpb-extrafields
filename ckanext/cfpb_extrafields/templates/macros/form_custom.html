@@ -1,9 +1,9 @@
 {# pick-one list with specified other option #}
-{% macro select_one_with_other(name, label='', current_value="", options_defaults=[], extra_html="", error='' ) %}
+{% macro select_one_with_other(name, label='', id='', current_value="", options_defaults=[], extra_html="", error='' ) %}
 <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
     <label class="control-label" for="{{ name }}">{{label}}</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
-    <select id={{name}} name={{name}} width="400" style="width: 400px">
+    <select id={{ id or name }} name={{name}} width="400" style="width: 400px">
     {# provide nothing as an option #}
     <option value=""></option>
     {# move previously selected elements to the top and select #}
@@ -25,11 +25,11 @@
 {% endmacro %}
 
 {# select multiple list with specified other option #}
-{% macro select_multi_with_other(name, label='', current_values=[], size="400", options_defaults=[], extra_html="", error='') %}
+{% macro select_multi_with_other(name, id='', label='', current_values=[], size="400", options_defaults=[], extra_html="", error='') %}
 <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
     <label class="control-label" for="{{ name }}">{{label}}</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
-    <select id={{name}} name={{name}} width={{size}} style="width:{{size}}px" multiple>
+    <select id={{ id or name }} name={{name}} width={{size}} style="width:{{size}}px" multiple>
     {# move previously selected elements to the top and select #}
     {% for e in current_values %}
         {% if e %}
@@ -52,13 +52,13 @@
 </div>
 {% endmacro %}
 
-{% macro radio(name, label='', current_value='TBD', error='') %}
+{% macro radio(name, id='', label='', current_value='TBD', error='') %}
   <div class="control-group ">
     <label class="control-label">{{label}}</label>
-    <div class="controls ">
-        <input id={{name}} type="radio" name={{name}} value='yes' placeholder="Yes" {% if current_value == 'yes' %}checked{% endif %}>Yes</input>
-        <input id={{name}} type="radio" name={{name}} value='no' placeholder="No"  {% if current_value == 'no' %}checked{% endif %}>No</input>
-        <input id={{name}} type="radio" name={{name}} value='' placeholder=""  {% if current_value != 'yes' and current_value != 'no' %}checked{% endif %}>tbd</input>
+    <div class="controls " id={{ id or name }}>
+        <input  type="radio" name={{name}} value='yes' placeholder="Yes" {% if current_value == 'yes' %}checked{% endif %}>Yes</input>
+        <input  type="radio" name={{name}} value='no' placeholder="No"  {% if current_value == 'no' %}checked{% endif %}>No</input>
+        <input  type="radio" name={{name}} value='' placeholder=""  {% if current_value != 'yes' and current_value != 'no' %}checked{% endif %}>tbd</input>
     </div>
   </div>
 {% endmacro %}

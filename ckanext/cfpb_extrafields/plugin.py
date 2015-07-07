@@ -112,7 +112,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_content_periodicity': opts.content_periodicity,
                 'options_update_frequency': opts.update_frequency,
                 'options_content_spatial': opts.content_spatial,
-                'options_acquisition_method': opts.acquisition_method,
                 'options_pra_exclusion': opts.pra_exclusion,
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
@@ -202,8 +201,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
             'access_notes': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
-            'acquisition_method': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
             'pra_exclusion': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'dataset_last_modified_date': [tk.get_validator('ignore_missing'),
@@ -222,8 +219,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
 
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('tag_string_convert'),tk.get_converter('convert_to_extras'),]})
         # now modify tag fields and convert_to_tags
         schema.update({
             'relevant_governing_documents': [
@@ -301,8 +296,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                              tk.get_validator('ignore_missing')],
             'access_notes': [tk.get_converter('convert_from_extras'),
                              tk.get_validator('ignore_missing')],
-            'acquisition_method': [tk.get_converter('convert_from_extras'),
-                                    tk.get_validator('ignore_missing')],
             'pra_exclusion': [tk.get_converter('convert_from_extras'),
                               tk.get_validator('ignore_missing')],
             'dataset_last_modified_date': [tk.get_converter('convert_from_extras'),
@@ -341,8 +334,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('convert_from_extras'),]})
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         # now show tag fields and convert_from_tags
@@ -381,7 +372,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
         # example facet added
-        facets_dict['acquisition_method'] = p.toolkit._('Acquisition Method')
+        facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
