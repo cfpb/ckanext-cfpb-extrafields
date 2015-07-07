@@ -1,5 +1,5 @@
 $(function() {
     $('#field-format').change( function() {
-        $( "#datadict_post" ).trigger( "click" );
+        $( "#resource_save" ).trigger( "click" );
     });
 });
