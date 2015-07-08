@@ -133,7 +133,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'get_datastore':ds.get_datastore,
                 'delete_datastore':ds.delete_datastore,
 
-                'get_datadict_html':ds.get_datadict_html,
+                'get_datadict_json':ds.get_datadict_json,
                 
                 }
     
