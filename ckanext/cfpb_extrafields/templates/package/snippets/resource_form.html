@@ -29,7 +29,7 @@
 
 {% block basic_fields_name %}
 <div class='core-field'>
-  {{ super()}}
+{{ form.input('name', id='field-name', label=_('name'), placeholder=_('eg. January 2011 Gold Prices'), value=data.name, error=errors.name, classes=['control-full']) }}
 </div>
 {% endblock %}
 
@@ -37,7 +37,7 @@
 {% block basic_fields_description %}
 {% if data.format %} {# format selected? #}
 <div class='core-field'>
-  {{ super()}}
+{{ form.markdown('description', id='field-description', label=_('description'), placeholder=_('Some useful notes about the data'), value=data.description, error=errors.description) }}
 </div>
 {% endif %} {# format selected? #}
 {% endblock %}
