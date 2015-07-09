@@ -46,13 +46,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                        resource_id=resource['id'],id=resource['package_id'])
 
     def _control_datadict(self, resource):
+        ''' delete and rebuild datadict'''
         record = resource.get('datadict','')
         if record:
             resource.pop('datadict', None)
             record = eval(record) 
-            print 'delete dict: ', ds.delete_datadict(resource['id']) 
-            print 'create datadict: ', ds.create_datadict(resource['id'],record,'')
-            print 'created successful datadict? ', ds.get_datadict(resource['id'])
+            ds.delete_datadict(resource['id'])
+            ds.create_datadict(resource['id'],record,'') 
+            # print 'check datadict? ',  ds.get_datadict(resource['id']) 
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new current is old)
@@ -68,24 +69,25 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             self._control_datadict(resource)
 
     def _email_on_change(self, context, resource, field):
-        # if privacy fields have changed notify the relevant people
+        # unfinished! 
+        # if specified fields have changed notify the relevant people
         if self.changed.get(field,False):
-            print 'trigger email on change to '+field 
-            # filter by dataset name?
-            # could get dataset followers list;
+            # print 'trigger email on change to '+field 
+            # filter by dataset name? 
             followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
             for f in followers:
-                # filter by group
-                # get emails 
+                # filter by group?
+                # get email addresses 
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
-            # send a notification of change by email
+                # send a notification of change by email
     def _redirect_on_change(self, resource, field):
         if self.changed.get('format',False):
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
     def after_update(self, context, resource):
-        # do things on field changes
-        self._email_on_change(context,resource,'privacy_contains_pii')
+        ''' do things on field changes '''
+        # unfinished email trigger:
+        # self._email_on_change(context,resource,'privacy_contains_pii')
         self._redirect_on_change(resource,'format')
         # reset monitored keys 
         for i in self.changed_keys:
