@@ -66,10 +66,7 @@ def get_datastore(rid):
     except tk.ObjectNotFound, err:
         return str(err) 
 
-def _convert_json_table(record):
-#    html_table = str(record)
-    return record
-def get_datadict_html(rid):
+def get_datadict_json(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     data = {"resource_id" : rid,     
@@ -77,13 +74,12 @@ def get_datadict_html(rid):
     }
     try:
         ds = tk.get_action('datastore_search')(context, data)
-        _table = _find_json_in_ds(ds,name="datadict")
-        return _convert_json_table(_table)
+        return _find_json_in_ds(ds,name="datadict")
     except tk.ObjectNotFound, err:
         print str(err)
         return None 
 
-def	update_datadict(rid):
+def update_datadict(rid):
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     data = {
