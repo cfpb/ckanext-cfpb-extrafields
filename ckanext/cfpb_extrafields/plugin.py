@@ -51,8 +51,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if record:
             resource.pop('datadict', None)
             record = eval(record) 
-            ds.delete_datadict(resource['id'])
-            ds.create_datadict(resource['id'],record,'') 
+            ds.delete_datastore_table(resource['id'], filter_key='name', filter_table='datadict')
+            ds.create_datastore_json(resource['id'], record=record, pkey='name', new_table='datadict') 
             # print 'check datadict? ',  ds.get_datadict(resource['id']) 
         return
     def before_update(self, context, current, resource):
