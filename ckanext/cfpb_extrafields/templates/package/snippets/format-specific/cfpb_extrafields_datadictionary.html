@@ -3,7 +3,7 @@
 {% resource 'cfpb_extrafields/datadict_post.js' %}
 
 
-{% set dd = h.get_datadict_json(data.id) %}
+{% set dd = h.get_datastore_json(data.id, 'name', 'datadict') %}
 {% if not dd %}
   {% set dd = [ ["Name","Description","Datatype","Size"],
   ["name","description","datatype","size"],

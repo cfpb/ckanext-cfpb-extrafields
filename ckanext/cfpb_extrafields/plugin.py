@@ -51,9 +51,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if record:
             resource.pop('datadict', None)
             record = eval(record) 
-            ds.delete_datastore_table(resource['id'], filter_key='name', filter_table='datadict')
-            ds.create_datastore_json(resource['id'], record=record, pkey='name', new_table='datadict') 
-            # print 'check datadict? ',  ds.get_datadict(resource['id']) 
+            ds.delete_datastore_json(resource['id'], 'name', 'datadict')
+            ds.create_datastore_json(resource['id'], record, 'name', 'datadict') 
+            # print 'check datadict? ',  ds.print_datastore_json(resource['id'],'','') 
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new current is old)
@@ -126,17 +126,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
 
-                'create_datadict':ds.create_datadict,
-                'create_generic_json':ds.create_generic_json,
-                'get_datadict':ds.get_datadict,                
-                'update_datadict':ds.update_datadict,
-                'delete_datadict':ds.delete_datadict,
-
-                'get_datastore':ds.get_datastore,
-                'delete_datastore':ds.delete_datastore,
-
-                'get_datadict_json':ds.get_datadict_json,
-                
+                'create_datastore_json':ds.create_datastore_json, 
+                'print_datastore_json':ds.print_datastore_json,
+                'get_datastore_json':ds.get_datastore_json,
+                'update_datastore_json':ds.update_datastore_json,
+                'delete_datastore_json':ds.delete_datastore_json,
                 }
     
     p.implements(p.IDatasetForm)
