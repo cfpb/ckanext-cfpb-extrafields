@@ -121,7 +121,7 @@ current_value=data.get('privacy_pia_notes', ''),
 options_defaults=h.options_privacy_pia_notes(), 
 error=errors.privacy_pia_notes,) }}
 
-{{ form.markdown('access_notes', id='field-access_notes', label=_('access: notes'), placeholder=_(''), value=data.access_notes, error=errors.access_notes) }}
+{{ form.markdown('access_notes', id='field-access_notes', label=_('how to get access'), placeholder=_(''), value=data.access_notes, error=errors.access_notes) }}
 
 <div class="core-field">
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
