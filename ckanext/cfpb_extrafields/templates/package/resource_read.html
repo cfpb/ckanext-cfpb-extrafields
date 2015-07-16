@@ -120,7 +120,7 @@
               {% if res.cleansing_rules_used %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
-                <td class="dataset-details">{{ res.cleansing_rules_used }}</td>
+                <td class="dataset-details">{{ h.render_markdown(res.cleansing_rules_used) }}</td>
               </tr>
               {% endif %}
               
