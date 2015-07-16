@@ -72,20 +72,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new, current is old)
-        self.changed_keys = ['format', 'privacy_contains_pii']
-        self.changed = {}
-        for i in self.changed_keys:
-            self.changed[i] = False
-            if resource.get(i,'0') != current.get(i,'1'):
-                self.changed[i] = True
-        # mimic a new controller for data dictionary field
-        if current.get('format','0') == 'Data Dictionary' and resource.get('format','1') == 'Data Dictionary':
+        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['format', 'privacy_contains_pii']}
+        if current.get('format', '') == 'Data Dictionary' and resource.get('format', '') == 'Data Dictionary':
             self._delete_and_rebuild_datadict(resource)
-
     def _email_on_change(self, context, resource, field):
         # unfinished! 
         # if specified fields have changed notify the relevant people
-        if self.changed.get(field,False):
+        if self.changed[field]:
             # print 'trigger email on change to '+field 
             # filter by dataset name? 
             followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
@@ -95,7 +88,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
                 # send a notification of change by email
     def _redirect_on_change(self, resource, field):
-        if self.changed.get('format',False):
+        if self.changed['format']:
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
     def after_update(self, context, resource):
@@ -104,8 +97,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # self._email_on_change(context,resource,'privacy_contains_pii')
         self._redirect_on_change(resource,'format')
         # reset monitored keys 
-        for i in self.changed_keys:
-            self.changed[i] = False
+        for key in self.changed:
+            self.changed[key] = False
         return
     def before_delete(self, context, resource, resources):
         return
