@@ -63,10 +63,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         record = resource.get('datadict','')
         if record:
             resource.pop('datadict', None)
-            record = eval(record) 
-            ds.delete_datastore_json(resource['id'], 'name', 'datadict')
+            record = eval(record)
+            try:
+                ds.delete_datastore_json(resource['id'], 'name', 'datadict')
+            except tk.ObjectNotFound, err:
+                pass
             ds.create_datastore_json(resource['id'], record, 'name', 'datadict') 
-            # print 'check datadict? ',  ds.print_datastore_json(resource['id'],'','') 
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new current is old)
@@ -75,7 +77,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         for i in self.changed_keys:
             self.changed[i] = False
             if resource.get(i,'0') != current.get(i,'1'):
-                print 'trigger a redirect in after_update: ', self.changed.get(i,'')
                 self.changed[i] = True
         # mimic a new controller for data dictionary field
         if current.get('format','0') == 'Data Dictionary' and resource.get('format','1') == 'Data Dictionary':
@@ -140,9 +141,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_usage_restrictions': popup_usage_restrictions,
 
                 'create_datastore_json':ds.create_datastore_json, 
-                'print_datastore_json':ds.print_datastore_json,
-                'get_datastore_json':ds.get_datastore_json,
-                'update_datastore_json':ds.update_datastore_json,
+                'get_unique_datastore_json':ds.get_unique_datastore_json,
                 'delete_datastore_json':ds.delete_datastore_json,
                 
                 'parse_resource_related_gist': parse_resource_related_gist,
