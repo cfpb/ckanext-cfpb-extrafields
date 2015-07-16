@@ -58,20 +58,20 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         tk.redirect_to(controller='package',action='resource_edit',
                        resource_id=resource['id'],id=resource['package_id'])
 
-    def _control_datadict(self, resource):
-        ''' delete and rebuild datadict'''
-        record = resource.get('datadict','')
-        if record:
-            resource.pop('datadict', None)
-            record = eval(record)
+    def _delete_and_rebuild_datadict(self, resource):
+        import json
+        if 'datadict' in resource:
+            record = resource['datadict']
+            resource.pop('datadict')
+            json_record = json.loads(record)
             try:
-                ds.delete_datastore_json(resource['id'], 'name', 'datadict')
+                ds.delete_datastore_json(resource['id'], 'json_name', 'datadict')
             except tk.ObjectNotFound, err:
                 pass
-            ds.create_datastore_json(resource['id'], record, 'name', 'datadict') 
+            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict') 
         return
     def before_update(self, context, current, resource):
-        # note keys that have changed (resource is new current is old)
+        # note keys that have changed (resource is new, current is old)
         self.changed_keys = ['format', 'privacy_contains_pii']
         self.changed = {}
         for i in self.changed_keys:
@@ -80,7 +80,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 self.changed[i] = True
         # mimic a new controller for data dictionary field
         if current.get('format','0') == 'Data Dictionary' and resource.get('format','1') == 'Data Dictionary':
-            self._control_datadict(resource)
+            self._delete_and_rebuild_datadict(resource)
 
     def _email_on_change(self, context, resource, field):
         # unfinished! 

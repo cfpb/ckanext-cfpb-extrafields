@@ -3,7 +3,7 @@
 {% resource 'cfpb_extrafields/datadict_post.js' %}
 
 
-{% set dd = h.get_unique_datastore_json(data.id, 'name', 'datadict') %}
+{% set dd = h.get_unique_datastore_json(data.id, 'json_name', 'datadict') %}
 {% if not dd %}
   {% set dd = [ ["Name","Description","Datatype","Size"],
   ["name","description","datatype","size"],
@@ -65,8 +65,3 @@
 
 <input type="hidden" id="field-datadict" name="datadict">
 
-{#
-{{ data.package_id }}<br>
-{{ data.id }}<br>
-{{ data.name }}<br>
-#}
