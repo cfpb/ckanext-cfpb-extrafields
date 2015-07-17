@@ -2,6 +2,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import validators as v
 import options as opts
+import datastore_actions as ds
 import collections
 
 # if tag usage is going to be expanded, the following should be generalized.
@@ -48,8 +49,65 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
             
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
-    p.implements(p.IDatasetForm)
-    p.implements(p.IConfigurer)
+
+    p.implements(p.IResourceController)
+    def before_create(self, context, resource):
+        return
+    def after_create(self, context, resource):
+        # must have changed['format'] when you created the resource
+        tk.redirect_to(controller='package',action='resource_edit',
+                       resource_id=resource['id'],id=resource['package_id'])
+
+    def _delete_and_rebuild_datadict(self, resource):
+        import json
+        if 'datadict' in resource:
+            record = resource['datadict']
+            resource.pop('datadict')
+            json_record = json.loads(record)
+            try:
+                ds.delete_datastore_json(resource['id'], 'json_name', 'datadict')
+            except tk.ObjectNotFound, err:
+                pass
+            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict') 
+        return
+    def before_update(self, context, current, resource):
+        # note keys that have changed (resource is new, current is old)
+        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['format', 'privacy_contains_pii']}
+        if current.get('format', '') == 'Data Dictionary' and resource.get('format', '') == 'Data Dictionary':
+            self._delete_and_rebuild_datadict(resource)
+    def _email_on_change(self, context, resource, field):
+        # unfinished! 
+        # if specified fields have changed notify the relevant people
+        if self.changed[field]:
+            # print 'trigger email on change to '+field 
+            # filter by dataset name? 
+            followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
+            for f in followers:
+                # filter by group?
+                # get email addresses 
+                print tk.get_action('user_show')(context,{'id': f['id']})['email']
+                # send a notification of change by email
+    def _redirect_on_change(self, resource, field):
+        if self.changed['format']:
+            tk.redirect_to(controller='package', action='resource_edit',
+                           resource_id=resource['id'],id=resource['package_id'])
+    def after_update(self, context, resource):
+        ''' do things on field changes '''
+        # unfinished email trigger:
+        # self._email_on_change(context,resource,'privacy_contains_pii')
+        self._redirect_on_change(resource,'format')
+        # reset monitored keys 
+        for key in self.changed:
+            self.changed[key] = False
+        return
+    def before_delete(self, context, resource, resources):
+        return
+    def after_delete(self, context, resources):
+        return
+    def before_show(self, resource_dict):
+        return
+
+
     p.implements(p.ITemplateHelpers)
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
@@ -63,7 +121,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_content_periodicity': opts.content_periodicity,
                 'options_update_frequency': opts.update_frequency,
                 'options_content_spatial': opts.content_spatial,
-                'options_acquisition_method': opts.acquisition_method,
                 'options_pra_exclusion': opts.pra_exclusion,
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
@@ -75,9 +132,15 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
+
+                'create_datastore_json':ds.create_datastore_json, 
+                'get_unique_datastore_json':ds.get_unique_datastore_json,
+                'delete_datastore_json':ds.delete_datastore_json,
                 
                 'parse_resource_related_gist': parse_resource_related_gist,
-        }
+            }
+    
+    p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
         schema.update({
             # notes is the "Descriptions" built-in field.
@@ -141,8 +204,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
             'access_notes': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
-            'acquisition_method': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
             'pra_exclusion': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'dataset_last_modified_date': [tk.get_validator('ignore_missing'),
@@ -161,8 +222,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         tk.get_converter('convert_to_extras')],
 
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('tag_string_convert'),tk.get_converter('convert_to_extras'),]})
         # now modify tag fields and convert_to_tags
         schema.update({
             'relevant_governing_documents': [
@@ -240,8 +299,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                              tk.get_validator('ignore_missing')],
             'access_notes': [tk.get_converter('convert_from_extras'),
                              tk.get_validator('ignore_missing')],
-            'acquisition_method': [tk.get_converter('convert_from_extras'),
-                                    tk.get_validator('ignore_missing')],
             'pra_exclusion': [tk.get_converter('convert_from_extras'),
                               tk.get_validator('ignore_missing')],
             'dataset_last_modified_date': [tk.get_converter('convert_from_extras'),
@@ -280,8 +337,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
                 'update_size' : [ tk.get_validator('ignore_missing'),],
         })
-        # this update is for special fields that become free tags AND normal fields.
-        schema.update({'subject_matter': [tk.get_converter('convert_from_extras'),]})
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         # now show tag fields and convert_from_tags
@@ -299,6 +354,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+    
+    p.implements(p.IConfigurer)
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
@@ -314,19 +371,19 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         tk.add_resource('fanstatic','cfpb_extrafields')
 
     p.implements(p.IFacets)
-    def change_facets(self, facets_dict):
+    def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
         # example facet added
-        facets_dict['acquisition_method'] = p.toolkit._('Acquisition Method')
+        facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
         facets_dict.pop('license_id', None)
         return facets_dict
     def dataset_facets(self, facets_dict, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)
     def organization_facets(self, facets_dict, organization_type, package_type):
-        return self.change_facets(facets_dict)
+        return self._change_facets(facets_dict)

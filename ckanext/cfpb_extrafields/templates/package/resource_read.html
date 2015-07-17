@@ -1,4 +1,24 @@
 {% ckan_extends %}
+
+{% block resource_view_content %}
+
+{% if res.format == 'SQL' or 
+      res.format == 'Data Dictionary' %}
+
+    {% if res.format == 'SQL' %}
+      {% snippet 'package/snippets/format-specific/cfpb_extrafields_SQL.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
+    {% endif %}
+
+    {% if res.format == 'Data Dictionary'  %}
+      {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
+    {% endif %}
+
+  {%else%}
+    {{super()}}
+  {% endif %}
+
+{% endblock %}
+
 {% block resource_content %}
 {{super()}}
 {% endblock %}
@@ -19,37 +39,37 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">{{ _('Metadata Resource ID') }}</th>
+                <th scope="row">{{ _('metadata resource ID') }}</th>
                 <td>{{ res.id or _('unknown') }}</td>
               </tr>
               <tr>
-                <th scope="row">{{ _('Metadata Resource Created') }}</th>
+                <th scope="row">{{ _('metadata resource created') }}</th>
                 <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
               <tr>
-                <th scope="row">{{ _('Metadata Last updated') }}</th>
+                <th scope="row">{{ _('metadata last updated') }}</th>
                 <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
               <tr>
-                <th scope="row">{{ _('Format') }}</th>
+                <th scope="row">{{ _('format') }}</th>
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
               </tr>
               <!-- new core fields -->
               {% if res.content_temporal_range_end %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range End") }} </th>
+	            <th scope="row" class="dataset-label">{{ _("content: end") }} </th>
 	            <td class="dataset-details">{{ res.content_temporal_range_end }} </td>
               </tr>
               {% endif %}
               {% if res.content_temporal_range_start %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("Content: Temporal Range Start") }} </th>
+	            <th scope="row" class="dataset-label">{{ _("content: start") }} </th>
 	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
               </tr>
               {% endif %}
               {% if res.storage_location or res.storage_location_path %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("Storage Location") }} </th>
+	            <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
 	            <td class="dataset-details">
                   <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
                              <td>{{ res.storage_location_path }}</td>
@@ -58,13 +78,13 @@
               </tr>
               {% if res.sensitivity_level %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("Sensitivity Level") }} </th>
+	            <th scope="row" class="dataset-label">{{ _("sensitivity level") }} </th>
 	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
               </tr>
               {% endif %}
               {% if res.privacy_contains_pii %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("Privacy: Contains PII") }} </th>
+	            <th scope="row" class="dataset-label">{{ _("privacy: contains PII") }} </th>
 	            <td class="dataset-details">{{ res.privacy_contains_pii}} </td>
               </tr>
               {% endif %}
@@ -74,38 +94,38 @@
               </tr>
               {% if res.intake_date %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Intake Date") }}</th>
+                <th scope="row" class="dataset-label">{{ _("intake date") }}</th>
                 <td class="dataset-details">{{ res.intake_date }}</td>
               </tr>
               {% endif %}
               {% if res.update_size %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Update: Size") }}</th>
+                <th scope="row" class="dataset-label">{{ _("update: size") }}</th>
                 <td class="dataset-details">{{ res.update_size }}</td>
               </tr>
               {% endif %}
               {% if res.approximate_total_size %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Approximate Total Size") }}</th>
+                <th scope="row" class="dataset-label">{{ _("approximate total Size") }}</th>
                 <td class="dataset-details">{{ res.approximate_total_size }}</td>
               </tr>
               {% endif %}
               {% if res.resource_type %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Resource Type") }}</th>
+                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
                 <td class="dataset-details">{{ res.resource_type }}</td>
               </tr>
               {% endif %}
               {% if res.privacy_has_direct_identifiers %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Privacy: Has Direct Identifiers") }}</th>
+                <th scope="row" class="dataset-label">{{ _("privacy: has direct identifiers") }}</th>
                 <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
               </tr>
               {% endif %}
               {% if res.cleansing_rules_used %} 
               <tr>
-                <th scope="row" class="dataset-label">{{ _("Cleansing Rules Used") }}</th>
-                <td class="dataset-details">{{ res.cleansing_rules_used }}</td>
+                <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
+                <td class="dataset-details">{{ h.render_markdown(res.cleansing_rules_used) }}</td>
               </tr>
               {% endif %}
               

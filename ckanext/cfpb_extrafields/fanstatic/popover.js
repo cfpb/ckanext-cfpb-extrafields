@@ -5,7 +5,7 @@ ckan.module('popover', function ($, _) {
         initialize: function () {
             $.proxyAll(this, /_on/);
             this.el.popover({title: this.options.title, html: true,
-                             content: 'Loading...', placement: 'left'});
+                             content: 'Loading...', placement: 'right'});
             this.el.on('click', this._onClick);
             // Subscribe to 'dataset_popover_clicked' events.
             // Whenever any line of code publishes an event with this topic,
@@ -49,7 +49,7 @@ ckan.module('popover', function ($, _) {
         _onReceiveSnippet: function(html) {
             this.el.popover('destroy');
             this.el.popover({title: this.options.title, html: true,
-                             content: html, placement: 'left'});
+                             content: html, placement: 'right' });
             this.el.popover('show');
         },
 
@@ -57,7 +57,7 @@ ckan.module('popover', function ($, _) {
             this.el.popover('destroy');
             var content = error.status + ' ' + error.statusText + ' :(';
             this.el.popover({title: this.options.title, html: true,
-                             content: content, placement: 'left'});
+                             content: content, placement: 'right'});
             this.el.popover('show');
             this._snippetReceived = true;
         },
