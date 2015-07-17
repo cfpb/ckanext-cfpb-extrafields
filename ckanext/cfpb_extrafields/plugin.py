@@ -68,11 +68,15 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 ds.delete_datastore_json(resource['id'], 'json_name', 'datadict')
             except tk.ObjectNotFound, err:
                 pass
-            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict') 
+            except tk.ValidationError, err:
+                # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+                pass
+            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict')
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new, current is old)
         self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['format', 'privacy_contains_pii']}
+                       
         if current.get('format', '') == 'Data Dictionary' and resource.get('format', '') == 'Data Dictionary':
             self._delete_and_rebuild_datadict(resource)
     def _email_on_change(self, context, resource, field):

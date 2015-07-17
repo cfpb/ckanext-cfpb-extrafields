@@ -24,6 +24,7 @@ def create_datastore_json(rid, json_record, title_colname, json_title):
     data = defaults.data
     data.update({
     'force':'true',
+     # If the table already exists with different fields this will fail! Datastore fields must be global!
     'fields': [{'id': title_colname},{'id': json_colname, 'type': 'json'}],
     'records': [ {title_colname: json_title, json_colname: json_record} ]
     })
@@ -37,6 +38,9 @@ def get_all_datastore_jsons(rid, title_colname, json_title):
         data.update({'filters': {title_colname: json_title},})
     try:
         ds = tk.get_action('datastore_search')(context, data)
+    except tk.ValidationError, err:
+        # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+        return 
     except tk.ObjectNotFound, err:
         return 
     else:
