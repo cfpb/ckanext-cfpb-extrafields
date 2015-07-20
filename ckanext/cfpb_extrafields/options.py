@@ -6,7 +6,7 @@ def form_select_format(l):
 
 # resources 
 def format():
-    return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
+    return ["Data Dictionary", "CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
            "excel", "TXT", "TAB", "JSON"] #+other
 def storage_location():
     return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",
@@ -22,7 +22,7 @@ def update_size():
 def approximate_total_size():
     return file_sizes()
 def resource_type():
-    a = ["Canonical","Extract","Documentation","Data Dictionary","Other"]
+    a = ["Canonical","Extract","Documentation","Other"]  #,"Data Dictionary"
     return form_select_format(a)
 
 # datasets

@@ -1,0 +1,21 @@
+
+{% if output %}
+  {% resource 'cfpb_extrafields/create_downloadable_file.js' %}
+
+  <textarea hidden id="dsn_box">
+[ODBC]
+DRIVER={{data.storage_location}} [e.g., SQL Server]
+UID=sa
+DATABASE={{data.storage_location_path}} 
+WSID=P2
+APP=Visual Basic
+SERVER=(local)  
+Description=Pubs in local SQL Server</textarea> 
+  <a class="btn btn-primary" download="cfpb_{{data.name}}_{{data.format}}.dsn" id="downloadlink">DSN Importable path to database</a>
+
+{% else %}
+
+  {% import 'macros/form.html' as form %}
+  {{ form.input('unused_placeholder', type='text', label=_("Unused placeholder"), placeholder="for SQL format", value=data.unused_placeholder, error=errors.unused_placeholder) }}
+
+{% endif %}

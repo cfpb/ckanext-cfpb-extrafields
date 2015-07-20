@@ -10,12 +10,6 @@
 	<td class="dataset-details">{{ pkg_dict.id }} </td>
   </tr>
   {% endif %}
-  {% if pkg_dict.subject_matter %}
-  <tr> 
-	<th scope="row" class="dataset-label">{{ _("subject matter") }} </th>
-	<td class="dataset-details">{{ pkg_dict.subject_matter }} </td>
-  </tr>
-  {% endif %}
   <!-- Core -->
   
   {% if pkg_dict.source_names %}
@@ -27,7 +21,7 @@
   {% if pkg_dict.access_restrictions %}
   <tr>
 	<th scope="row" class="dataset-label">{{ _("access: restrictions") }} </th>
-	<td class="dataset-details">{{ pkg_dict.access_restrictions }} </td>
+	<td class="dataset-details">{{ h.render_markdown(pkg_dict.access_restrictions) }} </td>
   </tr>
   {% endif %}
   {% if pkg_dict.contact_primary_name %}
@@ -39,7 +33,7 @@
   {% if pkg_dict.initial_purpose_for_intake %}
   <tr> 
 	<th scope="row" class="dataset-label">{{ _("initial purpose for intake") }} </th>
-	<td class="dataset-details">{{ pkg_dict.initial_purpose_for_intake}} </td>
+	<td class="dataset-details">{{ h.render_markdown(pkg_dict.initial_purpose_for_intake) }} </td>
   </tr>
   {% endif %}
   {% if pkg_dict.legal_authority_for_collection %}
@@ -85,7 +79,7 @@
   {% if pkg_dict.usage_restrictions %}
     <tr>
       <th scope="row" class="dataset-label">{{ _("usage restrictions") }} </th>
-      <td class="dataset-details">{{ pkg_dict.usage_restrictions }} </td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.usage_restrictions) }} </td>
     </tr>
   {% endif %}
   <!--not core -->
@@ -105,7 +99,7 @@
   {% if pkg_dict.transfer_details %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("transfer details") }}</th>
-      <td class="dataset-details">{{ pkg_dict.transfer_details }}</td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.transfer_details) }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.transfer_initial_size %} 
@@ -117,13 +111,13 @@
   {% if pkg_dict.transfer_method %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("transfer: method") }}</th>
-      <td class="dataset-details">{{ pkg_dict.transfer_method }}</td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.transfer_method) }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.also_known_as %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("also known as") }}</th>
-      <td class="dataset-details">{{ pkg_dict.also_known_as }}</td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.also_known_as) }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.update_frequency %} 
@@ -183,7 +177,7 @@
   {% if pkg_dict.records_retention_schedule %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("records retention schedule") }}</th>
-      <td class="dataset-details">{{ pkg_dict.records_retention_schedule }}</td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.records_retention_schedule) }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.procurement_document_id %} 
@@ -201,13 +195,13 @@
   {% if pkg_dict.dataset_notes %} 
     <tr>
       <th scope="row" class="dataset-label">{{ _("dataset notes") }}</th>
-      <td class="dataset-details">{{ pkg_dict.dataset_notes }}</td>
+      <td class="dataset-details">{{ h.render_markdown(pkg_dict.dataset_notes) }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.access_notes %} 
     <tr>
-      <th scope="row" class="dataset-label">{{ _("access: notes") }}</th>
-      <td class="dataset-details">{{ pkg_dict.access_notes }}</td>
+      <th scope="row" class="dataset-label">{{ _("how to get access") }}</th>
+        <td class="dataset-details">{{ h.render_markdown(pkg_dict.access_notes) }}</td>
     </tr>
   {% endif %}
 

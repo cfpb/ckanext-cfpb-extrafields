@@ -27,7 +27,7 @@ ckan.module('post_related_gist', function ($, _) {
                     this.options.gistlink = json.html_url;
                     var outhtml = '<h3>Posted a <a href="'+json.html_url+'">Gist</a></h3>';
                     $('#ace_output').html(outhtml);
-                    var option = $('<option></option>').attr("value", this.options.gistlink).text(this.options.gistdesc);
+                    var option = $('<option></option>').attr("value", Encoder.htmlEncode(this.options.gistlink)).text(this.options.gistdesc);
                     $('#gistselect').append(option); 
                     
                     if (!this._snippetReceived) {
