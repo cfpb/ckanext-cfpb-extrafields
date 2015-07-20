@@ -19,25 +19,21 @@ def default_datastore(rid):
 def create_datastore_json(rid, json_record, title_colname, json_title): 
     ''' create a new datastore json element with primary key element of title_colname and record '''
     defaults = default_datastore(rid)
-    json_colname = defaults.json_colname
-    context = defaults.context
     data = defaults.data
     data.update({
     'force':'true',
      # If the table already exists with different fields this will fail! Datastore fields must be global!
-    'fields': [{'id': title_colname},{'id': json_colname, 'type': 'json'}],
-    'records': [ {title_colname: json_title, json_colname: json_record} ]
+    'fields': [{'id': title_colname},{'id': defaults.json_colname, 'type': 'json'}],
+    'records': [ {title_colname: json_title, defaults.json_colname: json_record} ]
     })
-    ds = tk.get_action('datastore_create')(context, data)
+    ds = tk.get_action('datastore_create')(defaults.context, data)
 def get_all_datastore_jsons(rid, title_colname, json_title): 
     defaults = default_datastore(rid)
-    json_colname = defaults.json_colname
-    context = defaults.context
     data = defaults.data
     if json_title:
         data.update({'filters': {title_colname: json_title},})
     try:
-        ds = tk.get_action('datastore_search')(context, data)
+        ds = tk.get_action('datastore_search')(defaults.context, data)
     except tk.ValidationError, err:
         # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
         return 
@@ -45,7 +41,7 @@ def get_all_datastore_jsons(rid, title_colname, json_title):
         return 
     else:
         recs = ds.get('records',[{}])
-        json_list = [rec[json_colname] for rec in recs]
+        json_list = [rec[defaults.json_colname] for rec in recs]
         return json_list
 def get_unique_datastore_json(rid, title_colname, json_title):
     ''' For json_title, you're asserting that what you want is unique. '''
@@ -56,10 +52,8 @@ def get_unique_datastore_json(rid, title_colname, json_title):
         raise IndexError 
     else:
         return jsons[0]
-
 def delete_datastore_json(rid, title_colname, json_title):
     defaults = default_datastore(rid)
-    context = defaults.context
     data = defaults.data
     data.update({'force':'true', 'filters': {title_colname: json_title},})
-    ds = tk.get_action('datastore_delete')(context, data)
+    ds = tk.get_action('datastore_delete')(defaults.context, data)
