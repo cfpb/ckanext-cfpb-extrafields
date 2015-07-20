@@ -15,3 +15,14 @@
   {{ super() }}
   <META http-equip="X-Frame-Options" content="Deny" />
 {% endblock %}
+
+
+{% block footer %}
+  {{ super() }}
+  {#logo % include "custom_footer.html" %#}
+{% endblock %}
+
+{% block scripts %}
+   {% resource 'cfpb_extrafields/encoder.js' %}
+  {{ super() }}
+{% endblock %}
