@@ -133,13 +133,15 @@
     </table>
   </div>
   <div class="module-content">
-<!-- ============ SHARE ============= -->
-<!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
-          <h2>{{ _('Contribute Related Code') }}</h2>
-          {% resource 'cfpb_extrafields/post_related_gist.js' %}
-          {% resource 'cfpb_extrafields/ace_setup.css' %}
-          {% resource 'cfpb_extrafields/ace_setup.js' %}
-<script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
+    <!-- ============ SHARE ============= -->
+    <!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
+    <h2>{{ _('Resource Related Code') }}</h2>
+    A place for code snippets related to this resource.
+    <h3>{{ _('Contribute Related Code') }}</h3>
+    {% resource 'cfpb_extrafields/post_related_gist.js' %}
+    {% resource 'cfpb_extrafields/ace_setup.css' %}
+    {% resource 'cfpb_extrafields/ace_setup.js' %}
+    <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
           
           <div id="ace_editor">
             <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description to see a snippet editor." required class="longfield" style='width:350px'>
@@ -181,7 +183,7 @@ function example_code_snippet(items) {
           <div id="ace_output"></div>
 <!-- ============ SHARE ============= -->
 <!-- ============ VIEW ============= -->
-            <h2>{{ _('View Related Code') }}</h2>
+            <h3>{{ _('View Related Code') }} </h3>
             {% resource 'cfpb_extrafields/select_gist.js' %}
             {% resource 'cfpb_extrafields/listrelated.js' %}
             <div data-module="listrelated"
@@ -192,6 +194,7 @@ function example_code_snippet(items) {
             </div>
             <select id="gistselect" style='width:600px'></select>
             <div id="gistZone"></div>
+            <h3><a href='/dataset/{{res.package_id}}/related/'>{{ _('Manage Your Dataset Contributions') }}</a></h3>
 <!-- ============ VIEW ============= -->
           </div>
 </section>
