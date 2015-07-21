@@ -9,19 +9,25 @@
 {% import 'macros/form_custom.html' as form_custom %}
 {% resource 'cfpb_extrafields/resource_type_select.js' %}
 
-{{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
+<div class='core-field'>
+{{ form.input('name', id='field-name', label=_('name'), placeholder=_('eg. January 2011 Mortgage Prices'), value=data.name, error=errors.name, classes=['control-full'], is_required=true) }}
+</div>
 
 <div class='core-field'>
-  {{ super()}}
+  {# unchanged upload buttons so far #}
+  {% set is_upload = (data.url_type == 'upload') %}
+  {{ form.image_upload(data, errors, field_url='url', field_upload='upload', field_clear='clear_upload',
+  is_upload_enabled=h.uploads_enabled(), is_url=data.url and not is_upload, is_upload=is_upload,
+upload_label=_('File'), url_label=_('URL')) }}
 </div>
+
+{{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
+
 
 {% endblock %}
 
 
 {% block basic_fields_name %}
-<div class='core-field'>
-{{ form.input('name', id='field-name', label=_('name'), placeholder=_('eg. January 2011 Mortgage Prices'), value=data.name, error=errors.name, classes=['control-full'], is_required=true) }}
-</div>
 {% endblock %}
 
 {% block basic_fields_description %}
@@ -42,56 +48,59 @@
 {#{data}#}
 {% if data.resource_type %} {# resource_type selected? #}
 {% if data.resource_type == 'Dashboard' -%}
-<h3>Dashboard</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_dashboard.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Dashboard</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_dashboard.html',data=data,errors=errors,pkg_name=pkg_name %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% elif data.resource_type == 'Database'  %}
-<h3>Database</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Database</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=data,errors=errors,pkg_name=pkg_name %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% elif data.resource_type == 'Data Dictionary' -%}
-<h3>Data Dictionary</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
-
+  {% if data.id %}
+  <h3>Data Dictionary</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
+  <button hidden class="btn btn-primary" type="button"
+    id="datadict_stash" 
+    data-module="datadict_stash"
+    data-module-dataset_id="{{ data.package_id }}"
+    data-module-resource_id="{{ data.id }}"
+          data-module-resource_name="{{ data.name }}">Save dictionary</button>
+  {% else %}
+  <font color='red'>* Supply a resource link to see a data dictionary form.</font>
+  {% endif %}
 {% elif data.resource_type == 'Data File' -%}
-<h3>Data File</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datafile.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Data File</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datafile.html',data=data,errors=errors,pkg_name=pkg_name %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% elif data.resource_type == 'Documentation' -%}
-<h3>Documentation</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_documentation.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Documentation</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_documentation.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% elif data.resource_type == 'Report' -%}
-<h3>Report</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_report.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Report</h3>
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_report.html',data=data,errors=errors,pkg_name=pkg_name %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 {% else %}
-<h3>Default</h3>
-{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
-
+  <h3>Error: Undefined Resource Type</h3>
 {% endif %}{# specific resource_type #}
 {% endif %}{# resource_type selected? #}
 {% endblock %}
 
-
-{% block save_button %}
-{% if data.resource_type == 'Data Dictionary' -%}
-  <button class="btn btn-primary" name="save" value="go-metadata" type="submit"
-    id="resource_save" 
-    data-module="datadict_post"
-    data-module-dataset_id="{{ data.package_id }}"
-    data-module-resource_id="{{ data.id }}"
-    data-module-resource_name="{{ data.name }}">
-{% else %}
-  <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">
-{% endif %}
-  {% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
-{% endblock %}
-{% block add_button %}
-  <button id="resource_save" class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Add') }}</button>
+  
+{% block again_button %} <!----------------------------->
+  {# This "Save & add another" button is confusing in the new paradigm #}
+  {# <button id="resource_save" class="btn" name="save" value="again" type="submit">{{ _('Save & Continue') }}</button> #}
 {% endblock %}
     
+{% block save_button %}  <!----------------------------->
+  <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">
+    {% block save_button_text %}
+    {{ _('Modify and Save') }}
+    {% endblock %}
+  </button>
+{% endblock %}
+  
+{% block add_button %}
+  {# id="resource_create" don't listen for resource type changes when creating a resource #}
+  <button id="resource_create" class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Continue') }}</button>
+{% endblock %}
+  

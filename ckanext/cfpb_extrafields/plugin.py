@@ -59,7 +59,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                        resource_id=resource['id'],id=resource['package_id'])
     def _delete_and_rebuild_datadict(self, resource):
         import json
-        if 'datadict' in resource:
+        if 'datadict' in resource and 'id' in resource:
             record = resource['datadict']
             resource.pop('datadict')
             json_record = json.loads(record)

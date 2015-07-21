@@ -1,6 +1,6 @@
 {% resource 'cfpb_extrafields/datadict_setup.css' %}
 {% resource 'cfpb_extrafields/datadict_setup.js' %}
-{% resource 'cfpb_extrafields/datadict_post.js' %}
+{% resource 'cfpb_extrafields/datadict_stash.js' %}
 
 
 {% set dd = h.get_unique_datastore_json(data.id, 'json_name', 'datadict') %}
@@ -15,8 +15,7 @@
 {% set nkeys = range(dd[1]|length) %}
 {% set nrows = dd|length-2 %}
 
-
-<div id="table" class="table-editable">    
+<div id="datadict-table" class="table-editable">    
   {% if editable == "true" %}
   <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
   {% endif %}
@@ -47,7 +46,7 @@
       {% endif %}
     </tr>
   {%endfor%}
-   <!-- This is our clonable table line -->
+   <!-- This is our hidden clonable table line -->
     <tr class="hide">
       {% for item in header_names %}
         <td contenteditable={{editable}}>-</td>
