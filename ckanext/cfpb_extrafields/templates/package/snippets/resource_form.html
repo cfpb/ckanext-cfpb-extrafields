@@ -7,23 +7,14 @@
 
 {% block basic_fields_url %}
 {% import 'macros/form_custom.html' as form_custom %}
-{% resource 'cfpb_extrafields/format_select.js' %}
-
-
-<div class='core-field'>
-  {{ form_custom.select_one_with_other('format',
-  id='field-format',
-  label=_('format'),  
-  current_value=data.get('format', ''), 
-  options_defaults=h.options_format(), 
-  error=errors.format,) }}
-</div>
+{% resource 'cfpb_extrafields/resource_type_select.js' %}
 
 {{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
 
 <div class='core-field'>
   {{ super()}}
 </div>
+
 {% endblock %}
 
 
@@ -33,13 +24,12 @@
 </div>
 {% endblock %}
 
-
 {% block basic_fields_description %}
-{% if data.format %} {# format selected? #}
+{% if data.resource_type %} {# resource_type selected? #}
 <div class='core-field'>
 {{ form.markdown('description', id='field-description', label=_('description'), placeholder=_('Some useful notes about the data'), value=data.description, error=errors.description) }}
 </div>
-{% endif %} {# format selected? #}
+{% endif %} {# resource_type selected? #}
 {% endblock %}
 
 
@@ -50,25 +40,46 @@
 {% import 'macros/form_custom.html' as form_custom %}
 
 {#{data}#}
-{% if data.format %} {# format selected? #}
-{% if data.format == 'Data Dictionary' -%}
-<h3>Data Dictionary</h3>
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
+{% if data.resource_type %} {# resource_type selected? #}
+{% if data.resource_type == 'Dashboard' -%}
+<h3>Dashboard</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_dashboard.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 
-{% elif data.format == 'SQL'  %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_sql.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% elif data.resource_type == 'Database'  %}
+<h3>Database</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+
+{% elif data.resource_type == 'Data Dictionary' -%}
+<h3>Data Dictionary</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
+
+{% elif data.resource_type == 'Data File' -%}
+<h3>Data File</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datafile.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+
+{% elif data.resource_type == 'Documentation' -%}
+<h3>Documentation</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_documentation.html',data=data,errors=errors,pkg_name=pkg_name %}
+
+{% elif data.resource_type == 'Report' -%}
+<h3>Report</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_report.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 
 {% else %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+<h3>Default</h3>
+{% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
 
-{% endif %}
-{% endif %}{# format selected? #}
+{% endif %}{# specific resource_type #}
+{% endif %}{# resource_type selected? #}
 {% endblock %}
 
 
 {% block save_button %}
-{% if data.format == 'Data Dictionary' -%}
+{% if data.resource_type == 'Data Dictionary' -%}
   <button class="btn btn-primary" name="save" value="go-metadata" type="submit"
     id="resource_save" 
     data-module="datadict_post"

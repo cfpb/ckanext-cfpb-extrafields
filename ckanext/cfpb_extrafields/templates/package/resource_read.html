@@ -1,22 +1,22 @@
 {% ckan_extends %}
 
 {% block resource_view_content %}
+{% if res.resource_type == 'Database' or 
+      res.resource_type == 'Data Dictionary' %}
 
-{% if res.format == 'SQL' or 
-      res.format == 'Data Dictionary' %}
-
-    {% if res.format == 'SQL' %}
-      {% snippet 'package/snippets/format-specific/cfpb_extrafields_SQL.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
+    {% if res.resource_type == 'Database' %}
+      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
     {% endif %}
 
-    {% if res.format == 'Data Dictionary'  %}
-      {% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
+    {% if res.resource_type == 'Data Dictionary'  %}
+      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
     {% endif %}
 
-  {%else%}
+{% else %}
+
     {{super()}}
-  {% endif %}
 
+{% endif %}
 {% endblock %}
 
 {% block resource_content %}
@@ -50,6 +50,12 @@
                 <th scope="row">{{ _('metadata last updated') }}</th>
                 <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
+              {% if res.resource_type %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <td class="dataset-details">{{ res.resource_type }}</td>
+              </tr>
+              {% endif %}
               <tr>
                 <th scope="row">{{ _('format') }}</th>
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
@@ -108,12 +114,6 @@
               <tr>
                 <th scope="row" class="dataset-label">{{ _("approximate total Size") }}</th>
                 <td class="dataset-details">{{ res.approximate_total_size }}</td>
-              </tr>
-              {% endif %}
-              {% if res.resource_type %} 
-              <tr>
-                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
-                <td class="dataset-details">{{ res.resource_type }}</td>
               </tr>
               {% endif %}
               {% if res.privacy_has_direct_identifiers %} 

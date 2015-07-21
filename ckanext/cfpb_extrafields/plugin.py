@@ -54,10 +54,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_create(self, context, resource):
         return
     def after_create(self, context, resource):
-        # must have changed['format'] when you created the resource
+        # must have changed['resource_type'] when you created the resource
         tk.redirect_to(controller='package',action='resource_edit',
                        resource_id=resource['id'],id=resource['package_id'])
-
     def _delete_and_rebuild_datadict(self, resource):
         import json
         if 'datadict' in resource:
@@ -75,9 +74,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
     def before_update(self, context, current, resource):
         # note keys that have changed (resource is new, current is old)
-        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['format', 'privacy_contains_pii']}
+        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['resource_type', 'privacy_contains_pii']}
                        
-        if current.get('format', '') == 'Data Dictionary' and resource.get('format', '') == 'Data Dictionary':
+        if current.get('resource_type', '') == 'Data Dictionary' and resource.get('resource_type', '') == 'Data Dictionary':
             self._delete_and_rebuild_datadict(resource)
     def _email_on_change(self, context, resource, field):
         # unfinished! 
@@ -92,14 +91,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
                 # send a notification of change by email
     def _redirect_on_change(self, resource, field):
-        if self.changed['format']:
+        if self.changed['resource_type']:
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
     def after_update(self, context, resource):
         ''' do things on field changes '''
         # unfinished email trigger:
         # self._email_on_change(context,resource,'privacy_contains_pii')
-        self._redirect_on_change(resource,'format')
+        self._redirect_on_change(resource,'resource_type')
         # reset monitored keys 
         for key in self.changed:
             self.changed[key] = False
@@ -380,6 +379,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict = collections.OrderedDict()
         # example facet added
         facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
+        facets_dict['resource_type'] = p.toolkit._('Resource Type')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
