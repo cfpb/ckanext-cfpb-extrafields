@@ -16,16 +16,22 @@ ckan.module('post_related_gist', function ($, _) {
                 $('#gist-description').focus();
                 return;
             }
+            if (this.options.resource_name == true){
+                // module change '' to  true so this corresponds to an unnamed resource
+                this.options.resource_name = 'Unnamed'; 
+            }
             var textgist = editor.getSession().getValue();
             $('#ace_output').html('<div id="loader"><img src="/loader.gif" alt="loading..."></div>');
             var apiurl   = 'https://github.cfpb.gov/api/v3/gists';
             
             this._postGIST(apiurl,textgist, function(json) {
-                if (!("html_url" in json)){
+                if (!json) {
+                    $('#ace_output').html("<h2>GitHub failed to connect</h2><br>");
+                }else if (!("html_url" in json)){
                     $('#ace_output').html("<h2>GitHub post failed</h2><br>",json);
                 }else {
                     this.options.gistlink = json.html_url;
-                    var outhtml = '<h3>Posted a <a href="'+json.html_url+'">Gist</a></h3>';
+                    var outhtml = '<h4>Posted a <a href="'+json.html_url+'">Gist</a></h4>';
                     $('#ace_output').html(outhtml);
                     var option = $('<option></option>').attr("value", Encoder.htmlEncode(this.options.gistlink)).text(this.options.gistdesc);
                     $('#gistselect').append(option); 
