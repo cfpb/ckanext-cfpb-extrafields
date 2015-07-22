@@ -379,7 +379,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict = collections.OrderedDict()
         # example facet added
         facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
-        facets_dict['resource_type'] = p.toolkit._('Resource Type')
+        # resource_type randomly gets indexed in lib/search/index.py as res_type
+        facets_dict['res_type'] = p.toolkit._('Resource Type')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
