@@ -51,12 +51,14 @@ def parse_resource_related_gist(data_related_items, resource_id):
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     p.implements(p.IResourceController)
-    def before_create(self, context, resource):
-        return
-    def after_create(self, context, resource):
-        # must have changed['resource_type'] when you created the resource
-        tk.redirect_to(controller='package',action='resource_edit',
-                       resource_id=resource['id'],id=resource['package_id'])
+    def _which_check_keys_changed(self, old, new):
+        check_keys = ['resource_type', 'privacy_contains_pii']
+        self.changed = {key: new.get(key, '0') != old.get(key, '1')
+                        for key in check_keys}
+    def _redirect_to_edit_on_change(self, resource, field):
+        if self.changed[field]:
+            tk.redirect_to(controller='package', action='resource_edit',
+                           resource_id=resource['id'],id=resource['package_id'])
     def _delete_and_rebuild_datadict(self, resource):
         import json
         if 'datadict' in resource and 'id' in resource:
@@ -64,20 +66,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             resource.pop('datadict')
             json_record = json.loads(record)
             try:
-                ds.delete_datastore_json(resource['id'], 'json_name', 'datadict')
+                ds.delete_datastore_json(resource['id'], 'datadict')
             except tk.ObjectNotFound, err:
                 pass
             except tk.ValidationError, err:
                 # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
                 pass
-            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict')
+            ds.create_datastore_json(resource['id'], 'datadict', json_record)
         return
-    def before_update(self, context, current, resource):
-        # note keys that have changed (resource is new, current is old)
-        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['resource_type', 'privacy_contains_pii']}
-                       
-        if current.get('resource_type', '') == 'Data Dictionary' and resource.get('resource_type', '') == 'Data Dictionary':
-            self._delete_and_rebuild_datadict(resource)
     def _email_on_change(self, context, resource, field):
         # unfinished! 
         # if specified fields have changed notify the relevant people
@@ -90,15 +86,24 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # get email addresses 
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
                 # send a notification of change by email
-    def _redirect_on_change(self, resource, field):
-        if self.changed['resource_type']:
-            tk.redirect_to(controller='package', action='resource_edit',
-                           resource_id=resource['id'],id=resource['package_id'])
+    def before_create(self, context, resource):
+        return
+    def after_create(self, context, resource):
+        # Also create a placeholder for uploading data to datastore when the resource is created.
+        ds.create_datastore_placeholder(resource['id'])
+        self._which_check_keys_changed({}, resource)
+        self._redirect_to_edit_on_change(resource, 'resource_type')
+    def before_update(self, context, current, resource):
+        # note keys that have changed (current is old, resource is new)
+        self._which_check_keys_changed(current, resource)
+        if current.get('resource_type', '') == 'Data Dictionary' \
+           and resource.get('resource_type', '') == 'Data Dictionary':
+            self._delete_and_rebuild_datadict(resource)
     def after_update(self, context, resource):
         ''' do things on field changes '''
         # unfinished email trigger:
         # self._email_on_change(context,resource,'privacy_contains_pii')
-        self._redirect_on_change(resource,'resource_type')
+        self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys 
         for key in self.changed:
             self.changed[key] = False

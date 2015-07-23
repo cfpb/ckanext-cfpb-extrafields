@@ -3,7 +3,7 @@
 {% resource 'cfpb_extrafields/datadict_stash.js' %}
 
 
-{% set dd = h.get_unique_datastore_json(data.id, 'json_name', 'datadict') %}
+{% set dd = h.get_unique_datastore_json(data.id, 'datadict') %}
 {% if not dd %}
   {% set dd = [ ["Name","Description","Datatype","Size"],
   ["name","description","datatype","size"],
