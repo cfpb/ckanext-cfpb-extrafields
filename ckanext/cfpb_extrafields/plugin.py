@@ -382,14 +382,16 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
-        # example facet added
-        facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
-        # resource_type randomly gets indexed in lib/search/index.py as res_type
-        facets_dict['res_type'] = p.toolkit._('Resource Type')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
         # hide License facet because it is not used by cfpb
         facets_dict.pop('license_id', None)
+        # change the order of the format facet
+        facets_dict.pop('res_format', None)
+        facets_dict['tags'] = p.toolkit._('Subjects')
+        # resource_type randomly gets indexed in lib/search/index.py as res_type
+        facets_dict['res_type'] = p.toolkit._('Resource Types')
+        facets_dict['res_format'] = p.toolkit._('Formats')
         return facets_dict
     def dataset_facets(self, facets_dict, package_type):
         return self._change_facets(facets_dict)
