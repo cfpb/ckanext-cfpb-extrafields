@@ -208,7 +208,33 @@ the dataset's primary contact and cc your supervisor</a>. <br>
       <th scope="row" class="dataset-label">{{ _("how to get access") }}</th>
         <td class="dataset-details">{{ h.render_markdown(pkg_dict.access_notes) }}</td>
     </tr>
-  {% endif %}
+    {% endif %}
+    
+              {% if pkg_dict.sensitivity_level %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("sensitivity level") }} </th>
+	            <td class="dataset-details">{{ pkg_dict.sensitivity_level }} </td>
+              </tr>
+              {% endif %}
+              {% if pkg_dict.privacy_contains_pii %}
+              <tr>
+	            <th scope="row" class="dataset-label">{{ _("privacy: contains PII") }} </th>
+	            <td class="dataset-details">{{ pkg_dict.privacy_contains_pii}} </td>
+              </tr>
+              {% endif %}
+              {% if pkg_dict.privacy_has_direct_identifiers %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("privacy: has direct identifiers") }}</th>
+                <td class="dataset-details">{{ pkg_dict.privacy_has_direct_identifiers }}</td>
+              </tr>
+              {% endif %}
+      {% if pkg_dict.cleansing_rules_used %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
+                <td class="dataset-details">{{ h.render_markdown(pkg_dict.cleansing_rules_used) }}</td>
+              </tr>
+              {% endif %}
+              
 
 {% endblock %}
 {% endblock %}

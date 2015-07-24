@@ -82,18 +82,6 @@
                          </tr></table> </td>
               {% endif %}
               </tr>
-              {% if res.sensitivity_level %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("sensitivity level") }} </th>
-	            <td class="dataset-details">{{ res.sensitivity_level }} </td>
-              </tr>
-              {% endif %}
-              {% if res.privacy_contains_pii %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("privacy: contains PII") }} </th>
-	            <td class="dataset-details">{{ res.privacy_contains_pii}} </td>
-              </tr>
-              {% endif %}
               <tr>
                 <th scope="row" class="dataset-label"><br> </th>
                 <td class="dataset-details"><br> </td>
@@ -116,19 +104,6 @@
                 <td class="dataset-details">{{ res.approximate_total_size }}</td>
               </tr>
               {% endif %}
-              {% if res.privacy_has_direct_identifiers %} 
-              <tr>
-                <th scope="row" class="dataset-label">{{ _("privacy: has direct identifiers") }}</th>
-                <td class="dataset-details">{{ res.privacy_has_direct_identifiers }}</td>
-              </tr>
-              {% endif %}
-              {% if res.cleansing_rules_used %} 
-              <tr>
-                <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
-                <td class="dataset-details">{{ h.render_markdown(res.cleansing_rules_used) }}</td>
-              </tr>
-              {% endif %}
-              
             </tbody>
     </table>
   </div>
