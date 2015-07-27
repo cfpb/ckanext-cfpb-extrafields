@@ -28,6 +28,7 @@ label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=err
 
 {{ form.select('content_periodicity', label=_('content periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
+{{ form.input('content_spatial', label=_("content: spatial coverage"), placeholder="e.g., continental USA", value=data.content_spatial, error=errors.content_spatial) }}
 {#{ form_custom.select_multi_with_other('content_spatial', 
 label=_('content: spatial coverage'),  
 current_values=h.clean_select_multi(data.get('content_spatial', '')), 
