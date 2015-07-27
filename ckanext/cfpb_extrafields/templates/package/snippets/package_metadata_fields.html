@@ -19,7 +19,12 @@ label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=err
 <script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
 </div>
 
-{{ form.select('update_frequency', label=_('update frequency'), id='field-update_frequency', options=h.options_update_frequency(), selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
+<div class='core-field'>
+{{ form.input('content_temporal_range_start', id='field-content_temporal_range_start', type='date', label=_("content start date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
+</div>
+<div class='core-field'>
+{{ form.input('content_temporal_range_end', id='field-content_temporal_range_end', type='date', label=_("content end date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
+</div>
 
 {{ form.select('content_periodicity', label=_('content periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
@@ -29,6 +34,8 @@ current_values=h.clean_select_multi(data.get('content_spatial', '')),
 options_defaults=h.options_content_spatial(), 
 error=errors.content_spatial,
 ) }#}
+
+{{ form.select('update_frequency', label=_('update frequency'), id='field-update_frequency', options=h.options_update_frequency(), selected=data.update_frequency, error=errors.update_frequency, classes=['control-medium']) }}
 
 {{ form.input('wiki_link', label=_("wiki link"), placeholder="http://cfpb.local/...", type="url", value=data.wiki_link, error=errors.wiki_link) }}
 

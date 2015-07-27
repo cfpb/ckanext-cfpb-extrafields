@@ -21,11 +21,17 @@
 	<th scope="row" class="dataset-label">{{ _("") }} </th>
 	<td class="dataset-details"></td>
   </tr>
-  {% if pkg_dict.update_frequency %} 
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("update frequency") }}</th>
-      <td class="dataset-details">{{ pkg_dict.update_frequency }}</td>
-    </tr>
+  {% if pkg_dict.content_temporal_range_start %}
+  <tr>
+	<th scope="row" class="dataset-label">{{ _("content: start date") }} </th>
+	<td class="dataset-details">{{ pkg_dict.content_temporal_range_start }} </td>
+  </tr>
+  {% endif %}
+  {% if pkg_dict.content_temporal_range_end %}
+  <tr>
+	<th scope="row" class="dataset-label">{{ _("content: end date") }} </th>
+	<td class="dataset-details">{{ pkg_dict.content_temporal_range_end }} </td>
+  </tr>
   {% endif %}
   {% if pkg_dict.content_periodicity %} 
     <tr>
@@ -37,6 +43,12 @@
     <tr>
       <th scope="row" class="dataset-label">{{ _("content: spatial coverage") }}</th>
       <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.content_spatial) %} {{i}}; {% endfor %}</td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.update_frequency %} 
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("update frequency") }}</th>
+      <td class="dataset-details">{{ pkg_dict.update_frequency }}</td>
     </tr>
   {% endif %}
   {% if pkg_dict.wiki_link %} 

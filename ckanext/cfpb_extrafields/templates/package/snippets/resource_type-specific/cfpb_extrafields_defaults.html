@@ -11,15 +11,6 @@
   error=errors.format,) }}
 </div>
 
-<div class='core-field'>
-{{ form.input('content_temporal_range_start', id='field-content_temporal_range_start', type='date', label=_("content start date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_start, error=errors.content_temporal_range_start) }}
-</div>
-<div class='core-field'>
-{{ form.input('content_temporal_range_end', id='field-content_temporal_range_end', type='date', label=_("content end date"), placeholder="eg 2012-12-21", value=data.content_temporal_range_end, error=errors.content_temporal_range_end) }}
-</div>
-
-{{ form.input('intake_date', type='date', label=_("intake date"), placeholder="eg 2012-12-21", value=data.intake_date, error=errors.intake_date) }}
-
 <!-- custom version of select one with extra field -->
 <div class='core-field'>
 <div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
@@ -48,6 +39,8 @@
   </div>
 </div>
 </div>
+
+{{ form.input('intake_date', type='date', label=_("intake date"), placeholder="eg 2012-12-21", value=data.intake_date, error=errors.intake_date) }}
 
 {{ form.select('update_size', label=_('update: size'), id='field-update_size', options=h.options_update_size(), selected=data.update_size, error=errors.update_size, classes=['control-medium']) }}
 {{ form.select('approximate_total_size', label=_('approximate total size'), id='field-approximate_total_size', options=h.options_approximate_total_size(), selected=data.approximate_total_size, error=errors.approximate_total_size, classes=['control-medium']) }}

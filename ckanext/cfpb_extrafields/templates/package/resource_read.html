@@ -71,19 +71,7 @@
                 <th scope="row">{{ _('format') }}</th>
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
               </tr>
-              <!-- new core fields -->
-              {% if res.content_temporal_range_end %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("content: end") }} </th>
-	            <td class="dataset-details">{{ res.content_temporal_range_end }} </td>
-              </tr>
-              {% endif %}
-              {% if res.content_temporal_range_start %}
-              <tr>
-	            <th scope="row" class="dataset-label">{{ _("content: start") }} </th>
-	            <td class="dataset-details">{{ res.content_temporal_range_start }} </td>
-              </tr>
-              {% endif %}
+              
               {% if res.storage_location or res.storage_location_path %}
               <tr>
 	            <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
@@ -91,12 +79,8 @@
                   <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
                              <td>{{ res.storage_location_path }}</td>
                          </tr></table> </td>
+              </tr>
               {% endif %}
-              </tr>
-              <tr>
-                <th scope="row" class="dataset-label"><br> </th>
-                <td class="dataset-details"><br> </td>
-              </tr>
               {% if res.intake_date %} 
               <tr>
                 <th scope="row" class="dataset-label">{{ _("intake date") }}</th>

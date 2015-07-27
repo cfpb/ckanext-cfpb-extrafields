@@ -200,6 +200,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'content_spatial': [tk.get_validator('ignore_missing'),
                                 v.input_value_validator,
                         tk.get_converter('convert_to_extras')],
+            'content_temporal_range_end' : [v.end_after_start_validator, v.reasonable_date_validator,
+                                            tk.get_validator('ignore_missing'),
+                                            tk.get_converter('convert_to_extras')], 
+            'content_temporal_range_start' : [v.end_after_start_validator, v.reasonable_date_validator,
+                                              tk.get_validator('ignore_missing'),
+                                              tk.get_converter('convert_to_extras')],
             'update_frequency': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'website_name': [tk.get_validator('ignore_missing'),
@@ -245,8 +251,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         })
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),], 
-                'content_temporal_range_start' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'resource_type' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
@@ -300,6 +304,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                 tk.get_validator('ignore_missing')],
             'update_frequency': [tk.get_converter('convert_from_extras'),
                                  tk.get_validator('ignore_missing')],
+            'content_temporal_range_end' : [tk.get_converter('convert_from_extras'),
+                                            tk.get_validator('ignore_missing'),],
+            'content_temporal_range_start' : [tk.get_converter('convert_from_extras'),
+                                              tk.get_validator('ignore_missing'),],
             'website_name': [tk.get_converter('convert_from_extras'),
                              tk.get_validator('ignore_missing')],
             'website_url': [tk.get_converter('convert_from_extras'),
@@ -344,8 +352,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [tk.get_validator('ignore_missing'),],
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],

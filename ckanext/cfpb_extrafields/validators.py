@@ -70,12 +70,11 @@ def to_datetime(value):
         Invalid("Please ensure date is in yyyy-mm-dd format!")
     return parsed_date
 def end_after_start_validator(key, flattened_data, errors, context):
-    for i in range(flattened_data[('__extras',)].get('num_resources',1)):
-        start_str = flattened_data.get(('resources', i, 'content_temporal_range_start'),None)
-        end_str =  flattened_data.get(('resources', i, 'content_temporal_range_end'),None)
-        if start_str and end_str:
-            if to_datetime(start_str) > to_datetime(end_str): 
-                Invalid("content start date occurs after end date")
+    start_str = flattened_data.get(('content_temporal_range_start',),None)
+    end_str =  flattened_data.get(('content_temporal_range_end',),None)
+    if start_str and end_str:
+        if to_datetime(start_str) > to_datetime(end_str): 
+            Invalid("content start date occurs after end date")
     return
 
 
