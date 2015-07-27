@@ -52,6 +52,12 @@
 
 {% block custom_fields %}
 
+<h4>Content</h4>
+<h4>Access</h4>
+<h4>Administrative</h4>
+<h4>Compliance</h4>
+
+
 <div class="core-field">
 {{ form.markdown('data_source_names', id='field-data_source_names', label=_('source'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
 <script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
