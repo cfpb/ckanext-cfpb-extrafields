@@ -106,16 +106,17 @@
     <!-- ============ SHARE ============= -->
     <!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
     <hr>
-    <h1>{{ _('Related Code') }}</h1>
-    A place for code snippets related to this resource.
-    <h3>{{ _('Share Related Code') }}</h3>
+    <h2>{{ _('Related Code') }}</h2>
+    <p>A place for code snippets related to this resource.</p>
+    <h3>{{ _('Add Related Code') }}</h3>
+
     {% resource 'cfpb_extrafields/post_related_gist.js' %}
     {% resource 'cfpb_extrafields/ace_setup.css' %}
     {% resource 'cfpb_extrafields/ace_setup.js' %}
     <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
           
           <div id="ace_editor">
-            <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description to see a snippet editor." required class="longfield" style='width:350px'>
+            <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description of your new snippet." required class="longfield" style='width:350px'>
             
             <select id="gistType">
                 <option value='{"name":"javascript", "ext":"js"}'>Select a file-type (javascript)</option>
@@ -143,7 +144,7 @@ function example_code_snippet(items) {
 }</textarea>
             
           </div>
-          <button id="btn_post_related_gist" type="button" data-module="post_related_gist"
+          <button id="btn_post_related_gist" class="btn btn-primary" type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
                   data-module-resource_name="{{ res.name }}"
@@ -154,8 +155,7 @@ function example_code_snippet(items) {
           <div id="ace_output"></div>
 <!-- ============ SHARE ============= -->
 <!-- ============ VIEW ============= -->
-            <h3>{{ _('View Related Code') }} </h3>
-            {% resource 'cfpb_extrafields/select_gist.js' %}
+            
             {% resource 'cfpb_extrafields/listrelated.js' %}
             <div data-module="listrelated"
                  data-module-dataset_id="{{ res.package_id }}"
@@ -163,7 +163,7 @@ function example_code_snippet(items) {
                  data-module-resource_name="{{ res.name }}"
                  data-module-html="listrelated.html">
             </div>
-            <div id="list-gists" style='width:600px'></select>
+            <div id="list-gists"></select>
             <div id="gistZone"></div>
             <h3><a href='/dataset/{{res.package_id}}/related/'>{{ _('Manage Your Dataset Contributions') }}</a></h3>
 <!-- ============ VIEW ============= -->

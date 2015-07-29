@@ -1,5 +1,6 @@
+{% resource 'cfpb_extrafields/capital_framework.js' %}
 <div class="expandable-group" id="resource-gists">
-    <div class="expandable-group_header">View Related Code</div>
+    <div class="expandable-group_header">{{ _('View Related Code') }}</div>
     {% for item in h.parse_resource_related_gist(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
     <div class="expandable expandable__padded resource-gist" data-gist-url="{{ item.url }}">
         <button class="expandable_header expandable_target" title="Expand content">
@@ -18,13 +19,6 @@
             </span>
         </button>
         <div class="expandable_content">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Neque ipsa voluptatibus soluta nobis unde quisquam
-                temporibus magnam debitis quidem. Ducimus ratione
-                corporis nesciunt earum vel est quaerat blanditiis
-                dolore ipsa?
-            </p>
         </div>
     </div>
     {% endfor %}
