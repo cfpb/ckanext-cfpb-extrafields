@@ -1,6 +1,12 @@
 //<!-- http://stackoverflow.com/questions/9154026/jquery-dynamically-load-a-gist-embed -->
-document.getElementById("gistselect").onchange = function(e) {
-    if (e.target.value) {
+
+function adjustIframeSize(newHeight) {
+    var i = document.getElementById("gistFrame");
+    i.style.height = parseInt(newHeight) + "px";
+}
+
+$("#resource-gists .resource-gist").each(function(){
+    if ($(this).data('gist-url')) {
         // Create an iframe, append it to this document where specified
         var gistFrame = document.createElement("iframe");
         gistFrame.setAttribute("width", "100%");
@@ -11,7 +17,7 @@ document.getElementById("gistselect").onchange = function(e) {
         zone.appendChild(gistFrame);
         
         // Create the iframe's document
-        var gistFrameHTML = '<html><body onload="parent.adjustIframeSize(document.body.scrollHeight)"><scr'+'ipt type="text/javascript" src="' + e.target.value + '.js"></sc'+'ript></b'+'ody></h'+'tml><base target="_parent" />';
+        var gistFrameHTML = '<html><body onload="parent.adjustIframeSize(document.body.scrollHeight)"><scr'+'ipt type="text/javascript" src="' + $(this).data('gist-url') + '.js"></sc'+'ript></b'+'ody></h'+'tml><base target="_parent" />';
 
         // Set iframe's document with a trigger for this document to adjust the height
         var gistFrameDoc = gistFrame.document;
@@ -26,14 +32,8 @@ document.getElementById("gistselect").onchange = function(e) {
         gistFrameDoc.open();
         gistFrameDoc.writeln(gistFrameHTML);
         gistFrameDoc.close();
-        
-        console.log("iframe added");
     }
-}
+});
 
-function adjustIframeSize(newHeight) {
-    var i = document.getElementById("gistFrame");
-    i.style.height = parseInt(newHeight) + "px";
-    console.log("size adjusted", newHeight);
-}
-
+$('.expandable').expandable();
+console.log(98798798)

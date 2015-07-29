@@ -27,7 +27,9 @@ ckan.module('listrelated', function ($, _) {
         },
 
         _onReceiveSnippet: function(outhtml) {
-            $('#gistselect').html(outhtml);
+            $('#list-gists').html(outhtml);
+            // This is what shows on page load.
+            // console.log(outhtml);
         },
 
         _onReceiveSnippetError: function(error) {
