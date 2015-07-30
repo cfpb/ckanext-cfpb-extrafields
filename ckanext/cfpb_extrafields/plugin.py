@@ -89,10 +89,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_create(self, context, resource):
         return
     def after_create(self, context, resource):
-        # Also create a placeholder for uploading data to datastore when the resource is created.
-        ds.create_datastore_placeholder(resource['id'])
-        self._which_check_keys_changed({}, resource)
-        self._redirect_to_edit_on_change(resource, 'resource_type')
+        # resource creation is now handled under the hood by created_edit_resource.js
+        # All resources are produced with views, datastore headings and with a default URL
+        # (so that users aren't forced to enter a confusing link).
+        # some of that could be moved here if desired.
+        return 
     def before_update(self, context, current, resource):
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
@@ -141,6 +142,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
 
+                'create_datastore_placeholder':ds.create_datastore_placeholder,
                 'create_datastore_json':ds.create_datastore_json, 
                 'get_unique_datastore_json':ds.get_unique_datastore_json,
                 'delete_datastore_json':ds.delete_datastore_json,

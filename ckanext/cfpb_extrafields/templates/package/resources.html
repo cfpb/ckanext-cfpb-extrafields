@@ -5,21 +5,14 @@ http://127.0.0.1:8080/dataset/feeab25d-1cfd-48b3-b587-a300fbbc384d/resource_edit
 
 {% block page_primary_action %}
 {#{super()}#}
-<a href="" id="create_resource" class="btn btn-primary">
+{% resource 'cfpb_extrafields/create_edit_resource.js' %}
+<a href="javascript:;" class="btn" type="button"
+   data-module="create_edit_resource"
+   data-module-html="create_edit_resource.html"
+   data-module-pkgid="{{c.pkg_dict.id}}"
+   >
   <i class="icon-plus"></i> {{ _('Add new resource') }}
 </a>
-
 {% endblock %}
 
-{#
-make a button that looks like this: 
-   {% link_for _('Add new resource'), controller='package', action='resource_edit', id=c.pkg.id, resource_id="f31d5f01-3337-4b6a-a7a1-6baf50949710", class_='btn', icon='plus' %}
-   drops a snippet:
-import ckan.plugins.toolkit as tk
-{% set rid = h.get_action('resource_create')(context, {'package_id':pkg.name,'url':'_datastore_only_resource'}) %}
-{% tk.redirect_to(controller='package', action='resource_edit', id=c.pkg.id, resource_id={{ rid }}) %}
 
-
-{% link_for _('Add new resource'), controller='package', action='new_resource', id=c.pkg_dict.name, class_='btn btn-primary', icon='plus' %}
-
-#}
