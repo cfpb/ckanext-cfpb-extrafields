@@ -4,7 +4,6 @@ $(function() {
     $('#field-resource_type').change( function() {
         var rtype = $('#field-resource_type').val();
         if(      rtype == 'Data Dictionary'){
-            $( "#url" ).val('http://-datadictionary-')
             $( "#resource_save" ).trigger( "click" );
         }else if(rtype == 'Report'){ 
             $( "#resource_save" ).trigger( "click" );

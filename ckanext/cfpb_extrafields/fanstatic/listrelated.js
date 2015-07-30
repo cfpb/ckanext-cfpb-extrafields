@@ -1,6 +1,5 @@
 "use strict";
-// now insert the data-module stuff so you can use that here instead of hidden data- stuff
-// then do the filtering in javascript but maybe the loop over returned values in jinja?
+
 ckan.module('listrelated', function ($, _) {
     return {
         initialize: function () {
