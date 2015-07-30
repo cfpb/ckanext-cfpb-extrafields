@@ -1,0 +1,4 @@
+{% set resource = h.get_action('resource_create', {'package_id': pkgid,'url':'_datastore_only_resource','resource_type':'Documentation'}) %}
+{{ h.url_for(controller='package', action='resource_edit', id=pkgid, resource_id=resource.id) }}
+
+
