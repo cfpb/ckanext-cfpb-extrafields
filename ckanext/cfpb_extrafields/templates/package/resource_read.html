@@ -225,11 +225,10 @@ function example_code_snippet(items) {
   </div>
 </div>
       
-  {% endif %}
-{% block resource_view_nav %}
-{% endblock %}
+{% endif %}
 {% block resource_view_content %}
-<section class="module resource-view">
+{% resource 'cfpb_extrafields/dataset-status.js' %}
+<section class="module resource-view" id="dataset-status">
   <div class="module-content">
     <div class="expandable expandable__padded">
       <button class="expandable_header expandable_target" title="Expand content">
@@ -248,6 +247,9 @@ function example_code_snippet(items) {
           </span>
       </button>
       <div class="expandable_content">
+          {% block resource_view_nav %}
+            {{ super() }}
+          {% endblock %}
           {{ super() }}
       </div>
     </div>
