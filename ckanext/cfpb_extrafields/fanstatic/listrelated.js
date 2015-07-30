@@ -16,6 +16,7 @@ ckan.module('listrelated', function ($, _) {
 
         _onLoad: function(event) {
             if (!this._snippetReceived) {
+                console.log(this.options);
                 this.sandbox.client.getTemplate(this.options.html,
                                                 this.options,
                                                 this._onReceiveSnippet);
@@ -55,7 +56,7 @@ ckan.module('listrelated', function ($, _) {
                     gistFrameDoc.close();
                 }
             });
-            jQuery('.expandable').expandable();
+            jQuery('.resource-gist').expandable();
         },
 
         _onReceiveSnippetError: function(error) {
