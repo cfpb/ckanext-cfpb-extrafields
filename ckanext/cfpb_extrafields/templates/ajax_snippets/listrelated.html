@@ -1,5 +1,33 @@
-  <option value="">Display a code snippet</option>
-  {% for item in h.parse_resource_related_gist(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
-  <option value="{{ item.url }}">{{ item.title }}</option>
-  {% endfor %}
-
+{% resource 'cfpb_extrafields/capital_framework.js' %}
+<div class="expandable-group" id="resource-gists">
+    <div class="expandable-group_header">
+      {{ _('Related Code Snippets') }}
+      <a href='/dataset/{{resource_package_id}}/related/' class="manage-snippets" title="Manage related code snippets">
+        <i class="cf-icon cf-icon-settings"></i>
+      </a>
+      <a class="manage-snippets add-new-snippet" title="Add a new code snippet" data-toggle="modal" data-target="#add-new-snippet">
+        <i class="cf-icon cf-icon-plus"></i>
+      </a>
+    </div>
+    {% for item in h.parse_resource_related_gist(h.get_action('related_list', {'id': dataset_id }), resource_id) %}
+    <div class="expandable expandable__padded resource-gist" data-gist-url="{{ item.url }}">
+        <button class="expandable_header expandable_target" title="Expand content">
+            <span class="expandable_header-left expandable_label">
+                {{ item.title }}
+            </span>
+            <span class="expandable_header-right expandable_link">
+                <span class="expandable_cue-open">
+                    Show
+                    <span class="icon-code"></span>
+                </span>
+                <span class="expandable_cue-close">
+                    Hide
+                    <span class="icon-code"></span>
+                </span>
+            </span>
+        </button>
+        <div class="expandable_content">
+        </div>
+    </div>
+    {% endfor %}
+</div>

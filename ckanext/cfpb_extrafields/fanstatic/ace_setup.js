@@ -2,7 +2,7 @@
 
 $( document ).ready(function(){
     var textarea = $('textarea[name="code"]').hide();
-    $('#editor_div').hide();
+    $('#snippet-editor').hide();
     $('#btn_post_related_gist').hide();
     var editor = ace.edit("editor_div");
     //editor.setTheme("ace/theme/idle_fingers");
@@ -22,7 +22,7 @@ $('#gist-description').on('change', function(){
 });
 
 $('#gistType').on('change', function(){
-    $('#editor_div').show();
+    $('#snippet-editor').show();
     $('#btn_post_related_gist').show();
     var editor = ace.edit("editor_div");
     var newMode = $.parseJSON($(this).val());

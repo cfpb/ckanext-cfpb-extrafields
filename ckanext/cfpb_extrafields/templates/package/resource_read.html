@@ -41,9 +41,26 @@
 {% block resource_additional_information %}
 {% if res %}
 {#{ res }#}
-<section class="module">
+<section class="module resource-view">
   <div class="module-content">
-    <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+    <div class="expandable expandable__padded expandable__expanded">
+      <button class="expandable_header expandable_target" title="Expand content">
+          <span class="expandable_header-left expandable_label">
+              Metadata
+          </span>
+          <span class="expandable_header-right expandable_link">
+              <span class="expandable_cue-open">
+                  Show
+                  <span class="cf-icon cf-icon-plus-round"></span>
+              </span>
+              <span class="expandable_cue-close">
+                  Hide
+                  <span class="cf-icon cf-icon-minus-round"></span>
+              </span>
+          </span>
+      </button>
+      <div class="expandable_content">
+        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
               </tr>
@@ -74,8 +91,8 @@
               
               {% if res.storage_location or res.storage_location_path %}
               <tr>
-	            <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
-	            <td class="dataset-details">
+              <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
+              <td class="dataset-details">
                   <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
                              <td>{{ res.storage_location_path }}</td>
                          </tr></table> </td>
@@ -100,87 +117,141 @@
               </tr>
               {% endif %}
             </tbody>
-    </table>
+        </table>
+      </div>
+    </div>
   </div>
+</section>
+<section class="module resource-view">
   <div class="module-content">
     <!-- ============ SHARE ============= -->
     <!-- CODE REVIEW: This must come before the VIEW section below for some reason?! -->
-    <hr>
-    <h1>{{ _('Related Code') }}</h1>
-    A place for code snippets related to this resource.
-    <h3>{{ _('Share Related Code') }}</h3>
+    <h3></h3>
+
     {% resource 'cfpb_extrafields/post_related_gist.js' %}
     {% resource 'cfpb_extrafields/ace_setup.css' %}
     {% resource 'cfpb_extrafields/ace_setup.js' %}
     <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
           
-          <div id="ace_editor">
-            <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description to see a snippet editor." required class="longfield" style='width:350px'>
-            
-            <select id="gistType">
-                <option value='{"name":"javascript", "ext":"js"}'>Select a file-type (javascript)</option>
-                <option value='{"name":"plain_text", "ext":"txt"}'>text</option>
-                <option value='{"name":"markdown", "ext":"md"}'>markdown</option>
-                <option value='{"name":"css", "ext":"css"}'>css</option>
-                <option value='{"name":"html", "ext":"html"}'>html</option>
-                <option value='{"name":"java", "ext":"java"}'>java</option>
-                <option value='{"name":"javascript", "ext":"js"}'>javascript</option>
-                <option value='{"name":"matlab", "ext":"ml"}'>matlab</option>
-                <option value='{"name":"perl", "ext":"perl"}'>perl</option>
-                <option value='{"name":"php", "ext":"php"}'>php</option>
-                <option value='{"name":"python", "ext":"py"}'>python</option>
-                <option value='{"name":"r", "ext":"r"}'>r</option>
-                <option value='{"name":"ruby", "ext":"rb"}'>ruby</option>
-                <option value='{"name":"sh", "ext":"sh"}'>sh</option>
-                <option value='{"name":"sql", "ext":"sql"}'>sql</option>
-            </select>
-            
-            <div id="editor_div"></div>
-            <textarea name='code'>
-function example_code_snippet(items) {
-    var x = "This is javascript. Select a file-type for different syntax highlighting";
-    return x;
-}</textarea>
-            
-          </div>
-          <button id="btn_post_related_gist" type="button" data-module="post_related_gist"
-                  data-module-dataset_id="{{ res.package_id }}"
-                  data-module-resource_id="{{ res.id }}"
-                  data-module-resource_name="{{ res.name }}"
-                  data-module-html="post_related_gist.html"
-                  data-module-title="{{ _('posting code') }}">
-            Post code to GitHub
-          </button>
-          <div id="ace_output"></div>
+          
 <!-- ============ SHARE ============= -->
 <!-- ============ VIEW ============= -->
-            <h3>{{ _('View Related Code') }} </h3>
-            {% resource 'cfpb_extrafields/select_gist.js' %}
+            
             {% resource 'cfpb_extrafields/listrelated.js' %}
             <div data-module="listrelated"
                  data-module-dataset_id="{{ res.package_id }}"
                  data-module-resource_id="{{ res.id }}"
                  data-module-resource_name="{{ res.name }}"
+                 data-module-resource_package_id="{{ res.package_id }}"
                  data-module-html="listrelated.html">
             </div>
-            <select id="gistselect" style='width:600px'></select>
-            <div id="gistZone"></div>
-            <h3><a href='/dataset/{{res.package_id}}/related/'>{{ _('Manage Your Dataset Contributions') }}</a></h3>
+            <div id="list-gists"></div>
+
 <!-- ============ VIEW ============= -->
           </div>
 </section>
+
+<!-- New Snippet Modal -->
+<div class="modal fade" id="add-new-snippet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{ _('Add a code snippet') }}</h4>
+      </div>
+      <div class="modal-body">
+        <div id="ace_editor">
+            <div class="form-group">
+                <label class="form-label-header">Description</label>
+                <div class="form-group_item">
+                    <input type="text" name="gist-description" id="gist-description" placeholder="Enter a short description of your new snippet." required class="longfield">
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label-header">Code Language</label>
+                <div class="form-group_item">
+                    <select id="gistType">
+                        <option value='{"name":"javascript", "ext":"js"}'>Select a language</option>
+                        <option value='{"name":"plain_text", "ext":"txt"}'>text</option>
+                        <option value='{"name":"markdown", "ext":"md"}'>markdown</option>
+                        <option value='{"name":"css", "ext":"css"}'>css</option>
+                        <option value='{"name":"html", "ext":"html"}'>html</option>
+                        <option value='{"name":"java", "ext":"java"}'>java</option>
+                        <option value='{"name":"javascript", "ext":"js"}'>javascript</option>
+                        <option value='{"name":"matlab", "ext":"ml"}'>matlab</option>
+                        <option value='{"name":"perl", "ext":"perl"}'>perl</option>
+                        <option value='{"name":"php", "ext":"php"}'>php</option>
+                        <option value='{"name":"python", "ext":"py"}'>python</option>
+                        <option value='{"name":"r", "ext":"r"}'>r</option>
+                        <option value='{"name":"ruby", "ext":"rb"}'>ruby</option>
+                        <option value='{"name":"sh", "ext":"sh"}'>sh</option>
+                        <option value='{"name":"sql", "ext":"sql"}'>sql</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="snippet-editor">
+                <label class="form-label-header">Code</label>
+                <div class="form-group_item">
+                    <div id="editor_div"></div>
+                    <textarea name='code'>
+function example_code_snippet(items) {
+    var x = "This is javascript. Select a file-type for different syntax highlighting";
+    return x;
+}</textarea>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div id="ace_output"></div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="btn_post_related_gist" class="btn btn-primary" type="button" data-module="post_related_gist"
+                  data-module-dataset_id="{{ res.package_id }}"
+                  data-module-resource_id="{{ res.id }}"
+                  data-module-resource_name="{{ res.name }}"
+                  data-module-html="post_related_gist.html"
+                  data-module-title="{{ _('posting code') }}">
+            Submit code snippet
+            <span class="cf-icon cf-icon-update cf-icon__pulse hidden" id="gist-loading"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
       
   {% endif %}
 {% block resource_view_nav %}
 {% endblock %}
 {% block resource_view_content %}
-<section class="module">
-<div class="module-content">
-    <hr>
-<h1>{{_('Dataset status')}}</h1>
-{{_('Information about the operational health of a resource ("operational metadata") is stored for analysis and visualization in the following table.')}}
-{{ super() }}
-</div>
+<section class="module resource-view">
+  <div class="module-content">
+    <div class="expandable expandable__padded">
+      <button class="expandable_header expandable_target" title="Expand content">
+          <span class="expandable_header-left expandable_label">
+              {{_('Dataset status')}}
+          </span>
+          <span class="expandable_header-right expandable_link">
+              <span class="expandable_cue-open">
+                  Show
+                  <span class="cf-icon cf-icon-plus-round"></span>
+              </span>
+              <span class="expandable_cue-close">
+                  Hide
+                  <span class="cf-icon cf-icon-minus-round"></span>
+              </span>
+          </span>
+      </button>
+      <div class="expandable_content">
+          {{ super() }}
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}
 {% endblock %}
