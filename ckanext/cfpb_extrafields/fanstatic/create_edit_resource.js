@@ -19,6 +19,7 @@ ckan.module('create_edit_resource', function ($, _) {
             this.el.on('click', this._onClick);
         },
         _onClick: function(event) {
+            $('#create_edit_resource').html('<span id="loader"><img src="/loader.gif" alt="loading..."></span>');
             this.sandbox.client.getTemplate(this.options.html,
                                             this.options,
                                             this._onReceiveSnippet);
