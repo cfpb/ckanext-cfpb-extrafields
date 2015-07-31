@@ -134,7 +134,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
                 'options_sensitivity_level': opts.sensitivity_level,
-                'options_update_size': opts.update_size,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
 
@@ -256,7 +255,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'resource_type' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [tk.get_validator('ignore_missing'),],
-                'update_size' : [tk.get_validator('ignore_missing'),],
         })
         return schema
     def create_package_schema(self):
@@ -357,7 +355,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
-                'update_size' : [ tk.get_validator('ignore_missing'),],
         })
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))

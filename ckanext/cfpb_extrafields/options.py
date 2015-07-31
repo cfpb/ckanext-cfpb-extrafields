@@ -20,8 +20,6 @@ def sensitivity_level():
 def file_sizes():
     a = ["<500 MB","501-1,000 MB","1001-10,000 MB",">10,000 MB"]
     return form_select_format(a)
-def update_size():
-    return file_sizes()
 def approximate_total_size():
     return file_sizes()
 
