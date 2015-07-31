@@ -41,3 +41,5 @@
 </div>
 
 {{ form.input('intake_date', type='date', label=_("intake date"), placeholder="eg 2012-12-21", value=data.intake_date, error=errors.intake_date) }}
+
+{{ form.select('approximate_total_size', label=_('approximate total size'), id='field-approximate_total_size', options=h.options_approximate_total_size(), selected=data.approximate_total_size, error=errors.approximate_total_size, classes=['control-medium']) }}
