@@ -1,0 +1,4 @@
+{% set resource = h.get_action('resource_create', {'package_id': pkgname,'url':' optional URL or click (X) to upload a file','resource_type':'Documentation'}) %}
+{% set ds_headers = h.create_datastore_placeholder(resource.id) %}
+{% set view = h.get_action('resource_view_create', {'resource_id':resource.id, 'title':'Default View','description':'', 'view_type':'recline_view'}) %}
+{{ h.url_for(controller='package', action='resource_edit', id=pkgname, resource_id=resource.id) }}
