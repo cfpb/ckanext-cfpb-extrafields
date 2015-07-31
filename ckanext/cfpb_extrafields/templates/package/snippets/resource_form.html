@@ -6,7 +6,13 @@
 {% resource 'cfpb_extrafields/new_resource_redirect.js' %}
 {% if not form_action  %}
 
-<span id="auto-redirect-loader"><img src="/loader.gif" alt="loading..."></span>
+<span id="auto-redirect-loader"
+      data-module="new_resource_redirect"
+      data-module-html="new_resource_redirect.html"
+      data-module-pkgid="{{data.id}}"
+      data-module-pkgname="{{pkg_name}}">
+  <img src="/loader.gif" alt="Loading...">
+</span>
 
 {% endif %}
 <!----###################################------->
