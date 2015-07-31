@@ -134,7 +134,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
                 'options_sensitivity_level': opts.sensitivity_level,
-                'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
 
                 'popup_relevant_governing_documents': popup_relevant_governing_documents,
@@ -250,7 +249,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 tk.get_converter('convert_to_tags')('relevant_governing_documents')]
         })
         schema['resources'].update({
-                'approximate_total_size' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'resource_type' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
@@ -350,7 +348,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_validator('ignore_missing'),],
         })
         schema['resources'].update({
-                'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
                 'intake_date' : [tk.get_validator('ignore_missing'),],
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
