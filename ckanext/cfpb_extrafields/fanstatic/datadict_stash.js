@@ -5,6 +5,9 @@ $(function() {
     $('#resource_save').click( function() {
         $( "#datadict_stash" ).trigger( "click" );
     });
+    $('#resource_create').click( function() {
+        $( "#datadict_stash" ).trigger( "click" );
+    });
 });
 
 /* stashes a hidden datadict that python processes during plugin's update */
@@ -52,4 +55,3 @@ ckan.module('datadict_stash', function ($, _) {
     },
   }
 });
-

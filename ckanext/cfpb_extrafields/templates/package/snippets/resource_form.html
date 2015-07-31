@@ -106,12 +106,6 @@ document.getElementById('field-resource_type').parentNode.insertAdjacentHTML("be
   {% if data.id %}
   <h3>Data Dictionary</h3>
   {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
-  <button hidden class="btn btn-primary" type="button"
-    id="datadict_stash" 
-    data-module="datadict_stash"
-    data-module-dataset_id="{{ data.package_id }}"
-    data-module-resource_id="{{ data.id }}"
-          data-module-resource_name="{{ data.name }}">Save dictionary</button>
   {% else %}
   <font color='red'>* Supply a resource link to see a data dictionary form.</font>
   {% endif %}
@@ -148,29 +142,15 @@ document.getElementById('field-resource_type').parentNode.insertAdjacentHTML("be
         <button class="btn" name="save" value="go-dataset" type="submit">{{ _('Previous') }}</button>
       {% endblock %}
       {% block again_button %}
-{#% block again_button %} <!----------------------------->
-  {# This "Save & add another" button is confusing in the new paradigm #}
-  {# <button id="resource_save" class="btn" name="save" value="again" type="submit">{{ _('Save & Continue') }}</button> }
-{% endblock %#}<!----------------------------->
-        <button class="btn" name="save" value="again" type="submit">{{ _('Save & add another') }}</button>
+        <button id="resource_save" class="btn" name="save" value="again" type="submit">{{ _('Save & add another') }}</button>
         {% endblock %}
       {% block save_button %}
-{#% block save_button %}  <!----------------------------->
-  <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">
-    {% block save_button_text %}
-    {{ _('Modify and Save') }}
-    {% endblock %}
-  </button>
-{% endblock %#}<!----------------------------->
-      <button class="btn btn-primary" name="save" value="go-metadata" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
+      <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
       {% endblock %}
     {% else %}
       {% block add_button %}
-{#% block add_button %}<!----------------------------->
-  <!-- id="resource_create" don't listen for resource type changes when creating a resource -->
-  <button id="resource_create" class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Continue') }}</button>
-{% endblock %#}<!----------------------------->
-      <button class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Add') }}</button>
+      <!-- id="resource_create" don't listen for resource type changes when creating a resource -->
+      <button id="resource_create" class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Add') }}</button>
       {% endblock %}
     {% endif %}
   </div>
