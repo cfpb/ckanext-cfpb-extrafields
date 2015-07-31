@@ -1,7 +1,8 @@
 {% ckan_extends %}
 
 {% block page_primary_action %}
-{% resource 'cfpb_extrafields/create_edit_resource.js' %}
+{{super()}}
+{#% resource 'cfpb_extrafields/create_edit_resource.js' %}
 <span id='create_edit_resource'>
 <a href="javascript:;" class="btn" type="button"
    data-module="create_edit_resource"
@@ -9,7 +10,7 @@
    data-module-pkgid="{{c.pkg_dict.id}}"
    >
   <i class="icon-plus"></i> {{ _('Add new resource') }}
-</a></span>
+</a></span>#}
 {% endblock %}
 
 
