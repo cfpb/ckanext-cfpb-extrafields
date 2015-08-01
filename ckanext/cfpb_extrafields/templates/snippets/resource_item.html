@@ -28,10 +28,6 @@
       {% block resource_item_explore_links %}
       <li>
         <a href="{{ url }}">
-          {% if res.has_views %}
-            <i class="icon-bar-chart"></i>
-            {{ _('Preview') }}
-          {% else %}
             <i class="icon-info-sign"></i>
             {{ _('More information') }}
           {% endif %}
