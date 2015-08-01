@@ -255,6 +255,18 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'resource_type' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [tk.get_validator('ignore_missing'),],
+                'database_server' : [ tk.get_validator('ignore_missing'),],  
+                'database_name' : [ tk.get_validator('ignore_missing'),],  
+                'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_4' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_5' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_6' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
         })
         return schema
     def create_package_schema(self):
@@ -355,6 +367,18 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
+                'database_server' : [ tk.get_validator('ignore_missing'),],  
+                'database_name' : [ tk.get_validator('ignore_missing'),],  
+                'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_4' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_5' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_6' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
         })
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))

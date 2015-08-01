@@ -3,18 +3,6 @@
 $(function() {
     $('#field-resource_type').change( function(event) {
         event.stopPropagation();
-        var rtype = $('#field-resource_type').val();
-        if(      rtype == 'Data Dictionary'){
-            $( "#resource_save" ).trigger( "click" );
-        }else if(rtype == 'Report'){ 
-            $( "#resource_save" ).trigger( "click" );
-        }else if(rtype == 'Documentation'){ 
-            $( "#resource_save" ).trigger( "click" );
-        }else if(rtype == 'Data File'){ 
-            $( "#resource_save" ).trigger( "click" );
-        }else if(rtype == 'Database'){
-            $( "#resource_save" ).trigger( "click" );
-        }else{
-        }
+        $( "#resource_save" ).trigger( "click" );
     });
 });

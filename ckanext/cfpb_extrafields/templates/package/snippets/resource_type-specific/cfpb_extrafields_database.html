@@ -1,7 +1,77 @@
+{#
+* Database (category: "database")
+X title
+X database server
+X database name
+X schema
+X description
+X roles and descriptions (+ reveals more)
+X + intake_date
+X + hidden (required) url
+#}
 
-{% if output %}
+{% if location=="form" %}
+  <!-- cfpb_extrafields_database.html snippet -->
+  {% import 'macros/form.html' as form %}
+  <!-- A "URL" fiel is REQUIRED for all types -->
+  <div hidden class='core-field'>
+  {% set is_upload = (data.url_type == 'upload') %}
+  {{ form.image_upload(data, errors, field_url='url', field_upload='upload',
+  field_clear='clear_upload',is_upload_enabled=h.uploads_enabled(),
+  is_url=data.url and not is_upload, is_upload=is_upload,
+  upload_label=_('File'), url_label=_('URL')) }}
+  </div>
+
+  <!-- format persists unless reset -->
+  <div hidden class='core-field'>
+  <input id="format" value="not applicable" name="format"/>
+  </div>
+  
+  {{ form.input('database_server', type='text', label=_("database server"),
+  placeholder="", value=data.database_server,
+  error=errors.database_server) }}
+  {{ form.input('database_name', type='text', label=_("database name"),
+  placeholder="", value=data.database_name,
+  error=errors.database_name) }}
+  {{ form.input('database_schema', type='text', label=_("database schema"),
+  placeholder="", value=data.database_schema,
+  error=errors.database_schema) }}
+  
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('Some useful notes about the data'), value=data.description,
+  error=errors.description) }}
+  </div>
+  
+  {{ form.input('intake_date', type='date', label=_("intake date"),
+  placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
+
+  <div>
+    <p>Roles and access descriptions:</p>
+  </div>
+  {{ form.input('db_role_level_1', type='text', label=_("Level 1"),
+  placeholder="", value=data.db_role_level_1,error=errors.db_role_level_1,classes=['control-full']) }}
+  {{ form.input('db_role_level_2', type='text', label=_("Level 2"),
+  placeholder="", value=data.db_role_level_2,error=errors.db_role_level_2,classes=['control-full']) }}
+  {{ form.input('db_role_level_3', type='text', label=_("Level 3"),
+  placeholder="", value=data.db_role_level_3,error=errors.db_role_level_3,classes=['control-full']) }}
+  {{ form.input('db_role_level_4', type='text', label=_("Level 4"),
+  placeholder="", value=data.db_role_level_4,error=errors.db_role_level_4,classes=['control-full']) }}
+  {{ form.input('db_role_level_5', type='text', label=_("Level 5"),
+  placeholder="", value=data.db_role_level_5,error=errors.db_role_level_5,classes=['control-full']) }}
+  {{ form.input('db_role_level_6', type='text', label=_("Level 6"),
+  placeholder="", value=data.db_role_level_6,error=errors.db_role_level_6,classes=['control-full']) }}
+  {{ form.input('db_role_level_7', type='text', label=_("Level 7"),
+  placeholder="", value=data.db_role_level_7,error=errors.db_role_level_7,classes=['control-full']) }}
+  {{ form.input('db_role_level_8', type='text', label=_("Level 8"),
+  placeholder="", value=data.db_role_level_8,error=errors.db_role_level_8,classes=['control-full']) }}
+  {{ form.input('db_role_level_9', type='text', label=_("Level 9"),
+  placeholder="", value=data.db_role_level_9,error=errors.db_role_level_9,classes=['control-full']) }}
+  <!-- end cfpb_extrafields_database.html snippet -->
+  
+{% elif location=="description" %}
+  <!-- cfpb_extrafields_database.html snippet -->
   {% resource 'cfpb_extrafields/create_downloadable_file.js' %}
-
   <textarea hidden id="dsn_box">
 [ODBC]
 DRIVER={{data.storage_location}} [e.g., SQL Server]
@@ -11,12 +81,17 @@ WSID=P2
 APP=Visual Basic
 SERVER=(local)  
 Description=Pubs in local SQL Server</textarea>
+  <!-- commenting DSNs out for the initial roll-out 
+  <a class="btn btn-default" download="cfpb_{{data.name}}_{{data.format}}.dsn"
+     id="downloadlink">DSN file (an importable path to this resource)</a>
+  -->
+  <!-- end cfpb_extrafields_database.html snippet -->
+
+{% elif location=="metadata" %}
+  <!-- cfpb_extrafields_database.html snippet -->
+  <!-- end cfpb_extrafields_database.html snippet -->
   
-<a class="btn btn-default" download="cfpb_{{data.name}}_{{data.format}}.dsn" id="downloadlink">DSN file (an importable path to this resource)</a>
-
 {% else %}
-
-  {% import 'macros/form.html' as form %}
-  {{ form.input('unused_placeholder', type='text', label=_("Unused placeholder"), placeholder="for SQL format", value=data.unused_placeholder, error=errors.unused_placeholder) }}
-
+  Bad location snippet choice
+  
 {% endif %}
