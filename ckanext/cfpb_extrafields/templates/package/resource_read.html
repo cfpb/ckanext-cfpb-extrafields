@@ -277,6 +277,7 @@ function example_code_snippet(items) {
         <button id="btn_post_related_gist" class="btn btn-primary" type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
+                  data-module-email="{{c.userobj.email}}" {# accessing c. is bad practice! #}
                   data-module-resource_name="{{ res.name }}"
                   data-module-html="post_related_gist.html"
                   data-module-title="{{ _('posting code') }}">
