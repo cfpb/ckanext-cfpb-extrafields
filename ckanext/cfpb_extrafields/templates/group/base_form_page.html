@@ -1,0 +1,15 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+
+{% block breadcrumb_content %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block primary_content_inner %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block breadcrumb_link %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block page_heading_class %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
