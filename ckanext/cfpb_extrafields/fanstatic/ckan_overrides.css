@@ -368,6 +368,7 @@ a.add-new-snippet {
 .modal {
   width: 60%;
   margin-left: -30%;
+  display: none;
 }
 
 #gist-description {
