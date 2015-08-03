@@ -1,0 +1,44 @@
+{% ckan_extends %}
+
+{% block resource_item_explore %}
+  {% if not url_is_edit and res.resource_type not in ('Database', 'Data Dictionary') %}
+  <div class="dropdown btn-group">
+    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-share-alt"></i>
+      {{ _('Explore') }}
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      {% block resource_item_explore_links %}
+      <li>
+        <a href="{{ url }}">
+          <i class="icon-info-sign"></i>
+          {{ _('More information') }}
+        </a>
+      </li>
+      {% if res.url and h.is_url(res.url) %}
+      <li>
+        <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
+          {% if res.has_views %}
+            <i class="icon-download"></i>
+            {{ _('Download') }}
+          {% else %}
+            <i class="icon-external-link"></i>
+            {{ _('Go to resource') }}
+          {% endif %}
+        </a>
+      </li>
+      {% endif %}
+      {% if can_edit %}
+      <li>
+        <a href="{{ h.url_for(controller='package', action='resource_edit', id=pkg.name, resource_id=res.id) }}">
+          <i class="icon-edit"></i>
+          {{ _('Edit') }}
+        </a>
+      </li>
+      {% endif %}
+      {% endblock %}
+    </ul>
+  </div>
+  {% endif %}
+{% endblock %}
