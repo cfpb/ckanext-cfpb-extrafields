@@ -12,8 +12,7 @@ def format():
     return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc",
            "excel", "TXT", "TAB", "JSON"] #+other
 def storage_location():
-    return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",
-            "RightNow"] #+other
+    return ["Research Server", "Z Drive", "SES", "RightNow"] #+other
 def sensitivity_level():
     a = ["Public", "Low", "Medium", "High"]
     return form_select_format(a)

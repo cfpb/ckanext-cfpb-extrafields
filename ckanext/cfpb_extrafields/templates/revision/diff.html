@@ -1,0 +1,5 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+{% block breadcrumb_content %}
+{{super()|replace("Groups", "Topics")}}
+{% endblock %}

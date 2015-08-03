@@ -1,0 +1,5 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+{% block primary_content_inner %}
+{{super()|replace("Groups", "Topics")}}
+{% endblock %}
