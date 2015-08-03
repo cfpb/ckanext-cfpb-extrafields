@@ -419,6 +419,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict = collections.OrderedDict()
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
+        facets_dict['groups'] = p.toolkit._('Topics')
         # hide License facet because it is not used by cfpb
         facets_dict.pop('license_id', None)
         # change the order of the format facet
