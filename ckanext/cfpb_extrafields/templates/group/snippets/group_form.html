@@ -1,0 +1,11 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+{% block basic_fields %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block delete_button %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block save_text %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}

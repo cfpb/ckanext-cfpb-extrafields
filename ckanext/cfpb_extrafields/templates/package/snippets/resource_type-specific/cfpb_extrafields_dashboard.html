@@ -1,0 +1,40 @@
+{% import 'macros/form.html' as form %}
+{#
+* Dashboard (category: "link only")
+X title
+X url only
+X description
+#}
+{% if location=="form" %}
+  {% import 'macros/form.html' as form %}
+  <!-- cfpb_extrafields_dashboard.html snippet -->
+  <!-- A "URL" fiel is REQUIRED for all types -->
+  <div class='core-field'>
+  {{ form.input('url', label=_("URL"), placeholder="enter URL or a dummy value", type="url", value=data.url, error=errors.url, classes=['control-full']) }}
+  </div>
+  
+  <!-- format persists unless reset -->
+  <div hidden class='core-field'>
+  <input id="format" value="not applicable" name="format"/>
+  </div>
+  
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('Some useful notes about the data'), value=data.description,
+  error=errors.description) }}
+  </div>
+  <!-- end cfpb_extrafields_dashboard.html snippet -->
+  
+{% elif location=="description" %}
+  <!-- cfpb_extrafields_dashboard.html snippet -->
+  <!-- end cfpb_extrafields_dashboard.html snippet -->
+  
+{% elif location=="metadata" %}
+  <!-- cfpb_extrafields_dashboard.html snippet -->
+  {# title, url and description are automatically output #}
+  <!-- end cfpb_extrafields_dashboard.html snippet -->
+  
+{% else %}
+  Bad dashboard snippet location choice
+  
+{% endif %}

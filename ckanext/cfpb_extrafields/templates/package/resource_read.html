@@ -26,10 +26,10 @@
   {% endif %}
 
     {% if res.resource_type == 'Database' %}
-      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=res,errors=errors,pkg_name=res.name,output="true" %}
+      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=res,errors=errors,pkg_name=res.name,location="description" %}
     {% endif %}
     {% if res.resource_type == 'Data Dictionary'  %}
-      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false" %}
+      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false",location="description" %}
   {% endif %}
 </div> 
 {% endblock %}
@@ -66,6 +66,57 @@
               </tr>
             </thead>
             <tbody>
+              {% if res.resource_type %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <td class="dataset-details">{{ res.resource_type }}</td>
+              </tr>
+              {% endif %}
+              {% if res.database_server %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <td class="dataset-details">{{ res.database_server }}</td>
+              </tr>
+              {% endif %}
+              {% if res.database_name %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <td class="dataset-details">{{ res.database_name }}</td>
+              </tr>
+              {% endif %}
+              {% if res.database_schema %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("database schema") }}</th>
+                <td class="dataset-details">{{ res.database_schema }}</td>
+              </tr>
+              {% endif %}
+              {% if res.format and res.format != "not applicable"%}
+              <tr>
+                <th scope="row">{{ _('format') }}</th>
+                <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
+              </tr>
+              {% endif %}
+              {% if res.storage_location or res.storage_location_path %}
+              <tr>
+              <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
+              <td class="dataset-details">
+                  <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
+                             <td>{{ res.storage_location_path }}</td>
+              </tr></table> </td>
+              </tr>
+              {% endif %}
+              {% if res.approximate_total_size %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("approximate total Size") }}</th>
+                <td class="dataset-details">{{ res.approximate_total_size }}</td>
+              </tr>
+              {% endif %}
+              {% if res.intake_date %} 
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("intake date") }}</th>
+                <td class="dataset-details">{{ res.intake_date }}</td>
+              </tr>
+              {% endif %}
               <tr>
                 <th scope="row">{{ _('metadata resource ID') }}</th>
                 <td>{{ res.id or _('unknown') }}</td>
@@ -78,40 +129,58 @@
                 <th scope="row">{{ _('metadata last updated') }}</th>
                 <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
               </tr>
-              {% if res.resource_type %} 
+            </tbody>
+         </table>
+            
+        {% if res.db_role_level_1 %} 
+        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+            <thead>
               <tr>
-                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
-                <td class="dataset-details">{{ res.resource_type }}</td>
+                <th scope="row" class="dataset-label">{{ _("Role") }}</th>
+                <th class="dataset-details">{{ _("Description") }}</th>
               </tr>
+            </thead>
+            <tbody>
+              {% if res.db_role_level_1 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 1") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_1 }}</td></tr>
               {% endif %}
-              <tr>
-                <th scope="row">{{ _('format') }}</th>
-                <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
-              </tr>
-              
-              {% if res.storage_location or res.storage_location_path %}
-              <tr>
-              <th scope="row" class="dataset-label">{{ _("storage location") }} </th>
-              <td class="dataset-details">
-                  <table style="width:100%"><tr><td>{{ res.storage_location }}</td>
-                             <td>{{ res.storage_location_path }}</td>
-                         </tr></table> </td>
-              </tr>
+              {% if res.db_role_level_2 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 2") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_2 }}</td></tr>
               {% endif %}
-              {% if res.intake_date %} 
-              <tr>
-                <th scope="row" class="dataset-label">{{ _("intake date") }}</th>
-                <td class="dataset-details">{{ res.intake_date }}</td>
-              </tr>
+              {% if res.db_role_level_3 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 3") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_3 }}</td></tr>
               {% endif %}
-              {% if res.approximate_total_size %} 
-              <tr>
-                <th scope="row" class="dataset-label">{{ _("approximate total Size") }}</th>
-                <td class="dataset-details">{{ res.approximate_total_size }}</td>
-              </tr>
+              {% if res.db_role_level_4 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 4") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_4 }}</td></tr>
+              {% endif %}
+              {% if res.db_role_level_5 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 5") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_5 }}</td></tr>
+              {% endif %}
+              {% if res.db_role_level_6 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 6") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_6 }}</td></tr>
+              {% endif %}
+              {% if res.db_role_level_7 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 7") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_7 }}</td></tr>
+              {% endif %}
+              {% if res.db_role_level_8 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 8") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_8 }}</td></tr>
+              {% endif %}
+              {% if res.db_role_level_9 %} 
+              <tr><th scope="row" class="dataset-label">{{ _("level 9") }}</th>
+                <td class="dataset-details">{{ res.db_role_level_9 }}</td></tr>
               {% endif %}
             </tbody>
-        </table>
+         </table>
+        {% endif %}
+              
       </div>
     </div>
   </div>
@@ -251,4 +320,3 @@ function example_code_snippet(items) {
 </section>
 {% endblock %}
 {% endblock %}
-

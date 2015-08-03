@@ -1,0 +1,11 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+{% block subtitle %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block breadcrumb_link %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
+{% block page_heading %}
+{{super()|replace("Group", "Topic")}}
+{% endblock %}
