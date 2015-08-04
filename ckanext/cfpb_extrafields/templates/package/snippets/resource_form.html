@@ -35,6 +35,12 @@
 
   <input name="id" value="{{ data.id }}" type="hidden"/>
 
+  <div class='core-field'>
+{{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
+</div>
+
+<hr />
+
   {% block basic_fields %}
     {% block basic_fields_name %}
       <div class='core-field'>
@@ -46,18 +52,6 @@
       <!-- moved basic_fields_url to type specific snippets -->
       <!-- Note: A "URL" field is REQUIRED for each resource type. --> 
     {% endblock %}
-      
-<div class='core-field'>
-{{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
-<script>
-  var b='<button type="button" data-module="popover" \
-                 data-module-html="resource_type_popover.html" \
-                 data-module-title="{{ _('Resource Type') }}" \
-                 <i class="icon-info-sign"></i>\
-</button>'
-document.getElementById('field-resource_type').parentNode.insertAdjacentHTML("beforeend",b);
-</script>
-</div>
 
     {% block basic_fields_description %}
       <!-- moved basic_fields_description to metadata snippets -->
