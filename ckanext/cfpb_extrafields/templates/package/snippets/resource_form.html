@@ -5,15 +5,12 @@
 <!----###################################------->
 {% resource 'cfpb_extrafields/new_resource_redirect.js' %}
 {% if not form_action  %}
-
 <span id="auto-redirect-loader"
       data-module="new_resource_redirect"
       data-module-html="new_resource_redirect.html"
       data-module-pkgid="{{data.id}}"
       data-module-pkgname="{{pkg_name}}">
-  <img src="/loader.gif" alt="Loading...">
 </span>
-
 {% endif %}
 <!----###################################------->
 
@@ -35,6 +32,9 @@
 
   <input name="id" value="{{ data.id }}" type="hidden"/>
 
+  {% if not data.resource_type %}
+  <div align="left"><p>Setting a resource type... <img src="/loader.gif" alt="Loading..."></p></div>
+  {% endif %}
   <div class='core-field'>
 {{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
 </div>
