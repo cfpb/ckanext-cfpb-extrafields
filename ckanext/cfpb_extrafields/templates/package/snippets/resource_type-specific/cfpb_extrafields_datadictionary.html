@@ -9,10 +9,16 @@ X related-to-url
   <!-- cfpb_extrafields_datadictionary.html snippet -->
   {% import 'macros/form.html' as form %}
   <!-- A "URL" fiel is REQUIRED for all types -->
+  {% if data.url %}
+    {{ form.hidden('url', value=data.url)}}
+  {% else %}
+    {{ form.hidden('url', value="http://dummy-url")}}
+  {% endif %}
+  
   <div class='core-field'>
-  {{ form.input('url', label=_("URL of a related resource "),
-  placeholder="enter URL or a dummy value",
-  type="url", value=data.url, error=errors.url, classes=['control-full']) }}
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('URL to a related resource or other notes about the data dictionary'), value=data.description,
+  error=errors.description) }}
   </div>
   
   <!-- format persists unless reset -->
@@ -97,5 +103,7 @@ X related-to-url
         data-module-resource_id="{{ data.id }}"
         data-module-resource_name="{{ data.name }}">Stash hidden JSON of dictionary</button>
 <!-- end cfpb_extrafields_datadictionary.html snippet -->
-
+{% endif %}
+{% if location=="description" %}<div align="right">
+  <i class="icon-info-sign"><a href='/api/3/action/datastore_search?resource_id={{data.id}}&filters={"record_title":"datadict"}'>{{ _(' JSON format') }}</a></i></div>
 {% endif %}
