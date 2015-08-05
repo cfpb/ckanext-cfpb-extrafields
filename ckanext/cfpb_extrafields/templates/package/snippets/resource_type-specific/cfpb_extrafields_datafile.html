@@ -35,7 +35,7 @@ X +intake_date
   error=errors.format,) }}
   </div>
 
-  {% include "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html" %}
+  {% snippet "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html",errors=errors, data=data  %}
   
   {{ form.select('approximate_total_size', label=_('approximate total size'),
   id='field-approximate_total_size', options=h.options_approximate_total_size(),

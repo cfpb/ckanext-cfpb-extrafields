@@ -39,7 +39,7 @@ X +intake_date
   error=errors.format,) }}
   </div>
 
-  {% include "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html" %}
+  {% snippet "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html",errors=errors, data=data  %}
 
   {{ form.input('intake_date', type='date', label=_("intake date"),
   placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
