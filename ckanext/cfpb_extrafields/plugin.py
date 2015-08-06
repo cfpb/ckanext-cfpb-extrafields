@@ -72,7 +72,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             except tk.ValidationError, err:
                 # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
                 pass
-            ds.create_datastore_json(resource['id'], 'datadict', json_record)
+            ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
         return
     def _email_on_change(self, context, resource, field):
         # unfinished! 
@@ -141,8 +141,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
 
-                'create_datastore_placeholder':ds.create_datastore_placeholder,
-                'create_datastore_json':ds.create_datastore_json, 
+                'create_datastore':ds.create_datastore,
                 'get_unique_datastore_json':ds.get_unique_datastore_json,
                 'delete_datastore_json':ds.delete_datastore_json,
                 

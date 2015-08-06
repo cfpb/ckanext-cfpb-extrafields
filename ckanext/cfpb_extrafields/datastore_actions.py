@@ -37,27 +37,18 @@ def default_datastore(rid):
                           response_timems_colname, all_fields)
 
 
-def create_datastore_placeholder(rid): 
-    ''' create a new datastore element with default colnames'''
-    defaults = default_datastore(rid)
-    data = defaults.data
-    data.update({
-        'force':'true',
-        'fields': defaults.all_fields,
-        'records': []
-    })
-    ds = tk.get_action('datastore_create')(defaults.context, data)
-
-   
 # JSON related (for datadict):
-def create_datastore_json(rid, json_title, json_record): 
+def create_datastore(rid, json_title=None, json_record=None): 
     ''' create a new datastore json element with title_colname and record '''
     defaults = default_datastore(rid)
     data = defaults.data
+    records = []
+    if json_title :
+        records.append({defaults.title_colname: json_title, defaults.json_colname: json_record})
     data.update({
         'force':'true',
         'fields': defaults.all_fields,
-        'records': [ {defaults.title_colname: json_title, defaults.json_colname: json_record} ]
+        'records': records,
     })
     ds = tk.get_action('datastore_create')(defaults.context, data)
 
