@@ -17,7 +17,7 @@ X + hidden (required) url
   {% if data.url %}
     {{ form.hidden('url', value=data.url)}}
   {% else %}
-    {{ form.hidden('url', value="http://dummy-url")}}
+    {{ form.hidden('url', value=" optional URL or click (X) to upload a file")}}
   {% endif %}
 
   <!-- format persists unless reset -->

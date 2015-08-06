@@ -33,6 +33,7 @@
   <input name="id" value="{{ data.id }}" type="hidden"/>
 
   {% if not data.resource_type %}
+  {# the loading button obeys different logic from the auto-redirect-loader! #}
   <div align="left"><p>Setting a resource type... <img src="/loader.gif" alt="Loading..."></p></div>
   {% endif %}
   <div class='core-field'>
