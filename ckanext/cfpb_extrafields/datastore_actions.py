@@ -35,6 +35,8 @@ def default_datastore(rid):
                           title_colname, subtitle_colname, json_colname,
                           datetime_colname, response_colname,
                           response_timems_colname, all_fields)
+
+
 def create_datastore_placeholder(rid): 
     ''' create a new datastore element with default colnames'''
     defaults = default_datastore(rid)
@@ -46,6 +48,7 @@ def create_datastore_placeholder(rid):
     })
     ds = tk.get_action('datastore_create')(defaults.context, data)
 
+   
 # JSON related (for datadict):
 def create_datastore_json(rid, json_title, json_record): 
     ''' create a new datastore json element with title_colname and record '''
@@ -57,6 +60,8 @@ def create_datastore_json(rid, json_title, json_record):
         'records': [ {defaults.title_colname: json_title, defaults.json_colname: json_record} ]
     })
     ds = tk.get_action('datastore_create')(defaults.context, data)
+
+
 def get_all_datastore_jsons(rid, json_title): 
     defaults = default_datastore(rid)
     data = defaults.data
@@ -73,6 +78,8 @@ def get_all_datastore_jsons(rid, json_title):
         recs = ds.get('records',[{}])
         json_list = [rec[defaults.json_colname] for rec in recs]
         return json_list
+
+
 def get_unique_datastore_json(rid, json_title):
     ''' For json_title, you're asserting that what you want is unique. '''
     jsons = get_all_datastore_jsons(rid, json_title)
@@ -82,6 +89,8 @@ def get_unique_datastore_json(rid, json_title):
         raise IndexError 
     else:
         return jsons[0]
+
+
 def delete_datastore_json(rid, json_title):
     defaults = default_datastore(rid)
     data = defaults.data
