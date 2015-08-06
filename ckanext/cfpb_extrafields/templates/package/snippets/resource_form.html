@@ -3,15 +3,15 @@
 {% resource 'cfpb_extrafields/resource_type_select.js' %}
 
 <!----###################################------->
+<!-- there is a hack here that checks whether the page url is edit_resource or new_resource, 
+     if it is the latter the form submits and reloads in edit mode. -->
 {% resource 'cfpb_extrafields/new_resource_redirect.js' %}
-{% if not form_action  %}
 <span id="auto-redirect-loader"
       data-module="new_resource_redirect"
       data-module-html="new_resource_redirect.html"
       data-module-pkgid="{{data.id}}"
       data-module-pkgname="{{pkg_name}}">
 </span>
-{% endif %}
 <!----###################################------->
 
 
@@ -33,7 +33,7 @@
   <input name="id" value="{{ data.id }}" type="hidden"/>
 
   {% if not data.resource_type %}
-  {# the loading button obeys different logic from the auto-redirect-loader! #}
+  {# the loading button obeys different logic from new_resource_redirect! #}
   <div align="left"><p>Setting a resource type... <img src="/loader.gif" alt="Loading..."></p></div>
   {% endif %}
   <div class='core-field'>
