@@ -18,6 +18,8 @@ def create_relevant_governing_documents():
         for tag in opts.relevant_governing_documents(): 
             data = {'name': tag, 'vocabulary_id': vocab['id']}
             tk.get_action('tag_create')(context, data)
+
+
 def tag_relevant_governing_documents():
     create_relevant_governing_documents()
     try:
@@ -26,6 +28,7 @@ def tag_relevant_governing_documents():
         return tags
     except tk.ObjectNotFound:
         return None
+
 
 # these go into a new popup module if there are more than a few fields
 def popup_relevant_governing_documents():
@@ -47,7 +50,8 @@ def parse_resource_related_gist(data_related_items, resource_id):
            resource_id in desc:
             urls.append( {'title':title,'url':url} )
     return urls
-            
+
+
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     p.implements(p.IResourceController)
@@ -55,10 +59,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         check_keys = ['resource_type', 'privacy_contains_pii']
         self.changed = {key: new.get(key, '0') != old.get(key, '1')
                         for key in check_keys}
+
     def _redirect_to_edit_on_change(self, resource, field):
         if self.changed[field]:
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
+
     def _delete_and_rebuild_datadict(self, resource):
         import json
         if 'datadict' in resource and 'id' in resource:
@@ -67,13 +73,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             json_record = json.loads(record)
             try:
                 ds.delete_datastore_json(resource['id'], 'datadict')
-            except tk.ObjectNotFound, err:
-                pass
-            except tk.ValidationError, err:
-                # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+            # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+            except (tk.ObjectNotFound, tk.ValidationError), err:
                 pass
             ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
         return
+    
     def _email_on_change(self, context, resource, field):
         # unfinished! 
         # if specified fields have changed notify the relevant people
@@ -86,20 +91,24 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # get email addresses 
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
                 # send a notification of change by email
+
     def before_create(self, context, resource):
         return
+
     def after_create(self, context, resource):
         # resource creation is now handled under the hood by created_edit_resource.js
         # All resources are produced with views, datastore headings and with a default URL
         # (so that users aren't forced to enter a confusing link).
         # some of that could be moved here if desired.
-        return 
+        return
+    
     def before_update(self, context, current, resource):
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
            and resource.get('resource_type', '') == 'Data Dictionary':
             self._delete_and_rebuild_datadict(resource)
+            
     def after_update(self, context, resource):
         ''' do things on field changes '''
         # unfinished email trigger:
@@ -109,10 +118,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         for key in self.changed:
             self.changed[key] = False
         return
+    
     def before_delete(self, context, resource, resources):
         return
+    
     def after_delete(self, context, resources):
         return
+    
     def before_show(self, resource_dict):
         return
 
@@ -147,6 +159,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 
                 'parse_resource_related_gist': parse_resource_related_gist,
             }
+
     
     p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
@@ -268,14 +281,17 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
         })
         return schema
+    
     def create_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).create_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
+    
     def update_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).update_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
+    
     def show_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
@@ -388,14 +404,17 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 tk.get_validator('ignore_missing')]
             })
         return schema
+    
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
         # package types not handled by any other IDatasetForm plugin.
         return True
+    
     def package_types(self):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+
     
     p.implements(p.IConfigurer)
     def update_config(self, config):
@@ -411,6 +430,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # that we'll use to refer to this fanstatic directory from CKAN
         # templates.
         tk.add_resource('fanstatic','cfpb_extrafields')
+
 
     p.implements(p.IFacets)
     def _change_facets(self, facets_dict):
@@ -428,6 +448,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict['res_type'] = p.toolkit._('Resource Types')
         facets_dict['res_format'] = p.toolkit._('Formats')
         return facets_dict
+    
     def dataset_facets(self, facets_dict, package_type):
         return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):
