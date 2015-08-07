@@ -321,6 +321,12 @@ input[type="button"].btn-block {
   margin-right: 0;
 }
 
+/* Footer */
+
+#creeper {
+  width: 50px;
+}
+
 /* Resource display page */
 
 h1.page-heading {
