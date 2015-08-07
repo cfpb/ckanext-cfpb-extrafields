@@ -26,7 +26,6 @@ $('#gistType').on('change', function(){
     $('#btn_post_related_gist').show();
     var editor = ace.edit("editor_div");
     var newMode = $.parseJSON($(this).val());
-    console.log(newMode.name);
     editor.session.setMode("ace/mode/" + newMode.name)
 });
 
