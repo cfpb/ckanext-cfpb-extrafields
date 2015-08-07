@@ -1,14 +1,31 @@
 {% ckan_extends %}
 
 {% block styles %}
-{{ super() }}
+   {{ super() }}
+   {# Import css using Fanstatic.
+   'cfpb_extrafields/' is the name that the cfpb_extrafields/fanstatic directory
+   was registered with when the toolkit.add_resource() function was called.
+   'corefields.css' is the path to the CSS file, relative to the root of
+   the fanstatic directory. #}
+   {% resource 'cfpb_extrafields/corefields.css' %}
+   {% resource 'cfpb_extrafields/capital_framework.css' %}
+   {% resource 'cfpb_extrafields/ckan_overrides.css' %}
+{% endblock %}
 
-{# Import css using Fanstatic.
-'cfpb_extrafields/' is the name that the cfpb_extrafields/fanstatic directory
-was registered with when the toolkit.add_resource() function was called.
-'corefields.css' is the path to the CSS file, relative to the root of
-the fanstatic directory. #}
 
-{% resource 'cfpb_extrafields/corefields.css' %}
+{% block meta %}
+  {{ super() }}
+  <META http-equip="X-Frame-Options" content="Deny" />
+{% endblock %}
 
+
+{% block footer %}
+  {{ super() }}
+  {#logo % include "custom_footer.html" %#}
+{% endblock %}
+
+{% block scripts %}
+   {% resource 'cfpb_extrafields/encoder.js' %}
+   {% resource 'cfpb_extrafields/capital_framework.js' %}
+  {{ super() }}
 {% endblock %}

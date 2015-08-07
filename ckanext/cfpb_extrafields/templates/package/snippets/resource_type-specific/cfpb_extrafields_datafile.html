@@ -1,0 +1,59 @@
+{% import 'macros/form.html' as form %}
+{#
+* Datafile (category: "link only")
+X title
+X url only
+X description
+X +format
+X +storage location ; path (drop-down+free-text)
+X +approximate_size
+X +intake_date
+#}
+
+{% if location=="form" %}
+  {% import 'macros/form.html' as form %}
+  {% resource 'cfpb_extrafields/otherspecify.js' %}
+  {% import 'macros/form_custom.html' as form_custom %}
+  <!-- cfpb_extrafields_datafile.html snippet -->
+  <div class='core-field'>
+  {{ form.input('url', label=_("URL"), placeholder="enter URL or a dummy value",
+  type="url", value=data.url, error=errors.url, classes=['control-full']) }}
+  </div>
+
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('Some useful notes about the data'), value=data.description,
+  error=errors.description) }}
+  </div>
+  
+  <div class='core-field'>
+  {{ form_custom.select_one_with_other('format',
+  id='field-format',
+  label=_('format'),  
+  current_value=data.get('format', ''), 
+  options_defaults=h.options_format(), 
+  error=errors.format,) }}
+  </div>
+
+  {% snippet "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html",errors=errors, data=data  %}
+  
+  {{ form.select('approximate_total_size', label=_('approximate total size'),
+  id='field-approximate_total_size', options=h.options_approximate_total_size(),
+  selected=data.approximate_total_size, error=errors.approximate_total_size,
+  classes=['control-medium']) }}
+  
+  {{ form.input('intake_date', type='date', label=_("intake date"),
+  placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
+  <!-- end cfpb_extrafields_datafile.html snippet -->
+  
+{% elif location=="description" %}
+  <!-- cfpb_extrafields_datafile.html snippet -->
+  <!-- end cfpb_extrafields_datafile.html snippet -->
+{% elif location=="metadata" %}
+  <!-- cfpb_extrafields_datafile.html snippet -->
+  <!-- end cfpb_extrafields_datafile.html snippet -->
+  
+{% else %}
+  Bad dashboard snippet location choice
+  
+{% endif %}

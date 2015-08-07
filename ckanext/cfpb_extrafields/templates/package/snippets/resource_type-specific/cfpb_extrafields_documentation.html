@@ -1,0 +1,59 @@
+{% import 'macros/form.html' as form %}
+{#
+* Documentation or Report (category: "link or upload")
+X title
+X url / upload
+X description
+X +format
+X +storage location ; path (drop-down+free-text)
+X +intake_date
+#}
+
+{% if location=="form" %}
+  {% import 'macros/form.html' as form %}
+  {% resource 'cfpb_extrafields/otherspecify.js' %}
+  {% import 'macros/form_custom.html' as form_custom %}
+
+  <!-- cfpb_extrafields_documentation.html snippet -->
+  <!-- A "URL" fiel is REQUIRED for all types -->
+  <div class='core-field'>
+  {% set is_upload = (data.url_type == 'upload') %}
+  {{ form.image_upload(data, errors, field_url='url', field_upload='upload',
+  field_clear='clear_upload',is_upload_enabled=h.uploads_enabled(),
+  is_url=data.url and not is_upload, is_upload=is_upload,
+  upload_label=_('File'), url_label=_('URL')) }}
+  </div>
+  
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('Some useful notes about the data'), value=data.description,
+  error=errors.description) }}
+  </div>
+
+  <div class='core-field'>
+  {{ form_custom.select_one_with_other('format',
+  id='field-format',
+  label=_('format'),  
+  current_value=data.get('format', ''), 
+  options_defaults=h.options_format(), 
+  error=errors.format,) }}
+  </div>
+
+  {% snippet "package/snippets/resource_type-specific/cfpb_extrafields_field-storage-path.html",errors=errors, data=data  %}
+
+  {{ form.input('intake_date', type='date', label=_("intake date"),
+  placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
+  <!-- end cfpb_extrafields_documentation.html snippet -->
+  
+{% elif location=="description" %}
+  <!-- cfpb_extrafields_documentation.html snippet -->
+  <!-- end cfpb_extrafields_documentation.html snippet -->
+  
+{% elif location=="metadata" %}
+  <!-- cfpb_extrafields_documentation.html snippet -->
+  <!-- end cfpb_extrafields_documentation.html snippet -->
+  
+{% else %}
+  Bad location snippet choice
+  
+{% endif %}

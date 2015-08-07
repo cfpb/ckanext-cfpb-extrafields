@@ -1,0 +1,6 @@
+{% ckan_extends %}
+{# rename_groups_to_topics #}
+{% block page_header %}
+{{super()|replace("Groups", "Topics")}}
+{% endblock %}
+

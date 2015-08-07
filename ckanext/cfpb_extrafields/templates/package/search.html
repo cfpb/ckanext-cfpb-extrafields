@@ -1,0 +1,13 @@
+{% ckan_extends %}
+{% block breadcrumb_content%}
+{{ super() }}
+<span style="padding-left:450px;float:right;overflow:hidden">
+{% if h.check_access('package_create') %}
+    {% link_for _('add dataset'), controller='package', action='new', icon='plus-sign-alt' %}
+{% endif %}
+</span>
+{% endblock %}
+{% block page_primary_action %}
+<!--snippet moved up to the breadcrumb-->
+{% endblock %}
+

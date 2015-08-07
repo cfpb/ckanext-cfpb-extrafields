@@ -1,11 +1,22 @@
 "use strict";
 
-ckan.module('datadict_post', function ($, _) {
-  // A few jQuery helpers for exporting only
+/* on form submissions, first embed the hidden data */
+$(function() {
+    $('#resource_save').click( function() {
+        $( "#datadict_stash" ).trigger( "click" );
+    });
+    $('#resource_create').click( function() {
+        $( "#datadict_stash" ).trigger( "click" );
+    });
+});
+
+/* stashes a hidden datadict that python processes during plugin's update */
+ckan.module('datadict_stash', function ($, _) {
+    // A few jQuery helpers for exporting only
   jQuery.fn.pop = [].pop;
   jQuery.fn.shift = [].shift;
   return {
-    initialize: function () {
+      initialize: function () {
           $.proxyAll(this, /_on/);
           this.el.on('click', this._onClick);
     },
@@ -39,7 +50,7 @@ ckan.module('datadict_post', function ($, _) {
       
       // Output the result
       record = JSON.stringify(record);
-      //console.log(record);
+      // python picks this up on submit
       $( "input:hidden[name=datadict]" ).val(record);
     },
   }

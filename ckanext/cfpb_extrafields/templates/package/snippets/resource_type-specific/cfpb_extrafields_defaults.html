@@ -1,0 +1,45 @@
+{% resource 'cfpb_extrafields/otherspecify.js' %}
+{% import 'macros/form_custom.html' as form_custom %}
+{% import 'macros/form.html' as form %}
+
+<div class='core-field'>
+  {{ form_custom.select_one_with_other('format',
+  id='field-format',
+  label=_('format'),  
+  current_value=data.get('format', ''), 
+  options_defaults=h.options_format(), 
+  error=errors.format,) }}
+</div>
+
+<!-- custom version of select one with extra field -->
+<div class='core-field'>
+<div class="control-group{{ "errors.storage_location" if errors.storage_location }}{{ " " ~ classes | join(' ') }}">
+  <label class="control-label" for="storage_location">storage location</label>
+  <div class="controls{{ " " ~ control_classes | join(' ') }}">
+    <select id="storage_location" name="storage_location">
+      {# move previously selected elements to the top and select #}
+      {# provide nothing as an option #}
+      <option value=""></option>
+      {% for e in [data.get('storage_location', '')] %}
+      {% if e %}
+      <option value="{{e}}" selected="selected">{{e}}</option>
+      {% endif %}
+      {% endfor %}
+      {# provide the default options but don't duplicate if they were selected above #}
+      {% for e in h.options_storage_location() %}
+      {% if e != data.get('storage_location', '') %}
+      <option value="{{e}}">{{e}}</option>
+      {% endif %}
+      {% endfor %}
+      {# provide an option for javascript to use to create new fields #}
+      <option value="__Other">Other, please specify</option>
+    </select>
+    path: <input id="field-storage_location_path" placeholder="eg http://..., D:\path\" value="{{data.storage_location_path}}" name="storage_location_path"/>
+    {% if errors.storage_location and errors.storage_location is iterable %}<span class="error-block">{{ errors.storage_location|join(', ') }}</span>{% endif %}
+  </div>
+</div>
+</div>
+
+{{ form.input('intake_date', type='date', label=_("intake date"), placeholder="eg 2012-12-21", value=data.intake_date, error=errors.intake_date) }}
+
+{{ form.select('approximate_total_size', label=_('approximate total size'), id='field-approximate_total_size', options=h.options_approximate_total_size(), selected=data.approximate_total_size, error=errors.approximate_total_size, classes=['control-medium']) }}

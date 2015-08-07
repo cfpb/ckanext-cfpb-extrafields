@@ -1,0 +1,38 @@
+{% import 'macros/form.html' as form %}
+
+{% if location=="description" %}
+  <!-- cfpb_extrafields_template.html snippet -->
+  <!-- end cfpb_extrafields_template.html snippet -->
+  
+{% elif location=="form" %}
+  {% import 'macros/form.html' as form %}
+  <!-- cfpb_extrafields_template.html snippet -->
+  <!-- A "URL" fiel is REQUIRED for all types -->
+  <div class='core-field'>
+  {% set is_upload = (data.url_type == 'upload') %}
+  {{ form.image_upload(data, errors, field_url='url', field_upload='upload',
+  field_clear='clear_upload',is_upload_enabled=h.uploads_enabled(),
+  is_url=data.url and not is_upload, is_upload=is_upload,
+  upload_label=_('File'), url_label=_('URL')) }}
+  </div>
+  
+  <!-- format persists unless reset -->
+  <div hidden class='core-field'>
+  <input id="format" value="not applicable" name="format"/>
+  </div>
+  
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('Some useful notes about the data'), value=data.description,
+  error=errors.description) }}
+  </div>
+  <!-- end cfpb_extrafields_template.html snippet -->
+  
+{% elif location=="metadata" %}
+  <!-- cfpb_extrafields_template.html snippet -->
+  <!-- end cfpb_extrafields_template.html snippet -->
+  
+{% else %}
+  Bad template snippet location choice
+  
+{% endif %}

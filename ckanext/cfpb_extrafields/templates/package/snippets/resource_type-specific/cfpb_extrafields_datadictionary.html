@@ -1,0 +1,109 @@
+{#
+* Data Dictionary (category: "Data Dictionary")
+X title
+X related-to-url
+#}
+
+
+{% if location=="form" %}
+  <!-- cfpb_extrafields_datadictionary.html snippet -->
+  {% import 'macros/form.html' as form %}
+  <!-- A "URL" fiel is REQUIRED for all types -->
+  {% if data.url %}
+    {{ form.hidden('url', value=data.url)}}
+  {% else %}
+    {{ form.hidden('url', value=" optional URL or click (X) to upload a file")}}
+  {% endif %}
+  
+  <div class='core-field'>
+  {{ form.markdown('description', id='field-description', label=_('description'), 
+  placeholder=_('URL to a related resource or other notes about the data dictionary'), value=data.description,
+  error=errors.description) }}
+  </div>
+  
+  <!-- format persists unless reset -->
+  <div hidden class='core-field'>
+  <input id="format" value="not applicable" name="format"/>
+  </div>
+  <!-- end cfpb_extrafields_datadictionary.html snippet -->
+{% endif %}
+  
+{% if location=="form" or location=="description" %}
+  <!-- cfpb_extrafields_datadictionary.html snippet -->
+  
+{% resource 'cfpb_extrafields/datadict_setup.css' %}
+{% resource 'cfpb_extrafields/datadict_setup.js' %}
+{% resource 'cfpb_extrafields/datadict_stash.js' %}
+
+{% set dd = h.get_unique_datastore_json(data.id, 'datadict') %}
+{% if not dd %}
+  {# This set is the only place where default fields need to be entered by hand #}
+  {% set dd = [ ["Field Name","Type","Definition","Start Date", "End Date"],
+  ["field name","type","definition","start date","end date"],
+  {"field name":"-","type":"-","definition":"-","start date":"-", "end date":"-"},
+  ]%}
+{% endif %}
+{% set header_names = dd[0] %}
+{% set header_keys = dd[1] %}
+{% set nkeys = range(dd[1]|length) %}
+{% set nrows = dd|length-2 %}
+
+<div id="datadict-table" class="table-editable">    
+  {% if editable == "true" %}
+  <span class="table-add"><button type='button' class="btn btn-primary">+</button></span>
+  {% endif %}
+  <table class="table">
+    <tr>
+      {% for item in header_names %}
+        <th contenteditable={{editable}}>{{ item }}</th>
+      {% endfor %}
+      {% if editable == "true" %}
+      <th></th>
+      <th></th>
+      {% endif %}
+    </tr>
+  {% for irow in range(2,nrows+2) %}
+    <tr>
+      {% for i in nkeys %}
+        {% set key = header_keys[i]%}
+          <td contenteditable={{editable}}>{{ dd[irow][key] }}</td>
+        {% endfor %}
+      {% if editable == "true" %}
+      <td>
+        <span class="table-remove"> <button type='button' class="btn btn-danger"><i class="icon-trash icon-single"></i></button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary"><i class="icon-arrow-up icon-single"></i></button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary"><i class="icon-arrow-down icon-single"></i></button></span>
+      </td>
+      {% endif %}
+    </tr>
+  {%endfor%}
+   <!-- This is our hidden clonable table line -->
+    <tr class="hide">
+      {% for item in header_names %}
+        <td contenteditable={{editable}}>-</td>
+      {% endfor %}
+      <td>
+        <span class="table-remove"><button type='button' class="btn btn-danger"><i class="icon-trash icon-single"></i></button></span>
+      </td>
+      <td>
+        <span class="table-up"><button type='button' class="btn btn-primary"><i class="icon-arrow-up icon-single"></i></button></span>
+        <span class="table-down"><button type='button' class="btn btn-primary"><i class="icon-arrow-down icon-single"></i></button></span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<input type="hidden" id="field-datadict" name="datadict">
+<button class="btn btn-primary" type="button" style="display: none;"
+        id="datadict_stash" 
+        data-module="datadict_stash"
+        data-module-dataset_id="{{ data.package_id }}"
+        data-module-resource_id="{{ data.id }}"
+        data-module-resource_name="{{ data.name }}">Stash hidden JSON of dictionary</button>
+<!-- end cfpb_extrafields_datadictionary.html snippet -->
+{% endif %}
+{% if location=="description" %}<div align="right">
+  <i class="icon-info-sign"><a href='/api/3/action/datastore_search?resource_id={{data.id}}&filters={"record_title":"datadict"}'>{{ _(' JSON format') }}</a></i></div>
+{% endif %}

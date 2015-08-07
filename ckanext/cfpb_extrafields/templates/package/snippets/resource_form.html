@@ -1,48 +1,69 @@
-{% ckan_extends %}
+{% import 'macros/form.html' as form %}
 
-{% block package_basic_fields_license %}
-{% endblock %}
-{% block basic_fields_format %}
-{% endblock %}
+{% resource 'cfpb_extrafields/resource_type_select.js' %}
 
-{% block basic_fields_url %}
-{% import 'macros/form_custom.html' as form_custom %}
-{% resource 'cfpb_extrafields/format_select.js' %}
+<!----###################################------->
+<!-- there is a hack here that checks whether the page url is edit_resource or new_resource, 
+     if it is the latter the form submits and reloads in edit mode. -->
+{% resource 'cfpb_extrafields/new_resource_redirect.js' %}
+<span id="auto-redirect-loader"
+      data-module="new_resource_redirect"
+      data-module-html="new_resource_redirect.html"
+      data-module-pkgid="{{data.id}}"
+      data-module-pkgname="{{pkg_name}}">
+</span>
+<!----###################################------->
 
 
-<div class='core-field'>
-  {{ form_custom.select_one_with_other('format',
-  id='field-format',
-  label=_('format'),  
-  current_value=data.get('format', ''), 
-  options_defaults=h.options_format(), 
-  error=errors.format,) }}
-</div>
+{% set data = data or {} %}
+{% set errors = errors or {} %}
+{% set action = form_action or h.url_for(controller='package', action='new_resource', id=pkg_name) %}
 
+
+<form id="resource-edit" class="dataset-form dataset-resource-form form-horizontal" method="post" action="{{ action }}" data-module="basic-form resource-form" enctype="multipart/form-data">
+  {% block stages %}
+    {# An empty stages variable will not show the stages #}
+    {% if stage %}
+      {{ h.snippet('package/snippets/stages.html', stages=stage, pkg_name=pkg_name) }}
+    {% endif %}
+  {% endblock %}
+
+  {{ form.errors(error_summary) }}
+
+  <input name="id" value="{{ data.id }}" type="hidden"/>
+
+  {% if not data.resource_type %}
+  {# the loading button obeys different logic from new_resource_redirect! #}
+  <div align="left"><p>Setting a resource type... <img src="/loader.gif" alt="Loading..."></p></div>
+  {% endif %}
+  <div class='core-field'>
 {{ form.select('resource_type', label=_('resource type'), id='field-resource_type', options=h.options_resource_type(), selected=data.resource_type, error=errors.resource_type, classes=['control-medium']) }}
-
-<div class='core-field'>
-  {{ super()}}
 </div>
-{% endblock %}
 
+<hr />
 
-{% block basic_fields_name %}
-<div class='core-field'>
-{{ form.input('name', id='field-name', label=_('name'), placeholder=_('eg. January 2011 Gold Prices'), value=data.name, error=errors.name, classes=['control-full']) }}
-</div>
-{% endblock %}
+  {% block basic_fields %}
+    {% block basic_fields_name %}
+      <div class='core-field'>
+      {{ form.input('name', id='field-name', label=_('title'), placeholder=_('eg. January 2011 Gold Prices'), value=data.name, error=errors.name, classes=['control-full']) }}
+      </div>
+    {% endblock %}
 
+    {% block basic_fields_url %}
+      <!-- moved basic_fields_url to type specific snippets -->
+      <!-- Note: A "URL" field is REQUIRED for each resource type. --> 
+    {% endblock %}
 
-{% block basic_fields_description %}
-{% if data.format %} {# format selected? #}
-<div class='core-field'>
-{{ form.markdown('description', id='field-description', label=_('description'), placeholder=_('Some useful notes about the data'), value=data.description, error=errors.description) }}
-</div>
-{% endif %} {# format selected? #}
-{% endblock %}
+    {% block basic_fields_description %}
+      <!-- moved basic_fields_description to metadata snippets -->
+    {% endblock %}
 
+    {% block basic_fields_format %}
+      <!-- moved basic_fields_format and made drop-down in metadata snippets -->
+    {% endblock %}
+  {% endblock basic_fields %}
 
+<!----------------------------------------->        
 {% block metadata_fields %}
 {% resource 'cfpb_extrafields/otherspecify.js' %}
 {% resource 'cfpb_extrafields/popover.js' %}
@@ -50,33 +71,54 @@
 {% import 'macros/form_custom.html' as form_custom %}
 
 {#{data}#}
-{% if data.format %} {# format selected? #}
-{% if data.format == 'Data Dictionary' -%}
-<h3>Data Dictionary</h3>
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,editable="true" %}
+{% if data.resource_type %} {# resource_type selected? #}
+{% if data.resource_type == 'Dashboard' -%}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_dashboard.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
 
-{% elif data.format == 'SQL'  %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_sql.html',data=data,errors=errors,pkg_name=pkg_name %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+{% elif data.resource_type == 'Database'  %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
+
+{% elif data.resource_type == 'Data Dictionary' -%}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=data,errors=errors,pkg_name=pkg_name,location="form",editable="true" %}
+
+{% elif data.resource_type == 'Data File' -%}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datafile.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
+  
+{% elif data.resource_type == 'Documentation' or data.resource_type == 'Report' -%}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_documentation.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
 
 {% else %}
-{% snippet 'package/snippets/format-specific/cfpb_extrafields_defaults.html',data=data,errors=errors,pkg_name=pkg_name %}
+  <h3>Error: Undefined Resource Type</h3>
+{% endif %}{# specific resource_type #}
+{% endif %}{# resource_type selected? #}
+  {% endblock %}
+<!----------------------------------------->        
 
-{% endif %}
-{% endif %}{# format selected? #}
-{% endblock %}
-
-
-{% block save_button %}
-{% if data.format == 'Data Dictionary' -%}
-  <button class="btn btn-primary" name="save" value="go-metadata" type="submit"
-    id="resource_save" 
-    data-module="datadict_post"
-    data-module-dataset_id="{{ data.package_id }}"
-    data-module-resource_id="{{ data.id }}"
-    data-module-resource_name="{{ data.name }}">
-{% else %}
-  <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">
-{% endif %}
-  {% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
-{% endblock %}
+  <div class="form-actions">
+    
+    {% block delete_button %}
+      {% if data.id %}
+        {% if h.check_access('resource_delete', {'id': data.id})  %}
+          {% set locale = h.dump_json({'content': _('Are you sure you want to delete this resource?')}) %}
+          <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='resource_delete', resource_id=data.id, id=pkg_name %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+        {% endif %}
+      {% endif %}
+    {% endblock %}
+    {% if stage %}
+      {% block previous_button %}
+        <button class="btn" name="save" value="go-dataset" type="submit">{{ _('Previous') }}</button>
+      {% endblock %}
+      {% block again_button %}
+        <button id="resource_save" class="btn" name="save" value="again" type="submit">{{ _('Save & add another') }}</button>
+        {% endblock %}
+      {% block save_button %}
+      <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
+      {% endblock %}
+    {% else %}
+      {% block add_button %}
+      <!-- id="resource_create" don't listen for resource type changes when creating a resource -->
+      <button id="resource_create" class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Add') }}</button>
+      {% endblock %}
+    {% endif %}
+  </div>
+</form>

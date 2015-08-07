@@ -18,6 +18,8 @@ def create_relevant_governing_documents():
         for tag in opts.relevant_governing_documents(): 
             data = {'name': tag, 'vocabulary_id': vocab['id']}
             tk.get_action('tag_create')(context, data)
+
+
 def tag_relevant_governing_documents():
     create_relevant_governing_documents()
     try:
@@ -26,6 +28,7 @@ def tag_relevant_governing_documents():
         return tags
     except tk.ObjectNotFound:
         return None
+
 
 # these go into a new popup module if there are more than a few fields
 def popup_relevant_governing_documents():
@@ -47,34 +50,35 @@ def parse_resource_related_gist(data_related_items, resource_id):
            resource_id in desc:
             urls.append( {'title':title,'url':url} )
     return urls
-            
+
+
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     p.implements(p.IResourceController)
-    def before_create(self, context, resource):
-        return
-    def after_create(self, context, resource):
-        # must have changed['format'] when you created the resource
-        tk.redirect_to(controller='package',action='resource_edit',
-                       resource_id=resource['id'],id=resource['package_id'])
+    def _which_check_keys_changed(self, old, new):
+        check_keys = ['resource_type', 'privacy_contains_pii']
+        self.changed = {key: new.get(key, '0') != old.get(key, '1')
+                        for key in check_keys}
+
+    def _redirect_to_edit_on_change(self, resource, field):
+        if self.changed[field]:
+            tk.redirect_to(controller='package', action='resource_edit',
+                           resource_id=resource['id'],id=resource['package_id'])
 
     def _delete_and_rebuild_datadict(self, resource):
         import json
-        if 'datadict' in resource:
+        if 'datadict' in resource and 'id' in resource:
             record = resource['datadict']
             resource.pop('datadict')
             json_record = json.loads(record)
             try:
-                ds.delete_datastore_json(resource['id'], 'json_name', 'datadict')
-            except tk.ObjectNotFound, err:
+                ds.delete_datastore_json(resource['id'], 'datadict')
+            # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+            except (tk.ObjectNotFound, tk.ValidationError), err:
                 pass
-            ds.create_datastore_json(resource['id'], json_record, 'json_name', 'datadict') 
+            ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
         return
-    def before_update(self, context, current, resource):
-        # note keys that have changed (resource is new, current is old)
-        self.changed = {key: resource.get(key, '0') != current.get(key, '1') for key in ['format', 'privacy_contains_pii']}
-        if current.get('format', '') == 'Data Dictionary' and resource.get('format', '') == 'Data Dictionary':
-            self._delete_and_rebuild_datadict(resource)
+    
     def _email_on_change(self, context, resource, field):
         # unfinished! 
         # if specified fields have changed notify the relevant people
@@ -87,23 +91,40 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # get email addresses 
                 print tk.get_action('user_show')(context,{'id': f['id']})['email']
                 # send a notification of change by email
-    def _redirect_on_change(self, resource, field):
-        if self.changed['format']:
-            tk.redirect_to(controller='package', action='resource_edit',
-                           resource_id=resource['id'],id=resource['package_id'])
+
+    def before_create(self, context, resource):
+        return
+
+    def after_create(self, context, resource):
+        # resource creation is now handled under the hood by created_edit_resource.js
+        # All resources are produced with views, datastore headings and with a default URL
+        # (so that users aren't forced to enter a confusing link).
+        # some of that could be moved here if desired.
+        return
+    
+    def before_update(self, context, current, resource):
+        # note keys that have changed (current is old, resource is new)
+        self._which_check_keys_changed(current, resource)
+        if current.get('resource_type', '') == 'Data Dictionary' \
+           and resource.get('resource_type', '') == 'Data Dictionary':
+            self._delete_and_rebuild_datadict(resource)
+            
     def after_update(self, context, resource):
         ''' do things on field changes '''
         # unfinished email trigger:
         # self._email_on_change(context,resource,'privacy_contains_pii')
-        self._redirect_on_change(resource,'format')
+        self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys 
         for key in self.changed:
             self.changed[key] = False
         return
+    
     def before_delete(self, context, resource, resources):
         return
+    
     def after_delete(self, context, resources):
         return
+    
     def before_show(self, resource_dict):
         return
 
@@ -125,7 +146,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_privacy_pia_notes': opts.privacy_pia_notes,
                 'options_transfer_method': opts.transfer_method,
                 'options_sensitivity_level': opts.sensitivity_level,
-                'options_update_size': opts.update_size,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
 
@@ -133,12 +153,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'popup_data_source_names': popup_data_source_names,
                 'popup_usage_restrictions': popup_usage_restrictions,
 
-                'create_datastore_json':ds.create_datastore_json, 
+                'create_datastore':ds.create_datastore,
                 'get_unique_datastore_json':ds.get_unique_datastore_json,
                 'delete_datastore_json':ds.delete_datastore_json,
                 
                 'parse_resource_related_gist': parse_resource_related_gist,
             }
+
     
     p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
@@ -190,8 +211,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'content_periodicity': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'content_spatial': [tk.get_validator('ignore_missing'),
-                                v.input_value_validator,
-                        tk.get_converter('convert_to_extras')],
+                                tk.get_converter('convert_to_extras')],
+            'content_temporal_range_end' : [v.end_after_start_validator, v.reasonable_date_validator,
+                                            tk.get_validator('ignore_missing'),
+                                            tk.get_converter('convert_to_extras')], 
+            'content_temporal_range_start' : [v.end_after_start_validator, v.reasonable_date_validator,
+                                              tk.get_validator('ignore_missing'),
+                                              tk.get_converter('convert_to_extras')],
             'update_frequency': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'website_name': [tk.get_validator('ignore_missing'),
@@ -219,8 +245,15 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'records_retention_schedule': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'procurement_document_id': [tk.get_validator('ignore_missing'),
-                        tk.get_converter('convert_to_extras')],
-
+                                        tk.get_converter('convert_to_extras'),],
+            'cleansing_rules_used' : [tk.get_validator('ignore_missing'),
+                                      tk.get_converter('convert_to_extras'),],
+            'sensitivity_level' : [tk.get_validator('ignore_missing'),
+                                   tk.get_converter('convert_to_extras'),],
+            'privacy_contains_pii' : [tk.get_validator('ignore_missing'),
+                                      tk.get_converter('convert_to_extras'),],
+            'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
+                                                tk.get_converter('convert_to_extras'),],
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -230,27 +263,35 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         })
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),], 
-                'content_temporal_range_start' : [v.end_after_start_validator, v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
-                'cleansing_rules_used' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [tk.get_validator('ignore_missing'),],
-                'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),],
                 'resource_type' : [tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [tk.get_validator('ignore_missing'),],
-                'update_size' : [tk.get_validator('ignore_missing'),],
+                'database_server' : [ tk.get_validator('ignore_missing'),],  
+                'database_name' : [ tk.get_validator('ignore_missing'),],  
+                'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_4' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_5' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_6' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
         })
         return schema
+    
     def create_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).create_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
+    
     def update_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).update_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
+    
     def show_package_schema(self):
         schema = super(ExampleIDatasetFormPlugin, self).show_package_schema()
         schema.update({
@@ -289,6 +330,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                 tk.get_validator('ignore_missing')],
             'update_frequency': [tk.get_converter('convert_from_extras'),
                                  tk.get_validator('ignore_missing')],
+            'content_temporal_range_end' : [tk.get_converter('convert_from_extras'),
+                                            tk.get_validator('ignore_missing'),],
+            'content_temporal_range_start' : [tk.get_converter('convert_from_extras'),
+                                              tk.get_validator('ignore_missing'),],
             'website_name': [tk.get_converter('convert_from_extras'),
                              tk.get_validator('ignore_missing')],
             'website_url': [tk.get_converter('convert_from_extras'),
@@ -322,20 +367,33 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                        tk.get_validator('ignore_missing')],
             'usage_restrictions' : [tk.get_converter('convert_from_extras'),
                                     tk.get_validator('ignore_missing')],
+            'sensitivity_level' : [ tk.get_converter('convert_from_extras'),
+                                    tk.get_validator('ignore_missing'),],
+            'privacy_contains_pii' : [ tk.get_converter('convert_from_extras'),
+                                       tk.get_validator('ignore_missing'),],
+            'privacy_has_direct_identifiers' : [ tk.get_converter('convert_from_extras'),
+                                                 tk.get_validator('ignore_missing'),],
+            'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
+                                      tk.get_validator('ignore_missing'),],
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
-                'cleansing_rules_used' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_end' : [tk.get_validator('ignore_missing'),],
-                'content_temporal_range_start' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [tk.get_validator('ignore_missing'),],
-                'privacy_contains_pii' : [ tk.get_validator('ignore_missing'),],
-                'privacy_has_direct_identifiers' : [ tk.get_validator('ignore_missing'),],
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
-                'sensitivity_level' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],  
-                'update_size' : [ tk.get_validator('ignore_missing'),],
+                'database_server' : [ tk.get_validator('ignore_missing'),],  
+                'database_name' : [ tk.get_validator('ignore_missing'),],  
+                'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_4' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_5' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_6' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
+                'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
         })
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
@@ -346,14 +404,17 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 tk.get_validator('ignore_missing')]
             })
         return schema
+    
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
         # package types not handled by any other IDatasetForm plugin.
         return True
+    
     def package_types(self):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+
     
     p.implements(p.IConfigurer)
     def update_config(self, config):
@@ -370,17 +431,24 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # templates.
         tk.add_resource('fanstatic','cfpb_extrafields')
 
+
     p.implements(p.IFacets)
     def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
         facets_dict = collections.OrderedDict()
-        # example facet added
-        facets_dict['legal_authority_for_collection'] = p.toolkit._('Legal Authority for Collection')
         for key in dummy_facets.keys():
             facets_dict[key] = dummy_facets[key]
+        facets_dict['groups'] = p.toolkit._('Topics')
         # hide License facet because it is not used by cfpb
         facets_dict.pop('license_id', None)
+        # change the order of the format facet
+        facets_dict.pop('res_format', None)
+        facets_dict['tags'] = p.toolkit._('Subjects')
+        # resource_type randomly gets indexed in lib/search/index.py as res_type
+        facets_dict['res_type'] = p.toolkit._('Resource Types')
+        facets_dict['res_format'] = p.toolkit._('Formats')
         return facets_dict
+    
     def dataset_facets(self, facets_dict, package_type):
         return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):

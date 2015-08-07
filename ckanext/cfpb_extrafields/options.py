@@ -5,25 +5,22 @@ def form_select_format(l):
     return [{'value': k} for k in l]
 
 # resources 
+def resource_type():
+    a = ["Dashboard", "Database", "Data Dictionary", "Data File", "Documentation", "Report"]
+    return form_select_format(a)
 def format():
-    return ["Data Dictionary", "CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc", 
+    return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc",
            "excel", "TXT", "TAB", "JSON"] #+other
 def storage_location():
-    return ["Research Server", "SQLServer", "Postgres", "MS Access", "Z Drive", "SES",
-            "RightNow"] #+other
+    return ["Research Server", "Z Drive", "SES", "RightNow"] #+other
 def sensitivity_level():
     a = ["Public", "Low", "Medium", "High"]
     return form_select_format(a)
 def file_sizes():
     a = ["<500 MB","501-1,000 MB","1001-10,000 MB",">10,000 MB"]
     return form_select_format(a)
-def update_size():
-    return file_sizes()
 def approximate_total_size():
     return file_sizes()
-def resource_type():
-    a = ["Canonical","Extract","Documentation","Other"]  #,"Data Dictionary"
-    return form_select_format(a)
 
 # datasets
 def legal_authority_for_collection():
