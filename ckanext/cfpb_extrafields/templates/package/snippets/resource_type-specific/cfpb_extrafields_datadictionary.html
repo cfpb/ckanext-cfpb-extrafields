@@ -55,7 +55,7 @@ X related-to-url
   <table class="table">
     <tr>
       {% for item in header_names %}
-        <th contenteditable={{editable}}>{{ item }}</th>
+        <th><div contenteditable={{editable}}>{{ item }}</div></th>
       {% endfor %}
       {% if editable == "true" %}
       <th></th>
@@ -66,7 +66,7 @@ X related-to-url
     <tr>
       {% for i in nkeys %}
         {% set key = header_keys[i]%}
-          <td contenteditable={{editable}}>{{ dd[irow][key] }}</td>
+          <td><div contenteditable={{editable}}>{{ dd[irow][key] }}</div></td>
         {% endfor %}
       {% if editable == "true" %}
       <td>
@@ -82,7 +82,7 @@ X related-to-url
    <!-- This is our hidden clonable table line -->
     <tr class="hide">
       {% for item in header_names %}
-        <td contenteditable={{editable}}>-</td>
+        <td><div contenteditable={{editable}} class="dict-new-row"></div></td>
       {% endfor %}
       <td>
         <span class="table-remove"><button type='button' class="btn btn-danger"><i class="icon-trash icon-single"></i></button></span>

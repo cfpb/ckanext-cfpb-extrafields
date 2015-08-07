@@ -321,6 +321,12 @@ input[type="button"].btn-block {
   margin-right: 0;
 }
 
+/* Data dicts */
+
+.dict-new-row {
+  border: 1px dashed #ccc;
+}
+
 /* Footer */
 
 #creeper {
