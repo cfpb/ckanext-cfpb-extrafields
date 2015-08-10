@@ -323,7 +323,6 @@ input[type="button"].btn-block {
 
 /* Color overrides */
 
-
 .masthead,
 .homepage .module-search .module-content {
   background-color: #2CB34A;
@@ -349,6 +348,35 @@ body,
 
 [role=main] {
   min-height: 0;
+}
+
+/* Accessibility */
+
+#skip a {
+  position: absolute;
+  left: -99999999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+#skip a:focus {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  padding: 5px 10px 6px;
+}
+
+.alert-danger, .alert-error {
+  color: #000;
+}
+
+.header-text-logo a {
+  letter-spacing: .01em;
 }
 
 /* Data dicts */
