@@ -321,35 +321,6 @@ input[type="button"].btn-block {
   margin-right: 0;
 }
 
-/* Color overrides */
-
-.masthead,
-.homepage .module-search .module-content {
-  background-color: #2CB34A;
-}
-
-body,
-.site-footer,
-.account-masthead,
-.homepage .module-search .tags {
-  background-color: #43484E;
-}
-
-.account-masthead .account ul li a,
-.site-footer a {
-  color: #fff;
-}
-
-@media (min-width: 768px) {
-  .hero {
-    background: #fff;
-  }
-}
-
-[role=main] {
-  min-height: 0;
-}
-
 /* Accessibility */
 
 #skip a {
@@ -377,6 +348,10 @@ body,
 
 .header-text-logo a {
   letter-spacing: .01em;
+}
+
+[role=main] {
+  min-height: 0;
 }
 
 /* Data dicts */
