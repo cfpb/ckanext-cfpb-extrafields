@@ -2,7 +2,7 @@ var jsdom = require('jsdom');
 var fs = require('fs');
 var expect = require('expect.js');
 
-describe('list related', function () {
+describe('list related module', function () {
 
   var $;
 
