@@ -24,8 +24,7 @@ ckan.module('post_related_gist', function ($, _) {
             }
             var textgist = editor.getSession().getValue();
             $('#gist-loading').removeClass('hidden');
-            var apiurl   = 'https://github.cfpb.gov/api/v3/gists';
-            
+            var apiurl   = this.options.github_api_url+'gists';
             this._postGIST(apiurl,textgist, function(json) {
                 if (!json) {
                     $('#ace_output').html("<h2>GitHub failed to connect</h2><br>");

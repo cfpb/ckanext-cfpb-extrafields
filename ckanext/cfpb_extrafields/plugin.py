@@ -37,6 +37,10 @@ def popup_data_source_names():
     return "Insert purpose of source names field."
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
+
+import pylons.config as config
+def github_api_url():
+    return config['ckan.ckanext_cfpb_extrafields.github_api_url']
 def parse_resource_related_gist(data_related_items, resource_id):
     urls = []
     if not data_related_items:
@@ -46,7 +50,8 @@ def parse_resource_related_gist(data_related_items, resource_id):
         url = item.get('url')
         title = item.get('title')
         if desc and \
-           "https://github.cfpb.gov/gist" in url and \
+           "gist" in url and \
+           "github" in url and \
            resource_id in desc:
             urls.append( {'title':title,'url':url} )
     return urls
@@ -158,6 +163,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'delete_datastore_json':ds.delete_datastore_json,
                 
                 'parse_resource_related_gist': parse_resource_related_gist,
+                'github_api_url': github_api_url,
             }
 
     
