@@ -307,6 +307,7 @@ function example_code_snippet(items) {
                   data-module-resource_id="{{ res.id }}"
                   data-module-email="{{c.userobj.email}}" {# accessing c. is bad practice! #}
                   data-module-resource_name="{{ res.name }}"
+                  data-module-github_api_url="{{ h.github_api_url() }}"
                   data-module-html="post_related_gist.html"
                   data-module-title="{{ _('posting code') }}">
             Submit code snippet
