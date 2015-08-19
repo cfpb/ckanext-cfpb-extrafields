@@ -38,6 +38,7 @@ def popup_data_source_names():
 def popup_usage_restrictions():
     return "Enter instructions for what users can and cannot do with the data."
 
+
 import pylons.config as config
 def github_api_url():
     return config['ckan.ckanext_cfpb_extrafields.github_api_url']
@@ -59,6 +60,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
+    
     p.implements(p.IResourceController)
     def _which_check_keys_changed(self, old, new):
         check_keys = ['resource_type', 'privacy_contains_pii']
@@ -126,10 +128,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     
     def before_delete(self, context, resource, resources):
         return
-    
     def after_delete(self, context, resources):
         return
-    
     def before_show(self, resource_dict):
         return
 
