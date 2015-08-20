@@ -61,6 +61,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     
+    # modify ckan behavior on changes/(saves/updates/deletes) to resources
     p.implements(p.IResourceController)
     def _which_check_keys_changed(self, old, new):
         check_keys = ['resource_type', 'privacy_contains_pii']
@@ -82,12 +83,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 ds.delete_datastore_json(resource['id'], 'datadict')
             # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
             except (tk.ObjectNotFound, tk.ValidationError), err:
+                # code review: write tests for this.
                 pass
             ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
         return
-    
+
+    # This function is a template/starter for a more fine-grained email-on-change functionality
+    # than the default notification that CKAN provides. It is not currently used.
     def _email_on_change(self, context, resource, field):
-        # unfinished! 
         # if specified fields have changed notify the relevant people
         if self.changed[field]:
             # print 'trigger email on change to '+field 
@@ -134,6 +137,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
 
 
+    # functions that are accessible via h.* in the Jinja templates
     p.implements(p.ITemplateHelpers)
     def get_helpers(self):
         return {'clean_select_multi': v.clean_select_multi,
@@ -167,6 +171,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             }
 
     
+    # the main extra fields update/show functionality
     p.implements(p.IDatasetForm)
     def _modify_package_schema(self, schema):
         schema.update({
@@ -438,6 +443,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         tk.add_resource('fanstatic','cfpb_extrafields')
 
 
+    # filters that let users progressively narrow the datasets they're searching
     p.implements(p.IFacets)
     def _change_facets(self, facets_dict):
         dummy_facets = facets_dict
@@ -455,6 +461,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         facets_dict['res_format'] = p.toolkit._('Formats')
         return facets_dict
     
+    # now return the same altered search facets for the dataset, group and organization page
     def dataset_facets(self, facets_dict, package_type):
         return self._change_facets(facets_dict)
     def group_facets(self, facets_dict, group_type, package_type):
