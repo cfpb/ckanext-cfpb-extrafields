@@ -8,23 +8,29 @@ def form_select_format(l):
 def resource_type():
     a = ["Dashboard", "Database", "Data Dictionary", "Data File", "Documentation", "Report"]
     return form_select_format(a)
+
 def format():
     return ["CSV", "ASCII", "STATA", "SQL", "PDF", "SAS", "XML", "word doc",
            "excel", "TXT", "TAB", "JSON"] #+other
+
 def storage_location():
     return ["Research Server", "Z Drive", "SES", "RightNow"] #+other
+
 def sensitivity_level():
     a = ["Public", "Low", "Medium", "High"]
     return form_select_format(a)
+
 def file_sizes():
     a = ["<500 MB","501-1,000 MB","1001-10,000 MB",">10,000 MB"]
     return form_select_format(a)
+
 def approximate_total_size():
     return file_sizes()
 
 # datasets
 def legal_authority_for_collection():
     return ["Market Monitoring", "Supervision", "Enforcement", "Consumer Response"]
+
 def privacy_pia_title():
     return ["CFPB Business Intelligence Tool",
             "Certain Supervision, Enforcement, and Fair Lending Data used for Market Research",
@@ -49,6 +55,7 @@ def privacy_pia_title():
             "Scheduling and Examination System (SES) PIA",
             "SES November 2012 update",
             "N/A",]
+
 def privacy_sorn_number():
     return ["CFPB.001 - Freedom of Information Act/Privacy Act System",
             "CFPB.002 - Depository Institution Supervision Database",
@@ -78,10 +85,13 @@ def privacy_sorn_number():
             "CFPB.026 - Biographies",
             "Government-wide",
             "N/A",]
+
 def relevant_governing_documents():
     return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
+
 def content_spatial():
     return [""]
+
 def frequency_standards():
 #http://dublincore.org/groups/collections/frequency/
     a=["Triennial", "Biennial","Annual",
@@ -92,10 +102,13 @@ def frequency_standards():
     # want shorter options first
     a.reverse() 
     return form_select_format(a)
+
 def content_periodicity():
     return frequency_standards()
+
 def update_frequency():
     return frequency_standards()
+
 def pra_exclusion():
     return ["5 C.F.R. 1320.3(h)(1)",
             "5 C.F.R. 1320.3(h)(2)",
@@ -108,9 +121,11 @@ def pra_exclusion():
             "5 C.F.R. 1320.3(h)(9)",
             "5 C.F.R. 1320.3(h)(10)",
             "N/A",]
+
 def privacy_pia_notes():
     return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII", 
             "No PIA - All PII Aggregated"]
+
 def transfer_method():
     a=["Website", "SFTP", "FTP", "Physical Media", "Email", "Connect Direct", "Other"]
     return form_select_format(a)
