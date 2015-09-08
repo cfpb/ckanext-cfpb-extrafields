@@ -198,8 +198,9 @@ size="550",
 
 {{ form.input('procurement_document_id', label=_("procurement document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
+{% if false %}
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
-
+{% endif %}
 
 {% endblock %}
 

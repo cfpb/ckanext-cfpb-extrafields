@@ -317,7 +317,7 @@
             <td class="dataset-details">{{ pkg_dict.procurement_document_id }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.cleansing_rules_used %}
+        {% if pkg_dict.cleansing_rules_used and false %}
         <tr>
           <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
           <td class="dataset-details">{{ h.render_markdown(pkg_dict.cleansing_rules_used) }}</td>
