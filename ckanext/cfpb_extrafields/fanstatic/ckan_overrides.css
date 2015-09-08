@@ -361,6 +361,10 @@ input[type="button"].btn-block {
 }
 
 /* Footer */
+a.image, a.image:hover {
+  border: 0;
+  text-decoration: none;
+}
 
 #creeper {
   width: 50px;
