@@ -31,7 +31,7 @@
     {% if res.resource_type == 'Data Dictionary'  %}
       {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false",location="description" %}
   {% endif %}
-</div> 
+</div>
 {% endblock %}
 
 {% block data_preview %}
@@ -94,25 +94,25 @@
               </tr>
             </thead>
             <tbody>
-              {% if res.resource_type %} 
+              {% if res.resource_type %}
               <tr>
                 <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
                 <td class="dataset-details">{{ res.resource_type }}</td>
               </tr>
               {% endif %}
-              {% if res.database_server %} 
+              {% if res.database_server %}
               <tr>
-                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <th scope="row" class="dataset-label">{{ _("database server") }}</th>
                 <td class="dataset-details">{{ res.database_server }}</td>
               </tr>
               {% endif %}
-              {% if res.database_name %} 
+              {% if res.database_name %}
               <tr>
-                <th scope="row" class="dataset-label">{{ _("resource type") }}</th>
+                <th scope="row" class="dataset-label">{{ _("database name") }}</th>
                 <td class="dataset-details">{{ res.database_name }}</td>
               </tr>
               {% endif %}
-              {% if res.database_schema %} 
+              {% if res.database_schema %}
               <tr>
                 <th scope="row" class="dataset-label">{{ _("database schema") }}</th>
                 <td class="dataset-details">{{ res.database_schema }}</td>
@@ -133,13 +133,13 @@
               </tr></table> </td>
               </tr>
               {% endif %}
-              {% if res.approximate_total_size %} 
+              {% if res.approximate_total_size %}
               <tr>
                 <th scope="row" class="dataset-label">{{ _("approximate total Size") }}</th>
                 <td class="dataset-details">{{ res.approximate_total_size }}</td>
               </tr>
               {% endif %}
-              {% if res.intake_date %} 
+              {% if res.intake_date %}
               <tr>
                 <th scope="row" class="dataset-label">{{ _("intake date") }}</th>
                 <td class="dataset-details">{{ res.intake_date }}</td>
@@ -159,8 +159,8 @@
               </tr>
             </tbody>
          </table>
-            
-        {% if res.db_role_level_1 %} 
+
+        {% if res.db_role_level_1 %}
         <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
@@ -169,46 +169,46 @@
               </tr>
             </thead>
             <tbody>
-              {% if res.db_role_level_1 %} 
+              {% if res.db_role_level_1 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 1") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_1 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_2 %} 
+              {% if res.db_role_level_2 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 2") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_2 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_3 %} 
+              {% if res.db_role_level_3 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 3") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_3 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_4 %} 
+              {% if res.db_role_level_4 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 4") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_4 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_5 %} 
+              {% if res.db_role_level_5 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 5") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_5 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_6 %} 
+              {% if res.db_role_level_6 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 6") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_6 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_7 %} 
+              {% if res.db_role_level_7 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 7") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_7 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_8 %} 
+              {% if res.db_role_level_8 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 8") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_8 }}</td></tr>
               {% endif %}
-              {% if res.db_role_level_9 %} 
+              {% if res.db_role_level_9 %}
               <tr><th scope="row" class="dataset-label">{{ _("level 9") }}</th>
                 <td class="dataset-details">{{ res.db_role_level_9 }}</td></tr>
               {% endif %}
             </tbody>
          </table>
         {% endif %}
-              
+
       </div>
     </div>
   </div>
@@ -223,11 +223,11 @@
     {% resource 'cfpb_extrafields/ace_setup.css' %}
     {% resource 'cfpb_extrafields/ace_setup.js' %}
     <script src='/ace-builds/src/ace.js'  type="text/javascript" charset="utf-8"></script>
-          
-          
+
+
 <!-- ============ SHARE ============= -->
 <!-- ============ VIEW ============= -->
-            
+
             {% resource 'cfpb_extrafields/listrelated.js' %}
             <div data-module="listrelated"
                  data-module-dataset_id="{{ res.package_id }}"
@@ -291,12 +291,12 @@ function example_code_snippet(items) {
 }</textarea>
                 </div>
             </div>
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
           </div>
       </div>
       <div class="modal-footer">
@@ -317,7 +317,7 @@ function example_code_snippet(items) {
     </div>
   </div>
 </div>
-      
+
 {% endif %}
 {% block resource_view_content %}
 {% resource 'cfpb_extrafields/dataset-status.js' %}
