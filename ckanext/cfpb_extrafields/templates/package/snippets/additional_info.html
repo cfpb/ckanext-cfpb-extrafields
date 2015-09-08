@@ -22,14 +22,14 @@
     <div class="expandable_content">
       <table class="table table-striped table-bordered table-condensed">
         <tbody>
-          {% if pkg_dict.also_known_as %} 
+          {% if pkg_dict.also_known_as %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("also known as") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.also_known_as) }}</td>
           </tr>
           {% endif %}
-          {% if pkg_dict.source_names %}
-          <tr> 
+          {% if pkg_dict.data_source_names %}
+          <tr>
             <th scope="row" class="dataset-label">{{ _("data source(s)") }} </th>
             <td class="dataset-details">{{ pkg_dict.data_source_names }} </td>
           </tr>
@@ -46,31 +46,31 @@
             <td class="dataset-details">{{ pkg_dict.content_temporal_range_end }} </td>
           </tr>
           {% endif %}
-          {% if pkg_dict.content_periodicity %} 
+          {% if pkg_dict.content_periodicity %}
             <tr>
               <th scope="row" class="dataset-label">{{ _("content: periodicity") }}</th>
               <td class="dataset-details">{{ pkg_dict.content_periodicity }}</td>
             </tr>
           {% endif %}
-          {% if pkg_dict.content_spatial %} 
+          {% if pkg_dict.content_spatial %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("content: spatial coverage") }}</th>
             <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.content_spatial) %} {{i}}; {% endfor %}</td>
           </tr>
           {% endif %}
-          {% if pkg_dict.update_frequency %} 
+          {% if pkg_dict.update_frequency %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("update frequency") }}</th>
             <td class="dataset-details">{{ pkg_dict.update_frequency }}</td>
           </tr>
           {% endif %}
-          {% if pkg_dict.wiki_link %} 
+          {% if pkg_dict.wiki_link %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("wiki link") }}</th>
             <td class="dataset-details"><a href="{{ pkg_dict.wiki_link }}">CFPB wiki article</a></td>
           </tr>
           {% endif %}
-          {% if pkg_dict.website_url %} 
+          {% if pkg_dict.website_url %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("reference website URL") }}</th>
             <td class="dataset-details"><a href="{{ pkg_dict.website_url }}">{{ pkg_dict.website_name}}</a> </td>
@@ -101,18 +101,18 @@
       <table class="table table-striped table-bordered table-condensed">
         <tbody>
           {% if pkg_dict.contact_primary_name %}
-          <tr> 
+          <tr>
           <th scope="row" class="dataset-label">{{ _("contact: primary") }} </th>
           <td class="dataset-details"><a href="mailto:{{pkg_dict.contact_primary_email}}">{{pkg_dict.contact_primary_name}}</a></td>
           </tr>
           {% endif %}
           {% if pkg_dict.contact_secondary_name %}
-          <tr> 
+          <tr>
           <th scope="row" class="dataset-label">{{ _("contact: secondary") }} </th>
           <td class="dataset-details"><a href="mailto:{{pkg_dict.contact_secondary_email}}">{{pkg_dict.contact_secondary_name}}</a></td>
           </tr>
           {% endif %}
-          {% if pkg_dict.access_notes %} 
+          {% if pkg_dict.access_notes %}
             <tr>
               <th scope="row" class="dataset-label">{{ _("how to get access") }}</th>
               <td class="dataset-details">{{ h.render_markdown(pkg_dict.access_notes) }}</td>
@@ -155,48 +155,48 @@
       <table class="table table-striped table-bordered table-condensed">
         <tbody>
         {% if pkg_dict.id %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("dataset ID") }} </th>
         <td class="dataset-details">{{ pkg_dict.id }} </td>
         </tr>
         {% endif %}
-        {% if pkg_dict.dataset_notes %} 
+        {% if pkg_dict.dataset_notes %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("dataset notes") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.dataset_notes) }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.dataset_last_modified_date %} 
+        {% if pkg_dict.dataset_last_modified_date %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("dataset last modified date") }}</th>
             <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.obfuscated_title %} 
+        {% if pkg_dict.obfuscated_title %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("obfuscated title") }}</th>
             <td class="dataset-details">{{ pkg_dict.obfuscated_title }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.transfer_details %} 
+        {% if pkg_dict.transfer_details %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("transfer details") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.transfer_details) }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.transfer_initial_size %} 
+        {% if pkg_dict.transfer_initial_size %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("transfer: initial size") }}</th>
             <td class="dataset-details">{{ pkg_dict.transfer_initial_size }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.transfer_method %} 
+        {% if pkg_dict.transfer_method %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("transfer: method") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.transfer_method) }}</td>
           </tr>
         {% endif %}
-        
+
         </tbody>
       </table>
     </div>
@@ -228,42 +228,42 @@
         </tr>
         {% endif %}
         {% if pkg_dict.legal_authority_for_collection %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("legal authority for collection") }} </th>
         <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.legal_authority_for_collection) %} {{i}}; {% endfor %}  </td>
         </tr>
         {% endif %}
         {% if pkg_dict.relevant_governing_documents %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("relevant governing documents") }} </th>
         <td class="dataset-details">{% for i in pkg_dict.relevant_governing_documents %} {{i}}; {% endfor %} </td>
         </tr>
         {% endif %}
         {% if pkg_dict.dig_id %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("DIG ID") }} </th>
         <td class="dataset-details">{{ pkg_dict.dig_id }} </td>
         </tr>
         {% endif %}
         {% if pkg_dict.initial_purpose_for_intake %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("initial purpose for intake") }} </th>
         <td class="dataset-details">{{ h.render_markdown(pkg_dict.initial_purpose_for_intake) }} </td>
         </tr>
         {% endif %}
-        {% if pkg_dict.pra_exclusion %} 
+        {% if pkg_dict.pra_exclusion %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("PRA exclusion") }}</th>
             <td class="dataset-details">{{ pkg_dict.pra_exclusion }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.pra_omb_control_number %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("PRA OMB control number") }} </th>
         <td class="dataset-details">{{ pkg_dict.pra_omb_control_number }} </td>
         </tr>
         {% endif %}
-        {% if pkg_dict.pra_omb_expiration_date %} 
+        {% if pkg_dict.pra_omb_expiration_date %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("PRA: OMB expiration date") }}</th>
             <td class="dataset-details">{{ pkg_dict.pra_omb_expiration_date }}</td>
@@ -275,55 +275,55 @@
         <td class="dataset-details">{{ pkg_dict.privacy_contains_pii}} </td>
         </tr>
         {% endif %}
-        {% if pkg_dict.privacy_has_direct_identifiers %} 
+        {% if pkg_dict.privacy_has_direct_identifiers %}
         <tr>
           <th scope="row" class="dataset-label">{{ _("privacy: has direct identifiers") }}</th>
           <td class="dataset-details">{{ pkg_dict.privacy_has_direct_identifiers }}</td>
         </tr>
         {% endif %}
-        {% if pkg_dict.privacy_has_privacy_act_statement %} 
+        {% if pkg_dict.privacy_has_privacy_act_statement %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("privacy: has Privacy Act statement") }}</th>
             <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.privacy_pia_title %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("privacy: PIA title") }} </th>
         <td class="dataset-details"> {% for i in h.clean_select_multi(pkg_dict.privacy_pia_title) %} {{i}}; {% endfor %} </td>
         </tr>
         {% endif %}
-        {% if pkg_dict.privacy_pia_notes %} 
+        {% if pkg_dict.privacy_pia_notes %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("privacy: PIA notes") }}</th>
             <td class="dataset-details">{{ pkg_dict.privacy_pia_notes }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.privacy_sorn_number %}
-        <tr> 
+        <tr>
         <th scope="row" class="dataset-label">{{ _("privacy: SORN number") }} </th>
         <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.privacy_sorn_number) %} {{i}}; {% endfor %}</td>
         </tr>
         {% endif %}
-        {% if pkg_dict.records_retention_schedule %} 
+        {% if pkg_dict.records_retention_schedule %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("records retention schedule") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.records_retention_schedule) }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.procurement_document_id %} 
+        {% if pkg_dict.procurement_document_id %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("procurement document ID") }}</th>
             <td class="dataset-details">{{ pkg_dict.procurement_document_id }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.cleansing_rules_used %} 
+        {% if pkg_dict.cleansing_rules_used %}
         <tr>
           <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
           <td class="dataset-details">{{ h.render_markdown(pkg_dict.cleansing_rules_used) }}</td>
         </tr>
         {% endif %}
-        
+
         </tbody>
       </table>
     </div>
