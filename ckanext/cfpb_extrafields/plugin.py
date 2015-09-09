@@ -75,15 +75,20 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     def _delete_and_rebuild_datadict(self, resource):
         import json
+        import unicodedata
+
         if 'datadict' in resource and 'id' in resource:
             record = resource.pop('datadict')
 
             if record:
+                # Cleanse of errant unicode characters
+                record = unicodedata.normalize('NFKD', record).encode('ascii', 'ignore')
+
                 try:
                     json_record = json.loads(record)
-                except ValueError as e:
+                except ValueError as err:
                     # Invalid JSON, so don't remove old data
-                    error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(e, record)
+                    error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(err, record)
                     flash_error(error_message)
                     return
 
@@ -96,8 +101,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                     flash_error(error_message)
                     pass
 
-            ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
-        return
+            try:
+                ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
+            except UnicodeEncodeError as err:
+                error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(e, record)
+                flash_error(error_message)
 
     # This function is a template/starter for a more fine-grained email-on-change functionality
     # than the default notification that CKAN provides. It is not currently used.
