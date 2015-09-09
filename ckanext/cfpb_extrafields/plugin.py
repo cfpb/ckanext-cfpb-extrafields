@@ -78,20 +78,24 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if 'datadict' in resource and 'id' in resource:
             record = resource.pop('datadict')
 
-            try:
-                json_record = json.loads(record)
-            except ValueError as e:
-                # Invalid JSON, so don't remove old data
-                error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(e, record)
-                flash_error(error_message)
-                return
+            if record:
+                try:
+                    json_record = json.loads(record)
+                except ValueError as e:
+                    # Invalid JSON, so don't remove old data
+                    error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(e, record)
+                    flash_error(error_message)
+                    return
 
-            try:
-                ds.delete_datastore_json(resource['id'], 'datadict')
-            # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
-            except (tk.ObjectNotFound, tk.ValidationError), err:
-                # code review: write tests for this.
-                pass
+                try:
+                    ds.delete_datastore_json(resource['id'], 'datadict')
+                # don't fail if the filter is bad! (e.g., title_colname doesn't exist)
+                except (tk.ObjectNotFound, tk.ValidationError), err:
+                    # code review: write tests for this.
+                    error_message = "Error saving data dictionary: {0}.  Data was: {1}".format(e, record)
+                    flash_error(error_message)
+                    pass
+
             ds.create_datastore(resource['id'], json_title='datadict', json_record=json_record)
         return
 
