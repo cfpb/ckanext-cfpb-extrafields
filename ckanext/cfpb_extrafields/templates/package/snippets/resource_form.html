@@ -3,7 +3,7 @@
 {% resource 'cfpb_extrafields/resource_type_select.js' %}
 
 <!----###################################------->
-<!-- there is a hack here that checks whether the page url is edit_resource or new_resource, 
+<!-- there is a hack here that checks whether the page url is edit_resource or new_resource,
      if it is the latter the form submits and reloads in edit mode. -->
 {% resource 'cfpb_extrafields/new_resource_redirect.js' %}
 <span id="auto-redirect-loader"
@@ -51,7 +51,7 @@
 
     {% block basic_fields_url %}
       <!-- moved basic_fields_url to type specific snippets -->
-      <!-- Note: A "URL" field is REQUIRED for each resource type. --> 
+      <!-- Note: A "URL" field is REQUIRED for each resource type. -->
     {% endblock %}
 
     {% block basic_fields_description %}
@@ -63,7 +63,7 @@
     {% endblock %}
   {% endblock basic_fields %}
 
-<!----------------------------------------->        
+<!----------------------------------------->
 {% block metadata_fields %}
 {% resource 'cfpb_extrafields/otherspecify.js' %}
 {% resource 'cfpb_extrafields/popover.js' %}
@@ -83,7 +83,7 @@
 
 {% elif data.resource_type == 'Data File' -%}
   {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datafile.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
-  
+
 {% elif data.resource_type == 'Documentation' or data.resource_type == 'Report' -%}
   {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_documentation.html',data=data,errors=errors,pkg_name=pkg_name,location="form" %}
 
@@ -92,10 +92,10 @@
 {% endif %}{# specific resource_type #}
 {% endif %}{# resource_type selected? #}
   {% endblock %}
-<!----------------------------------------->        
+<!----------------------------------------->
 
   <div class="form-actions">
-    
+
     {% block delete_button %}
       {% if data.id %}
         {% if h.check_access('resource_delete', {'id': data.id})  %}
@@ -109,10 +109,10 @@
         <button class="btn" name="save" value="go-dataset" type="submit">{{ _('Previous') }}</button>
       {% endblock %}
       {% block again_button %}
-        <button id="resource_save" class="btn" name="save" value="again" type="submit">{{ _('Save & add another') }}</button>
+        <button id="resource_save_add" class="resource_save btn" name="save" value="again" type="submit">{{ _('Save & add another') }}</button>
         {% endblock %}
       {% block save_button %}
-      <button id="resource_save" class="btn btn-primary" name="save" value="go-metadata" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
+      <button id="resource_save" class="resource_save btn btn-primary" name="save" value="go-metadata" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
       {% endblock %}
     {% else %}
       {% block add_button %}

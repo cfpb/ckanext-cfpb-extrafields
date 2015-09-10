@@ -11,7 +11,7 @@
 <hr>
 <h3>I. Content</h3>
 
-{{ form.markdown('also_known_as', id='field-also_known_as', 
+{{ form.markdown('also_known_as', id='field-also_known_as',
 label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=errors.also_known_as) }}
 
 <div class="core-field">
@@ -29,10 +29,10 @@ label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=err
 {{ form.select('content_periodicity', label=_('content periodicity'), id='field-content_periodicity', options=h.options_content_periodicity(), selected=data.content_periodicity, error=errors.content_periodicity, classes=['control-medium']) }}
 
 {{ form.input('content_spatial', label=_("content: spatial coverage"), placeholder="e.g., continental USA", value=data.content_spatial, error=errors.content_spatial) }}
-{#{ form_custom.select_multi_with_other('content_spatial', 
-label=_('content: spatial coverage'),  
-current_values=h.clean_select_multi(data.get('content_spatial', '')), 
-options_defaults=h.options_content_spatial(), 
+{#{ form_custom.select_multi_with_other('content_spatial',
+label=_('content: spatial coverage'),
+current_values=h.clean_select_multi(data.get('content_spatial', '')),
+options_defaults=h.options_content_spatial(),
 error=errors.content_spatial,
 ) }#}
 
@@ -49,7 +49,7 @@ error=errors.content_spatial,
 
 <hr>
 <h3>II. Access</h3>
-    
+
 <div class="core-field">
   <div id="field-contact_primary">
     {% call form.input_block("field-contact_primary_name",_("primary contact"), error="", is_required=true) %} {# this is just for clicking #}
@@ -71,7 +71,7 @@ error=errors.content_spatial,
 </div>
 
 <div class="core-field">
-{{ form.markdown('usage_restrictions', id='field-usage_restrictions', 
+{{ form.markdown('usage_restrictions', id='field-usage_restrictions',
 label=_('usage restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
 <script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
 </div>
@@ -81,11 +81,13 @@ label=_('usage restrictions'), placeholder=_(''), value=data.usage_restrictions,
 
 {{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('dataset notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
 
-{{ form_custom.radio('obfuscated_title', 
+{{ form.input('dataset_last_modified_date', type='date', label=_("dataset last modified date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
+
+{{ form_custom.radio('obfuscated_title',
 label=_('obfuscated title'),
 current_value=data.obfuscated_title)}}
 
-{{ form.markdown('transfer_details', id='field-transfer_details', 
+{{ form.markdown('transfer_details', id='field-transfer_details',
 label=_('transfer details'), placeholder=_('enter text'), value=data.transfer_details, error=errors.transfer_details) }}
 
 {{ form.input('transfer_initial_size', label=_("transfer initial size (mb)"), placeholder="eg 1.2", value=data.transfer_initial_size, error=errors.transfer_initial_size) }}
@@ -107,12 +109,12 @@ label=_('transfer details'), placeholder=_('enter text'), value=data.transfer_de
   document.getElementById('field-sensitivity_level').parentNode.insertAdjacentHTML("beforeend",b);
 </script>
 
-    
+
 <div class="core-field">
-{{ form_custom.select_multi_with_other('legal_authority_for_collection', 
-label=_('legal authority for collection'),  
-current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')), 
-options_defaults=h.options_legal_authority_for_collection(), 
+{{ form_custom.select_multi_with_other('legal_authority_for_collection',
+label=_('legal authority for collection'),
+current_values=h.clean_select_multi(data.get('legal_authority_for_collection', '')),
+options_defaults=h.options_legal_authority_for_collection(),
 error=errors.legal_authority_for_collection,
 ) }}
 </div>
@@ -139,10 +141,10 @@ error=errors.legal_authority_for_collection,
 {{ form.markdown('initial_purpose_for_intake', id='field-initial_purpose_for_intake', label=_('initial purpose for intake'), placeholder=_(''), value=data.initial_purpose_for_intake, error=errors.initial_purpose_for_intake) }}
 </div>
 
-{{ form_custom.select_one_with_other('pra_exclusion', 
-label=_('PRA exclusion'),  
-current_value=data.get('pra_exclusion', ''), 
-options_defaults=h.options_pra_exclusion(), 
+{{ form_custom.select_one_with_other('pra_exclusion',
+label=_('PRA exclusion'),
+current_value=data.get('pra_exclusion', ''),
+options_defaults=h.options_pra_exclusion(),
 error=errors.pra_exclusion,) }}
 
 <div class="core-field">
@@ -162,44 +164,43 @@ error=errors.privacy_contains_pii)}}
 label=_('privacy: has direct identifiers?'),
 current_value=data.privacy_has_direct_identifiers)}}
 
-{{ form_custom.radio('privacy_has_privacy_act_statement', 
+{{ form_custom.radio('privacy_has_privacy_act_statement',
 label=_('privacy: has Privacy Act statement'),
 current_value=data.privacy_has_privacy_act_statement)}}
 
 <div class="core-field">
-{{ form_custom.select_multi_with_other('privacy_pia_title', 
-label=_('privacy: PIA title'),  
-current_values=h.clean_select_multi(data.get('privacy_pia_title', '')), 
-options_defaults=h.options_privacy_pia_title(), 
+{{ form_custom.select_multi_with_other('privacy_pia_title',
+label=_('privacy: PIA title'),
+current_values=h.clean_select_multi(data.get('privacy_pia_title', '')),
+options_defaults=h.options_privacy_pia_title(),
 error=errors.privacy_pia_title,
 size="550",
 ) }}
 </div>
 
-{{ form_custom.select_one_with_other('privacy_pia_notes', 
-label=_('privacy: PIA notes'),  
-current_value=data.get('privacy_pia_notes', ''), 
-options_defaults=h.options_privacy_pia_notes(), 
+{{ form_custom.select_one_with_other('privacy_pia_notes',
+label=_('privacy: PIA notes'),
+current_value=data.get('privacy_pia_notes', ''),
+options_defaults=h.options_privacy_pia_notes(),
 error=errors.privacy_pia_notes,) }}
 
 <div class="core-field">
-{{ form_custom.select_multi_with_other('privacy_sorn_number', 
-label=_('privacy: SORN number'),  
-current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')), 
-options_defaults=h.options_privacy_sorn_number(), 
+{{ form_custom.select_multi_with_other('privacy_sorn_number',
+label=_('privacy: SORN number'),
+current_values=h.clean_select_multi(data.get('privacy_sorn_number', '')),
+options_defaults=h.options_privacy_sorn_number(),
 error=errors.privacy_sorn_number,
 size="550",
 ) }}
 </div>
 
-{{ form.input('dataset_last_modified_date', type='date', label=_("dataset last modified date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
-
 {{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('records retention schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
 
 {{ form.input('procurement_document_id', label=_("procurement document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
+{% if false %}
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
-
+{% endif %}
 
 {% endblock %}
 
@@ -213,5 +214,3 @@ size="550",
 {% endblock %}
 {% block package_metadata_fields_custom %}
 {% endblock %}
-
-
