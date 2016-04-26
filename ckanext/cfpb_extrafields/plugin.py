@@ -31,15 +31,6 @@ def tag_relevant_governing_documents():
         return None
 
 
-# these go into a new popup module if there are more than a few fields
-def popup_relevant_governing_documents():
-    return "Insert purpose of relevant_governing_documents field."
-def popup_data_source_names():
-    return "Insert purpose of source names field."
-def popup_usage_restrictions():
-    return "Enter instructions for what users can and cannot do with the data."
-
-
 import pylons.config as config
 def github_api_url():
     return config['ckan.ckanext_cfpb_extrafields.github_api_url']
@@ -175,10 +166,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_sensitivity_level': opts.sensitivity_level,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
-
-                'popup_relevant_governing_documents': popup_relevant_governing_documents,
-                'popup_data_source_names': popup_data_source_names,
-                'popup_usage_restrictions': popup_usage_restrictions,
 
                 'create_datastore':ds.create_datastore,
                 'get_unique_datastore_json':ds.get_unique_datastore_json,
