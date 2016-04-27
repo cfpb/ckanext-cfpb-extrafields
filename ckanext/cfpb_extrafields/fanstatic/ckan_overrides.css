@@ -447,3 +447,11 @@ a.add-new-snippet {
 .expandable__padded .expandable_content {
   margin-bottom: 0;
 }
+
+/* Targeted style fixes */
+
+.input-prepend input#field-name {
+  font-size: 14px;
+  padding: 4px 6px;
+}
+
