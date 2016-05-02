@@ -16,7 +16,6 @@ label=_('also known as'), placeholder=_(''), value=data.also_known_as, error=err
 
 <div class="core-field">
 {{ form.markdown('data_source_names', id='field-data_source_names', label=_('data source(s)'), placeholder=_('e.g., vendor-one'), value=data.data_source_names, error=errors.data_source_names) }}
-<script> document.getElementById("field-data_source_names").title = "{{ h.popup_data_source_names() }}";</script>
 </div>
 
 <div class='core-field'>
@@ -73,7 +72,6 @@ error=errors.content_spatial,
 <div class="core-field">
 {{ form.markdown('usage_restrictions', id='field-usage_restrictions',
 label=_('usage restrictions'), placeholder=_(''), value=data.usage_restrictions, error=errors.usage_restrictions) }}
-<script> document.getElementById("field-usage_restrictions").title = "{{ h.popup_usage_restrictions() }}";</script>
 </div>
 
 <hr>
@@ -131,7 +129,6 @@ error=errors.legal_authority_for_collection,
     </div>
   </div>
 </div>
-<script> document.getElementById("field-relevant_governing_documents").title = "{{ h.popup_relevant_governing_documents() }}";</script>
 
 <div class="core-field">
 {{ form.input('dig_id', label=_("DIG ID"), placeholder="DI#####", value=data.dig_id, error=errors.dig_id) }}
@@ -201,6 +198,56 @@ size="550",
 {% if false %}
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 {% endif %}
+
+
+<script>
+  // NOTES: less than IE9 support 
+  // Using Object.keys.  
+  //   If needed we can shim from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+
+  _popup_dict = {
+      "access_restrictions":"Rules for allowing users to access data, above and beyond normal Bureau policies and applicable law. Subject to some exceptions, information should only be accessed if the employee has a need to know the information.",
+      "content_periodicity":"For data collected of multiple time periods, the frequency of the observations in the dataset",
+      "content_temporal_range_end":"End of the period of time covered by the data",
+      "content_temporal_range_start":"Beginning of the period of time covered by the data",
+      "data_source_names":"Individuals or organization(s) that provided the data to the Bureau",
+      "dig_id":"Unique identifier assigned by the Data Intake Group for datasets reviewed under the Data Intake Group process. For more information, see http://team.cfpb.local/wiki/index.php/Data_Intake_Group",
+      "initial_purpose_for_intake":"Original business use for intaking the dataset",
+      "legal_authority_for_collection":"Legal authority under which the data was collected",
+      "obfuscated_title":"Is the title of this dataset encrypted or hidden?",
+      "pra_exclusion":"If applicable, the reason for being exempt from Paperwork Reduction Act",
+      "pra_omb_control_number":"The number assigned from OMB, if the information collection needed approval by the OMB under the Paperwork Reduction Act (PRA). See the PRA wiki page for more information http://team.cfpb.local/wiki/index.php/Paperwork_Reduction_Act_-_PRA",
+      "pra_omb_expiration_date":"If applicable, the expiration date of the OMB control number from OMB",
+      "privacy_contains_pii":"Does this dataset contain personally identifiable information?",
+      "privacy_has_direct_identifiers":"Does this dataset contain direct personal identifiers (e.g. name, address, etc.)?",
+      "privacy_has_privacy_act_statement":"Is there a related Privacy Act Statement?",
+      "privacy_pia_notes":"Information on if a PIA is applicable to this dataset",
+      "privacy_pia_title":"If needed, the title of the applicable Privacy Impact Assessment (PIA). For a full list of the Bureau's PIAs, go to http://www.consumerfinance.gov/privacy/",
+      "privacy_sorn_number":"If applicable, the title of the applicable System of Record Notice (SORN). For a full list of the Bureau's SORN's, go to http://www.consumerfinance.gov/privacy/",
+      "procurement_document_id":"If applicable, the unique identifier from the Office of Procurement's internal database",
+      "records_retention_schedule":"The relevant retention schedule or other information about retention requirements",
+      "sensitivity_level":"Bureau-assigned sensitivity level per the Information Sensitivity Leveling Standard. For more information, see http://team.cfpb.local/wiki/index.php/Information_Sensitivity_Leveling_Standard",
+      "tags":"High-level subject matter that the dataset is related to. This creates tags that help group related datasets.",
+      "update_frequency":"How often the Bureau receives updates to the data",
+      "usage_restrictions":"Rules and restrictions for using the specific dataset, above and beyond normal Bureau policies and applicable law. All usage and disclosure of information is subject to applicable law, including the Bureau’s confidentiality regulations, the Privacy Act, and the Trade Secrets Act.  Information should not be disclosed outside of the Bureau unless it is aggregated and does not directly or indirectly identify an individual or an entity.  Additional usage or disclosure restrictions may be present in contracts, MOUs, NDAs, or similar agreements."
+    }
+
+  var fields = Object.keys(_popup_dict);
+  for(var i=0; i < fields.length; i++ )      // safe for < IE9 
+  {
+      var field = fields[i];
+      var controlElement = document.getElementById('field-'+field);
+      if( controlElement == null ) {
+        controlElement = document.getElementById(field);
+      }
+      if( controlElement != null ) {
+        controlElement.title = _popup_dict[field];
+      }
+      else {
+        console.log('Popup for' + field + ' not found');
+      }
+  }
+</script>
 
 {% endblock %}
 
