@@ -1,4 +1,4 @@
 {% ckan_extends %}
 {% set placeholder = _('Refine search results based on information about datasets') %}
-{% set sorting_selected = _('title_string asc') %}
+{% set sorting_selected = 'title_string asc' if not sorting_selected else sorting_selected %}
 {{super()}}

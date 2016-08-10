@@ -473,3 +473,54 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return self._change_facets(facets_dict)
     def organization_facets(self, facets_dict, organization_type, package_type):
         return self._change_facets(facets_dict)
+
+    # Ugh, it would be nice if the plugin interfaces could be distributed to
+    # other files instead of one large https://en.wikipedia.org/wiki/God_object
+    p.implements(p.IPackageController)
+    def read(self, entity):
+        pass
+
+    def create(self, entity):
+        pass
+
+    def edit(self, entity):
+        pass
+
+    def authz_add_role(self, object_role):
+        pass
+
+    def authz_remove_role(self, object_role):
+        pass
+
+    def delete(self, entity):
+        pass
+
+    def after_create(self, context, pkg_dict):
+        pass
+
+    def after_update(self, context, pkg_dict):
+        pass
+
+    def after_delete(self, context, pkg_dict):
+        pass
+
+    def after_show(self, context, pkg_dict):
+        pass
+
+    def before_search(self, search_params):
+        # Set the default sort to be 'Name Ascending' on the dataset index page
+        if 'facet.field' in search_params and 'sort' not in search_params:
+            search_params['sort'] = "title_string asc"
+            print('Modded')
+
+        return search_params
+
+    def after_search(self, search_results, search_params):
+        return search_results
+
+    def before_index(self, pkg_dict):
+        return pkg_dict
+
+    def before_view(self, pkg_dict):
+        return pkg_dict
+
