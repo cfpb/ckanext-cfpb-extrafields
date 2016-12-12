@@ -51,12 +51,9 @@ def reasonable_date_validator(value):
     ''' check the year is yyyy-mm-dd and between 1700 and 2300 '''
     if not value:
         return
-    try:
-        parsed_date = datetime.datetime.strptime(value, '%Y-%m-%d')
-        if parsed_date.year < 1700 or parsed_date.year > 2300:
-            Invalid("The chosen year is out of range (>1700, <2300).")
-    except ValueError:
-            Invalid("Please ensure date is in yyyy-mm-dd format.")
+    parsed_date = to_datetime(value)
+    if parsed_date.year < 1700 or parsed_date.year > 2300:
+        Invalid("The chosen year is out of range (>1700, <2300).")
     return value
 
 # check multiple fields at once
@@ -69,9 +66,10 @@ def to_datetime(value):
     except ValueError:
         Invalid("Please ensure date is in yyyy-mm-dd format!")
     return parsed_date
+
 def end_after_start_validator(key, flattened_data, errors, context):
     start_str = flattened_data.get(('content_temporal_range_start',),None)
-    end_str =  flattened_data.get(('content_temporal_range_end',),None)
+    end_str = flattened_data.get(('content_temporal_range_end',),None)
     if start_str and end_str:
         if to_datetime(start_str) > to_datetime(end_str): 
             Invalid("content start date occurs after end date")
