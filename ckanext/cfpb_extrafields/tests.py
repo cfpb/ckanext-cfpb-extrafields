@@ -18,18 +18,22 @@ class TestValidators(unittest.TestCase):
         (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
         (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
         (u'{a,"f d",d}',[u'a', u'f d', u'd']),
-    ]) 
+    ])
     def test_clean_select_multi(self, ms, expected):
         print ms
         print expected
         assert_equal(v.clean_select_multi(ms), expected)
 
         
-    @parameterized.expand([("note0 note1",), ("http://www.~/hi",), ])
+    @parameterized.expand([("note0 note1",), ("http://www.~/hi",)])
     def test_input_value_validator(self, input):
         assert_equal(input, v.input_value_validator(input))
         
-    @parameterized.expand([("__Other",), ])
+    @parameterized.expand([(["a", "a", "b"], ["a", "b"])])
+    def test_input_value_validator_list(self, input, expected):
+        assert_equal(expected, v.input_value_validator(input))
+
+    @parameterized.expand([("__Other",), ("invalid<",), (">",)])
     @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
     def test_input_value_validator_invalid(self, input, mi):
         mi.side_effect = Exception("")
@@ -67,15 +71,46 @@ class TestValidators(unittest.TestCase):
     def test_reasonable_date_validator(self, input):
         assert_equal(input, v.reasonable_date_validator(input))
 
+    @parameterized.expand([("",), (None,)])
+    def test_reasonable_date_validator_empty(self, input):
+        self.assertIsNone(v.reasonable_date_validator(input))
+
+
     @parameterized.expand([("a",), ("1500-01-01",), ("27901-01-01",),
                            ("2012/12/21",), ("2012/1/1",), ("2012-21-01",),
-                           ("2012-10-a1",), ]) 
+                           ("2012-10-a1",)]) 
     @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
-    def test_reasonable_date_validator(self, input, mi):
+    def test_reasonable_date_validator_invalid(self, input, mi):
         mi.side_effect = Exception("")
         with self.assertRaises(Exception):
             v.reasonable_date_validator(input)
 
+    @parameterized.expand([("2000-01-01", "2010-01-01"), ("2000-01-01", None)])
+    def test_end_after_start_validator_valid(self, start, end):
+        self.assertIsNone(v.end_after_start_validator(
+            None,
+            {
+                "content_temporal_range_start": start,
+                "content_temporal_range_end": end,
+            },
+            None,
+            None,
+        ))
+
+    @parameterized.expand([("2010-01-01", "2000-01-01")])
+    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
+    def test_end_after_start_validator_invalid(self, start, end, mi):
+        mi.side_effect = Exception("")
+        with self.assertRaises(Exception):
+            self.assertIsNone(v.end_after_start_validator(
+                None,
+                {
+                    ("content_temporal_range_start",): start,
+                    ("content_temporal_range_end",): end,
+                },
+                None,
+                None,
+            ))
 
     @parameterized.expand([("5555-6666",), ("6666-4444",), ])
     def test_pra_control_num_validator_valid(self, input):
