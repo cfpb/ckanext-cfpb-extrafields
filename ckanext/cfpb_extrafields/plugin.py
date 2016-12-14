@@ -530,3 +530,4 @@ class ExportPlugin(p.SingletonPlugin):
     def after_map(self, map):
         map.connect("export_page", "/export", controller="ckanext.cfpb_extrafields.controllers.export:ExportController", action="index")
         map.connect("export_csv", "/export/csv", controller="ckanext.cfpb_extrafields.controllers.export:ExportController", action="csv")
+        return map
