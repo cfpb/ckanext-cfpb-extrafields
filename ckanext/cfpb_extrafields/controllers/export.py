@@ -56,6 +56,7 @@ FIELDS = [
     'owner_org',
     'pra_exclusion',
     'pra_omb_control_number',
+    'pra_omb_expiration_date',
     'privacy_contains_pii',
     'privacy_has_direct_identifiers',
     'privacy_has_privacy_act_statement',
@@ -88,6 +89,48 @@ FIELDS = [
     'website_url',
     'wiki_link'
 ]
+FIELD_NAMES = """
+Dataset Title
+Visibility
+Description
+Subject Matter
+Organization
+Also Known As
+Data Sources
+Content Start Date
+Content End Date
+Content Periodicity
+Content Spatial Coverage
+Update Frequency
+Wiki Link
+Reference Website URL
+Primary Contact
+Secondary Contact
+How to Get Access
+Access Restrictions
+Usage Restrictions
+Dataset Notes
+Dataset Last Modified Date
+Obfuscated Title
+Transfer Details
+Transfer Initial Size (mb)
+Transfer Method
+Sensitivity Level
+Legal Authority for Collection
+Relevant Governing Documents
+DIG ID
+Initial Intake for Purpose
+PRA Exclusion
+PRA: OMB Control Number
+PRA: OMB Expiration Date
+Privacy: Contains PII?
+Privacy: Has Direct Identifiers?
+Privacy: Has Privacy Act statement?
+Privacy: PIA title
+Privacy: SORN number
+Records retention schedule
+Procurement document ID
+"""
 
 try:
     basestring
@@ -97,16 +140,16 @@ def flatten(data, list_sep=","):
     result = {}
     for k, v in data.items():
         if isinstance(v, basestring):
-            result[k] = v
+            result[k] = v.encode("utf-8")
         elif hasattr(v, "items"):
             for ikey, ival in flatten(v).items():
                 result[k + "." + ikey] = ival
         elif hasattr(v, "__iter__") and v:
             #assume it's a list
             if isinstance(v[0], basestring):
-                result[k] = list_sep.join(map(str, v))
+                result[k] = list_sep.join(map(str, v)).encode("utf-8")
             else:
-                result[k] = json.dumps(v)
+                result[k] = json.dumps(v).encode("utf-8")
         else:
             #int?
             result[k] = v
