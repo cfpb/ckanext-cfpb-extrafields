@@ -9,133 +9,53 @@ from ckan.plugins.toolkit import BaseController, render, response
 import ckanapi
 
 FIELDS = [
-    'access_notes',
-    'access_restrictions',
-    'also_known_as',
-    'author',
-    'author_email',
-    'contact_primary_email',
-    'contact_primary_name',
-    'contact_secondary_email',
-    'contact_secondary_name',
-    'content_periodicity',
-    'content_spatial',
-    'content_temporal_range_end',
-    'content_temporal_range_start',
-    'creator_user_id',
-    'data_source_names',
-    'dataset_notes',
-    'dig_id',
-    'groups',
-    'id',
-    'initial_purpose_for_intake',
-    'isopen',
-    'legal_authority_for_collection',
-    'license_id',
-    'license_title',
-    'maintainer',
-    'maintainer_email',
-    'metadata_created',
-    'metadata_modified',
-    'name',
-    'notes',
-    'num_resources',
-    'num_tags',
-    'obfuscated_title',
-    'organization.approval_status',
-    'organization.created',
-    'organization.description',
-    'organization.id',
-    'organization.image_url',
-    'organization.is_organization',
-    'organization.name',
-    'organization.revision_id',
-    'organization.state',
-    'organization.title',
-    'organization.type',
-    'owner_org',
-    'pra_exclusion',
-    'pra_omb_control_number',
-    'pra_omb_expiration_date',
-    'privacy_contains_pii',
-    'privacy_has_direct_identifiers',
-    'privacy_has_privacy_act_statement',
-    'privacy_pia_notes',
-    'privacy_pia_title',
-    'privacy_sorn_number',
-    'private',
-    'procurement_document_id',
-    'records_retention_schedule',
-    'relationships_as_object',
-    'relationships_as_subject',
-    'relevant_governing_documents',
-    'resources',
-    'revision_id',
-    'sensitivity_level',
-    'state',
-    'tags',
-    'title',
-    'tracking_summary.recent',
-    'tracking_summary.total',
-    'transfer_details',
-    'transfer_initial_size',
-    'transfer_method',
-    'type',
-    'update_frequency',
-    'url',
-    'usage_restrictions',
-    'version',
-    'website_name',
-    'website_url',
-    'wiki_link'
+    ("title", "Dataset Title"),
+    ("private", "Visibility"),
+    ("notes", "Description"),
+    # ("i", "Subject Matter"),
+    ("organization.name", "Organization"),
+    ("also_known_as", "Also Known As"),
+    ("data_source_names", "Data Sources"),
+    ("content_temporal_range_start", "Content Start Date"),
+    ("content_temporal_range_end", "Content End Date"),
+    ("content_periodicity", "Content Periodicity"),
+    ("content_spatial", "Content Spatial Coverage"),
+    ("update_frequency", "Update Frequency"),
+    ("wiki_link", "Wiki Link"),
+    ("website_url", "Reference Website URL"),
+    ("contact_primary_email", "Primary Contact"),
+    ("contact_secondary_email", "Secondary Contact"),
+    ("access_notes", "How to Get Access"),
+    ("access_restrictions", "Access Restrictions"),
+    ("usage_restrictions", "Usage Restrictions"),
+    ("dataset_notes", "Dataset Notes"),
+    # ("i", "Dataset Last Modified Date"),
+    ("obfuscated_title", "Obfuscated Title"),
+    ("transfer_details", "Transfer Details"),
+    ("dig_id", "Transfer Initial Size (mb)"),
+    ("transfer_initial_size", "Transfer Method"),
+    ("transfer_method", "Sensitivity Level"),
+    ("sensitivity_level", "Legal Authority for Collection"),
+    ("legal_authority_for_collection", "Relevant Governing Documents"),
+    ("relevant_governing_documents", "DIG ID"),
+    ("initial_purpose_for_intake", "Initial Purpose for Intake"),
+    ("pra_exclusion", "PRA Exclusion"),
+    ("pra_omb_control_number", "PRA: OMB Control Number"),
+    ("pra_omb_expiration_date", "PRA: OMB Expiration Date"),
+    ("privacy_contains_pii", "Privacy: Contains PII?"),
+    ("privacy_has_direct_identifiers", "Privacy: Has Direct Identifiers?"),
+    ("privacy_has_privacy_act_statement", "Privacy: Has Privacy Act statement?"),
+    ("privacy_pia_title", "Privacy: PIA title"),
+    ("privacy_sorn_number", "Privacy: SORN number"),
+    ("records_retention_schedule", "Records retention schedule"),
+    ("procurement_document_id", "Procurement document ID"),
 ]
-FIELD_NAMES = """
-Dataset Title
-Visibility
-Description
-Subject Matter
-Organization
-Also Known As
-Data Sources
-Content Start Date
-Content End Date
-Content Periodicity
-Content Spatial Coverage
-Update Frequency
-Wiki Link
-Reference Website URL
-Primary Contact
-Secondary Contact
-How to Get Access
-Access Restrictions
-Usage Restrictions
-Dataset Notes
-Dataset Last Modified Date
-Obfuscated Title
-Transfer Details
-Transfer Initial Size (mb)
-Transfer Method
-Sensitivity Level
-Legal Authority for Collection
-Relevant Governing Documents
-DIG ID
-Initial Intake for Purpose
-PRA Exclusion
-PRA: OMB Control Number
-PRA: OMB Expiration Date
-Privacy: Contains PII?
-Privacy: Has Direct Identifiers?
-Privacy: Has Privacy Act statement?
-Privacy: PIA title
-Privacy: SORN number
-Records retention schedule
-Procurement document ID
-"""
 
 try:
     basestring
 except NameError:
     basestring = str
+
 def flatten(data, list_sep=","):
     result = {}
     for k, v in data.items():
@@ -168,8 +88,8 @@ def get_datasets(rows=10000):
 
 def to_csv(data, fields):
     output = StringIO()
-    writer = csv.DictWriter(output, fields, extrasaction="ignore")
-    writer.writeheader()
+    writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
+    writer.writerow(dict(FIELDS))
     for result in data["results"]:
         writer.writerow(flatten(result))
     return output.getvalue()
@@ -186,3 +106,10 @@ class ExportController(BaseController):
         response.content_length = len(csvdata)
 
         return csvdata
+
+# if __name__ == "__main__":
+    # import fileinput
+    # data = json.loads("\n".join(fileinput.input()))
+    # result = to_csv(data["result"], FIELDS)
+    # with open("results2.csv", "w") as f:
+        # f.write(result)
