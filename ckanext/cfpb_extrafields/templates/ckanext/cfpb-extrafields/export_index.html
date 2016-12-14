@@ -1,2 +1,6 @@
-To export all the data, <button>click here</button>.
-<a href="/export/csv", target="_blank">test link</a>
+{% extends "page.html" %}
+
+{% block primary_content %}
+	<h2>CSV Export</h2>
+	To export all the data, <a href="/export/csv", target="_blank">click here</a>
+{% endblock %}
