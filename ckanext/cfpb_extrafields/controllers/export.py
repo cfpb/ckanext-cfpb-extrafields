@@ -89,17 +89,21 @@ FIELDS = [
     'wiki_link'
 ]
 
+try:
+    basestring
+except NameError:
+    basestring = str
 def flatten(data, list_sep=","):
     result = {}
     for k, v in data.items():
-        if isinstance(v, "".__class__):
+        if isinstance(v, basestring):
             result[k] = v
         elif hasattr(v, "items"):
             for ikey, ival in flatten(v).items():
                 result[k + "." + ikey] = ival
         elif hasattr(v, "__iter__") and v:
             #assume it's a list
-            if isinstance(v[0], "".__class__):
+            if isinstance(v[0], basestring):
                 result[k] = list_sep.join(map(str, v))
             else:
                 result[k] = json.dumps(v)
