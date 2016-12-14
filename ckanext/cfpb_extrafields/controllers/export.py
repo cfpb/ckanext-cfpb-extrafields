@@ -2,6 +2,7 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from stringIO import StringIO
+import csv
 
 from ckan.plugins.toolkit import BaseController, render, response
 import ckanapi
@@ -19,7 +20,7 @@ def get_datasets(rows=10000):
 
 def to_csv(data, fields):
     output = StringIO()
-    writer = csv.DictWriter(output, fields)
+    writer = csv.DictWriter(output, fields, extrasaction="ignore")
     writer.writeheader()
     for result in data["results"]:
         writer.writerow(result)
@@ -31,7 +32,7 @@ class ExportController(BaseController):
 
     def csv(self):
         datasets = get_datasets()
-        csvdata = to_csv(datasets, ["id", "description"])
+        csvdata = to_csv(datasets, ["id", "name", "contact_primary_email"])
         response.content_disposition = "attachment; filename=packages.csv"
         response.content_type = "text/csv"
         response.content_length = len(csvdata)
