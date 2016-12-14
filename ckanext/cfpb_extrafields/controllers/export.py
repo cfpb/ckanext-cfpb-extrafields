@@ -38,7 +38,7 @@ FIELDS = [
     ("sensitivity_level", "Legal Authority for Collection"),
     ("legal_authority_for_collection", "Relevant Governing Documents"),
     ("relevant_governing_documents", "DIG ID"),
-    ("initial_purpose_for_intake", "Initial Intake for Purpose"),
+    ("initial_purpose_for_intake", "Initial Purpose for Intake"),
     ("pra_exclusion", "PRA Exclusion"),
     ("pra_omb_control_number", "PRA: OMB Control Number"),
     ("pra_omb_expiration_date", "PRA: OMB Expiration Date"),
@@ -51,53 +51,11 @@ FIELDS = [
     ("procurement_document_id", "Procurement document ID"),
 ]
 
-FIELD_NAMES = """
-Dataset Title
-Visibility
-Description
-Subject Matter
-Organization
-Also Known As
-Data Sources
-Content Start Date
-Content End Date
-Content Periodicity
-Content Spatial Coverage
-Update Frequency
-Wiki Link
-Reference Website URL
-Primary Contact
-Secondary Contact
-How to Get Access
-Access Restrictions
-Usage Restrictions
-Dataset Notes
-Dataset Last Modified Date
-Obfuscated Title
-Transfer Details
-Transfer Initial Size (mb)
-Transfer Method
-Sensitivity Level
-Legal Authority for Collection
-Relevant Governing Documents
-DIG ID
-Initial Intake for Purpose
-PRA Exclusion
-PRA: OMB Control Number
-PRA: OMB Expiration Date
-Privacy: Contains PII?
-Privacy: Has Direct Identifiers?
-Privacy: Has Privacy Act statement?
-Privacy: PIA title
-Privacy: SORN number
-Records retention schedule
-Procurement document ID
-"""
-
 try:
     basestring
 except NameError:
     basestring = str
+
 def flatten(data, list_sep=","):
     result = {}
     for k, v in data.items():
@@ -131,7 +89,6 @@ def get_datasets(rows=10000):
 def to_csv(data, fields):
     output = StringIO()
     writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
-    # writer.writeheader()
     writer.writerow(dict(FIELDS))
     for result in data["results"]:
         writer.writerow(flatten(result))
@@ -149,3 +106,10 @@ class ExportController(BaseController):
         response.content_length = len(csvdata)
 
         return csvdata
+
+# if __name__ == "__main__":
+    # import fileinput
+    # data = json.loads("\n".join(fileinput.input()))
+    # result = to_csv(data["result"], FIELDS)
+    # with open("results2.csv", "w") as f:
+        # f.write(result)
