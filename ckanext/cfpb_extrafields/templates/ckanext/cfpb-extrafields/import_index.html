@@ -1,0 +1,20 @@
+{% extends "page.html" %}
+
+{% block primary_content %}
+	{% if errors %}
+		<div class="errors">
+			{% for err in errors %}
+				<span class="error-msg">{{err}}</span>
+			{% endfor %}
+		</div>
+	{% endif %}
+	<h2>Import DIG</h2>
+	<span style="color:#888;font-style:italic">Upload a DIG file to automatically ingest it into the system</span>
+	<form action="/import/upload" enctype="multipart/form-data" method="post" class="form-inline" style="padding-top:20px">
+		<div class="form-group" style="margin-left: 5px">
+			<label for="file" style="font-weight:bold">DIG file</label>
+			<input type="file" id="file" name="file" accept=".xls,.xlsx,.xlsm" style="line-height: 10px; vertical-align: top">
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+{% endblock %}
