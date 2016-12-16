@@ -22,18 +22,19 @@ from ckanext.cfpb_extrafields.digutils import make_rec
     # return result
 
 class ImportController(BaseController):
-    def index(self):
+    def index(self, group):
         errors = request.params.get("errors", [])
         if errors:
             try:
                 errors = json.loads(errors)
             except json.JSONDecodeError:
                 errors = ["Unknown errors detected"]
-        return render('ckanext/cfpb-extrafields/import_index.html', {"errors": errors})
+        return render('ckanext/cfpb-extrafields/import_index.html', {"errors": errors, "group": group})
 
     def upload(self):
         dig = request.POST["file"].file
+        group = request.POST["group"]
         rec, errors = make_rec(dig)
         if errors:
-            redirect_to("import_page", errors=json.dumps(errors))
+            redirect_to("import_page", errors=json.dumps(errors), group=group)
         return json.dumps(rec)

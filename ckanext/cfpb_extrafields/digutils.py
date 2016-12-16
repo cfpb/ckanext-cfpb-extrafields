@@ -3,11 +3,17 @@ from ckan.plugins.toolkit import Invalid
 
 from ckanext.cfpb_extrafields import validators as v
 
+def strfy(val):
+    if isinstance(val, basestring):
+        return val
+    else:
+        return ""
+
 def concat(fields):
     def concat_fields(ws):
         result = ""
         for field in fields:
-            result += ws[field].value or ""
+            result += strfy(ws[field].value)
         return result
     return concat_fields
 
@@ -27,12 +33,12 @@ FIELDS = {
     "contact_secondary_name": "B6",
     "data_source_names": "D10",
     "dataset_notes": "B54",
-    "dig_id": lambda ws: v.dig_id_validator(ws["B5"].value),
+    "dig_id": lambda ws: v.dig_id_validator(strfy(ws["B5"].value)),
     "initial_purpose_for_intake": "H15",
     "legal_authority_for_collection": "B25",
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
-    "pra_omb_control_number": lambda ws: v.pra_control_num_validator(ws["F37"].value),
+    "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
     "pra_omb_expiration_date": date("F38"),
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
@@ -58,7 +64,7 @@ def get_field(worksheet, field, fields=FIELDS):
     if hasattr(cell_or_func, "__call__"):
         return cell_or_func(worksheet)
     else:
-        return worksheet[cell_or_func].value
+        return strfy(worksheet[cell_or_func].value)
 
 def make_rec(excel_file):
     wb = load_workbook(excel_file, read_only=True)

@@ -1,6 +1,7 @@
 {% extends "page.html" %}
 
 {% block primary_content %}
+	<a href="/organization/{{group}}" class="btn btn-primary">&larr;Back to Organization</a>
 	{% if errors %}
 		<style type="text/css">
 			.errors {
@@ -32,10 +33,11 @@
 	{% endif %}
 	<h2 style="margin-top: 10px">Import DIG</h2>
 	<span style="color:#888;font-style:italic">Upload a DIG file to automatically ingest it into the system</span>
-	<form action="/import/upload" enctype="multipart/form-data" method="post" class="form-inline" style="padding-top:20px;padding-bottom:20px">
+	<form action="/import-upload" enctype="multipart/form-data" method="post" class="form-inline" style="padding-top:20px;padding-bottom:20px">
 		<div class="form-group" style="margin-left: 5px">
 			<label for="file" style="font-weight:bold">DIG file</label>
 			<input type="file" id="file" name="file" accept=".xls,.xlsx,.xlsm" style="line-height: 10px; vertical-align: top">
+			<input type="hidden" name="group" value="{{group}}">
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>

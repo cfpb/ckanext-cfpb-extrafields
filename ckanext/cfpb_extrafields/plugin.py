@@ -536,6 +536,6 @@ class DigImportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
 
     def after_map(self, map):
-        map.connect("import_page", "/import", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="index")
-        map.connect("import_upload", "/import/upload", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="upload", method="POST") #TODO confirm that method goes here
+        map.connect("import_page", "/import/{group}", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="index")
+        map.connect("import_upload", "/import-upload", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="upload", method="POST") #TODO confirm that method goes here
         return map

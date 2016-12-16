@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{% block page_primary_action %}
+	{{super()}}
+	{% if h.check_access('package_create', {'owner_org': c.group_dict.id}) %}
+		{% link_for _('Add Dataset from DIG file'), controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="index", group=c.group_dict.id, class_='btn btn-primary', icon='plus-sign-alt' %}
+	{% endif %}
+{% endblock %}
