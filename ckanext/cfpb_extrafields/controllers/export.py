@@ -57,16 +57,29 @@ except NameError:
     basestring = str
 
 def flatten(data, list_sep=","):
+    """Convert a nested dictionary to a flat data structure
+    flattened keys are separated by dots
+    Value encodings:
+    * lists of strings are joined by list_sep if it's present
+    * all other lists are json-encoded
+    * dicts are recursively flattened
+    * all other values are included verbatim
+
+    Example:
+        {"child":{"name": "Bob", "fav_foods": ["apples", "bananas"], "parents": [{"name": "John"}, {"name": "Sue"}]}}
+        ->
+        {"child.name": "Bob", "child.fav_foods": "apples,bananas", "parents": "<json encoded list>"}
+    """
     result = {}
     for k, v in data.items():
         if isinstance(v, basestring):
             result[k] = v.encode("utf-8")
         elif hasattr(v, "items"):
-            for ikey, ival in flatten(v).items():
+            for ikey, ival in flatten(v, list_sep=list_sep).items():
                 result[k + "." + ikey] = ival
         elif hasattr(v, "__iter__") and v:
             #assume it's a list
-            if isinstance(v[0], basestring):
+            if isinstance(v[0], basestring) and list_sep:
                 result[k] = list_sep.join(map(str, v)).encode("utf-8")
             else:
                 result[k] = json.dumps(v).encode("utf-8")
@@ -86,11 +99,11 @@ def get_datasets(rows=10000):
     )
     return result
 
-def to_csv(data, fields):
+def to_csv(data, fields, fieldmap=FIELDS):
     output = StringIO()
     writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
-    writer.writerow(dict(FIELDS))
-    for result in data["results"]:
+    writer.writerow(dict(fieldmap))
+    for result in data:
         writer.writerow(flatten(result))
     return output.getvalue()
 
@@ -100,16 +113,9 @@ class ExportController(BaseController):
 
     def csv(self):
         datasets = get_datasets()
-        csvdata = to_csv(datasets, FIELDS)
+        csvdata = to_csv(datasets["results"], FIELDS)
         response.content_disposition = "attachment; filename=packages.csv"
         response.content_type = "text/csv"
         response.content_length = len(csvdata)
 
         return csvdata
-
-# if __name__ == "__main__":
-    # import fileinput
-    # data = json.loads("\n".join(fileinput.input()))
-    # result = to_csv(data["result"], FIELDS)
-    # with open("results2.csv", "w") as f:
-        # f.write(result)

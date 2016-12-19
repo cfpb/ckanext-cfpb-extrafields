@@ -3,11 +3,11 @@ from nose_parameterized import parameterized
 from nose.tools import assert_equal
 import mock
 import validators as v
+import ckanext.cfpb_extrafields.controllers.export as ec
 
 
 class TestValidators(unittest.TestCase):
 
-    
     @parameterized.expand([
         (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
         (u'asdf',[u'asdf']),
@@ -122,3 +122,31 @@ class TestValidators(unittest.TestCase):
         mi.side_effect = Exception("")
         with self.assertRaises(Exception):
             v.pra_control_num_validator(input)
+
+class TestExport(unittest.TestCase):
+    @parameterized.expand([
+        ({"a": {"str": "x"}}, {"a.str": "x"}),
+        ({"a": {"int": 1}}, {"a.int": 1}),
+        ({"a": {"list_str": ["x", "y", "z"]}}, {"a.list_str": "x,y,z"}),
+        ({"a": {"list_dict": [{"x": "y"}, {}]}}, {"a.list_dict": '[{"x": "y"}, {}]'}),
+    ])
+    def test_flatten(self, data, expected):
+        result = ec.flatten(data)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
+        ({}, {"a.list_str": "x,y,z"}),
+        ({"list_sep": "; "}, {"a.list_str": "x; y; z"}),
+        ({"list_sep": None}, {"a.list_str": '["x", "y", "z"]'}),
+    ])
+    def test_flatten_listseps(self, kwargs, expected):
+        data = {"a": {"list_str": ["x", "y", "z"]}}
+        result = ec.flatten(data, **kwargs)
+        assert_equal(result, expected)
+    
+    @parameterized.expand([
+        ([{"a":1, "b": 2, "c": 3}], ["b", "a"], {"a": "A", "b": "bee"}, "bee,A\r\n2,1\r\n"),
+    ])
+    def test_to_csv(self, data, fields, fieldmap, expected):
+        result = ec.to_csv(data, fields, fieldmap)
+        assert_equal(result, expected)
