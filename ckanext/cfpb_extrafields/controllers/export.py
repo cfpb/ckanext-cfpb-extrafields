@@ -1,3 +1,8 @@
+"""Export all datasets to excel-compatible csv.
+
+Currently only exports public datasets, but once CKAN is upgraded to v2.4+,
+the code can be updated to support private datasets.
+"""
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -66,29 +71,31 @@ def flatten(data, list_sep=","):
     * all other values are included verbatim
 
     Example:
-        {"child":{"name": "Bob", "fav_foods": ["apples", "bananas"], "parents": [{"name": "John"}, {"name": "Sue"}]}}
+        {"child":{"name": "Bob", "fav_foods": ["apples", "bananas"],
+            "parents": [{"name": "John"}, {"name": "Sue"}]}}
         ->
         {"child.name": "Bob", "child.fav_foods": "apples,bananas", "parents": "<json encoded list>"}
     """
     result = {}
-    for k, v in data.items():
-        if isinstance(v, basestring):
-            result[k] = v.encode("utf-8")
-        elif hasattr(v, "items"):
-            for ikey, ival in flatten(v, list_sep=list_sep).items():
-                result[k + "." + ikey] = ival
-        elif hasattr(v, "__iter__") and v:
+    for key, val in data.items():
+        if isinstance(val, basestring):
+            result[key] = val.encode("utf-8")
+        elif hasattr(val, "items"):
+            for ikey, ival in flatten(val, list_sep=list_sep).items():
+                result[key + "." + ikey] = ival
+        elif hasattr(val, "__iter__") and val:
             #assume it's a list
-            if isinstance(v[0], basestring) and list_sep:
-                result[k] = list_sep.join(map(str, v)).encode("utf-8")
+            if isinstance(val[0], basestring) and list_sep:
+                result[key] = list_sep.join(map(str, val)).encode("utf-8")
             else:
-                result[k] = json.dumps(v).encode("utf-8")
+                result[key] = json.dumps(val).encode("utf-8")
         else:
             #int?
-            result[k] = v
+            result[key] = val
     return result
 
 def get_datasets(rows=10000):
+    """Get datasets (packages) from CKAN"""
     api = ckanapi.LocalCKAN()
     result = api.call_action(
         "package_search",
@@ -99,7 +106,14 @@ def get_datasets(rows=10000):
     )
     return result
 
-def to_csv(data, fields, fieldmap=FIELDS):
+def to_csv(data, fields, fieldmap=tuple(FIELDS)):
+    """Convert data to an excel-style csv
+
+    :param data: list of dictionaries of data (each dict is 1 row)
+    :param fields: which fields (keys in the dict) to write
+    :param fieldmap: dict mapping keys in the dict to human-readable names
+        which will appear as the first line of the csv
+    """
     output = StringIO()
     writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
     writer.writerow(dict(fieldmap))
@@ -109,12 +123,14 @@ def to_csv(data, fields, fieldmap=FIELDS):
 
 class ExportController(BaseController):
     def index(self):
+        """Basic page with a button for exporting data"""
         return render('ckanext/cfpb-extrafields/export_index.html')
 
     def csv(self):
+        """Returns a download with csv of all datasets"""
         datasets = get_datasets()
         csvdata = to_csv(datasets["results"], FIELDS)
-        response.content_disposition = "attachment; filename=packages.csv"
+        response.content_disposition = "attachment; filename=datasets.csv"
         response.content_type = "text/csv"
         response.content_length = len(csvdata)
 
