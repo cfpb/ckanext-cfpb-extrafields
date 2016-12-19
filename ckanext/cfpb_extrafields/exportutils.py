@@ -10,7 +10,6 @@ except ImportError:
 import csv
 import json
 
-import ckanapi
 
 FIELDS = [
     ("title", "Dataset Title"),
@@ -91,18 +90,6 @@ def flatten(data, list_sep=","):
         else:
             #int?
             result[key] = val
-    return result
-
-def get_datasets(rows=10000):
-    """Get datasets (packages) from CKAN"""
-    api = ckanapi.LocalCKAN()
-    result = api.call_action(
-        "package_search",
-        {
-            "q": "",
-            "rows": rows,
-        }
-    )
     return result
 
 def to_csv(data, fields, fieldmap=tuple(FIELDS)):

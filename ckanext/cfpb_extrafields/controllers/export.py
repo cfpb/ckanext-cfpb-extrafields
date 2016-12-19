@@ -13,7 +13,20 @@ import json
 from ckan.plugins.toolkit import BaseController, render, response
 import ckanapi
 
-from ckanext.cfpb_extrafields.exportutils import get_datasets, to_csv, FIELDS
+from ckanext.cfpb_extrafields.exportutils import to_csv, FIELDS
+
+def get_datasets(rows=10000):
+    """Get datasets (packages) from CKAN"""
+    api = ckanapi.LocalCKAN()
+    result = api.call_action(
+        "package_search",
+        {
+            "q": "",
+            "rows": rows,
+        }
+    )
+    return result
+
 class ExportController(BaseController):
     def index(self):
         """Basic page with a button for exporting data"""
