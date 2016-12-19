@@ -40,13 +40,13 @@ class ImportController(BaseController):
             redirect_to("import_page", errors=json.dumps(errors), group=group)
         else:
             rec["owner_org"] = group
-            rec["name"] = make_name(rec["title"])
-            rec["notes"] = "Automatically import from DIG"
+            rec["name"] = make_name(request.POST.get("name") or rec["title"])
+            rec["notes"] = request.POST["notes"]
             import logging;logging.error(repr(rec))
             try:
                 upload_rec(rec)
             except ValidationError as err:
-                errors = ["CKAN validation error for field {}: {}".format(field, ";".join(errs)) for field, errs in err.error_dict.items()]
+                errors = ['CKAN validation error for field "{}": {}'.format(field, ";".join(errs)) for field, errs in err.error_dict.items()]
                 redirect_to("import_page", errors=json.dumps(errors), group=group)
 
         return json.dumps(rec)
