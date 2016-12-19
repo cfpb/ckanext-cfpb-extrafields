@@ -12,7 +12,7 @@ import ckanapi
 from ckanext.cfpb_extrafields.digutils import make_rec
 
 def make_name(title):
-    return re.sub(r"[^a-zA-Z0-9]*", "-", title).lower()
+    return re.sub(r"[^a-zA-Z0-9]+", "-", title).lower()
 
 def upload_rec(rec):
     api = ckanapi.LocalCKAN()
@@ -49,4 +49,4 @@ class ImportController(BaseController):
                 errors = ['CKAN validation error for field "{}": {}'.format(field, ";".join(errs)) for field, errs in err.error_dict.items()]
                 redirect_to("import_page", errors=json.dumps(errors), group=group)
 
-        return json.dumps(rec)
+        redirect_to("dataset_read", id=rec["name"])
