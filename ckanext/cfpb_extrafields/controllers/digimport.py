@@ -6,7 +6,7 @@ import json
 import re
 import urllib
 
-from ckan.plugins.toolkit import BaseController, redirect_to, render, request, response
+from ckan.plugins.toolkit import BaseController, redirect_to, render, request, response, ValidationError
 import ckanapi
 
 from ckanext.cfpb_extrafields.digutils import make_rec
@@ -42,6 +42,11 @@ class ImportController(BaseController):
             rec["owner_org"] = group
             rec["name"] = make_name(rec["title"])
             rec["notes"] = "Automatically import from DIG"
-            upload_rec(rec)
             import logging;logging.error(repr(rec))
+            try:
+                upload_rec(rec)
+            except ValidationError as err:
+                errors = ["CKAN validation error for field {}: {}".format(field, ";".join(errs)) for field, errs in err.error_dict.items()]
+                redirect_to("import_page", errors=json.dumps(errors), group=group)
+
         return json.dumps(rec)
