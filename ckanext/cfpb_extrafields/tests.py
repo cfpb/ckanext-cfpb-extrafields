@@ -1,9 +1,14 @@
 import unittest
+import datetime as dt
+
 from nose_parameterized import parameterized
 from nose.tools import assert_equal
 import mock
+
 import validators as v
 import ckanext.cfpb_extrafields.exportutils as eu
+import ckanext.cfpb_extrafields.digutils as du
+
 
 
 class TestValidators(unittest.TestCase):
@@ -150,3 +155,59 @@ class TestExport(unittest.TestCase):
     def test_to_csv(self, data, fields, fieldmap, expected):
         result = eu.to_csv(data, fields, fieldmap)
         assert_equal(result, expected)
+
+class MockCell(object):
+    def __init__(self, val):
+        self.value = val
+
+class TestImport(unittest.TestCase):
+    @parameterized.expand([
+        ("s", "s"),
+        ("", ""),
+        (1, ""),
+        (dt.datetime.now(), ""),
+    ])
+    def test_strfy(self, data, expected):
+        result = du.strfy(data)
+        assert_equal(result, expected)
+
+    def test_concat(self):
+        sheet = {
+            "A39": MockCell("foo"),
+            "B39": MockCell("bar"),
+            "C39": MockCell("baz"),
+        }
+        result = du.concat(["A39", "B39", "C39"])(sheet)
+        assert_equal(result, "foobarbaz")
+
+    @parameterized.expand([
+        (dt.datetime(1989, 03, 11), "1989-03-11"),
+        (dt.date(1989, 03, 11), "1989-03-11"),
+        ("1989-03-11", "1989-03-11"),
+    ])
+    def test_date(self, cell_val, expected):
+        sheet = {"A1": MockCell(cell_val)}
+        result = du.date("A1")(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
+        ("A39", "foo"),
+        (lambda x: x["A39"].value.upper(), "FOO"),
+    ])
+    def test_get_field(self, cell_or_func, expected):
+        fields = {"test": cell_or_func}
+        sheet = {"A39": MockCell("foo")}
+        result = du.get_field(sheet, "test", fields)
+        assert_equal(result, expected)
+
+
+    @parameterized.expand([
+        ("A39", ({"test": "foo"}, [])),
+        (lambda ws: v.dig_id_validator(du.strfy(ws["A39"].value)), ({}, ["test: Must be in the format DI#####"])),
+    ])
+    def test_make_rec_from_sheet(self, cell_or_func, expected):
+        fields = {"test": cell_or_func}
+        sheet = {"A39": MockCell("foo")}
+        result = du.make_rec_from_sheet(sheet, fields)
+        assert_equal(result, expected)
+

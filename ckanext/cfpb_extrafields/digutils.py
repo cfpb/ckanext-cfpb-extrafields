@@ -3,12 +3,20 @@ from ckan.plugins.toolkit import Invalid
 
 from ckanext.cfpb_extrafields import validators as v
 
+# Helper functions to convert values of sheets
 def strfy(val):
     if isinstance(val, basestring):
         return val
     else:
         return ""
 
+# FIELDS values can be functions that take in a worksheet and provide a value
+# These factories return functions to use there.
+# For instance, pra_exclusion is in fields D38 and D39.
+# Therefore, we want the FIELDS value to be a function that takes in a worksheet and returns
+# those cells added together.
+# Instead of making this function manually with `dig_func = lambda ws: ws["D38"]+ws["D39"]`,
+# we can say `dig_func = concat(["D38", "D39"])` and it will make the function and return it to us.
 def concat(fields):
     def concat_fields(ws):
         result = ""
@@ -66,16 +74,17 @@ def get_field(worksheet, field, fields=FIELDS):
     else:
         return strfy(worksheet[cell_or_func].value)
 
-def make_rec(excel_file):
-    wb = load_workbook(excel_file, read_only=True)
-    ws = wb.worksheets[0]
+def make_rec_from_sheet(ws, fields):
     result = {}
     errors = []
-    for field in FIELDS:
+    for field in fields:
         try:
-            result[field] = get_field(ws, field)
+            result[field] = get_field(ws, field, fields)
         except Invalid as  err:
             errors.append(field + ": " + err.error)
-    #TODO add name, owner_org?
-    #TODO add validators?
     return result, errors
+
+def make_rec(excel_file, fields=FIELDS):
+    wb = load_workbook(excel_file, read_only=True)
+    ws = wb.worksheets[0]
+    return make_rec_from_sheet(ws, fields)
