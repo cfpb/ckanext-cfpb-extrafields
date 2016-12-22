@@ -1,9 +1,10 @@
 {% ckan_extends %}
-{% block breadcrumb_content%}
+{% block breadcrumb %}
 {{ super() }}
-<span style="padding-left:450px;float:right;overflow:hidden">
+<span style="float:right;overflow:hidden">
 {% if h.check_access('package_create') %}
-    {% link_for _('add dataset'), controller='package', action='new', icon='plus-sign-alt' %}
+    {% link_for _('Add Dataset'), controller='package', action='new', icon='plus-sign-alt' %}
+    {% link_for _('Export CSV'), named_route='export_csv', icon='download-alt' %}
 {% endif %}
 </span>
 {% endblock %}
