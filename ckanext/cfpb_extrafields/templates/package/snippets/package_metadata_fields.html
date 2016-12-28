@@ -246,11 +246,14 @@ size="550",
     }
 
   var fields = Object.keys(_popup_dict);
-  for(var i=0; i < fields.length; i++ )      // safe for < IE9 
-  {
+  document.addEventListener("DOMContentLoaded", function(event) { 
+ 
+    for(var i=0; i < fields.length; i++ )      // safe for < IE9 
+    {
       var field = fields[i];
       $("#"+field+",#field-"+field).closest(".control-group").attr("title", _popup_dict[field]);
-  }
+    }
+  });
 </script>
 
 {% endblock %}
