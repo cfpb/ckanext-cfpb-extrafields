@@ -242,7 +242,7 @@ size="550",
       "update_frequency": "How often the Bureau receives updates to the data",
       "usage_restrictions": "Rules and restrictions for using the specific dataset, above and beyond normal Bureau policies and applicable law. All usage and disclosure of information is subject to applicable law, including the Bureau’s confidentiality regulations, the Privacy Act, and the Trade Secrets Act.  Information should not be disclosed outside of the Bureau unless it is aggregated and does not directly or indirectly identify an individual or an entity.  Additional usage or disclosure restrictions may be present in contracts, MOUs, NDAs, or similar agreements.",
       "website_url": "Link to a relevant website",
-      "wiki_link": "link to a CFPB wiki page for this dataset"
+      "wiki_link": "Link to a CFPB wiki page for this dataset"
     }
 
   var fields = Object.keys(_popup_dict);
@@ -251,7 +251,9 @@ size="550",
     for(var i=0; i < fields.length; i++ )      // safe for < IE9 
     {
       var field = fields[i];
-      $("#"+field+",#field-"+field).closest(".control-group").attr("title", _popup_dict[field]);
+      var el = $("#"+field+",#field-"+field);
+      el.attr("title", _popup_dict[field]);
+      el.closest(".control-group").attr("title", _popup_dict[field]);
     }
   });
 </script>
