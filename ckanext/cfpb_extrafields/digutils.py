@@ -84,7 +84,7 @@ def make_rec_from_sheet(ws, fields):
         try:
             result[field] = get_field(ws, field, fields)
         except Invalid as  err:
-            errors.append(field + ": " + err.error)
+            errors.append(field + ": " + gettattr(err, "error", getattr(err, "message", "UKNOWN_ERROR")))
     return result, errors
 
 def make_rec(excel_file, fields=FIELDS):
