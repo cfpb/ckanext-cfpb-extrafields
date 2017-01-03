@@ -3,3 +3,4 @@ coveralls
 mock
 nose
 nose-parameterized
+openpyxl

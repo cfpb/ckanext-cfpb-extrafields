@@ -1,5 +1,8 @@
 from openpyxl import load_workbook
-from ckan.plugins.toolkit import Invalid
+try:
+    from ckan.plugins.toolkit import Invalid
+except ImportError: #If the custom exception can't be imported, use a more generic exception
+    Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
 
