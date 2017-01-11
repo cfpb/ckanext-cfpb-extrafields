@@ -11,20 +11,18 @@ import csv
 import json
 
 from ckan.plugins.toolkit import BaseController, check_ckan_version, get_action, render, response
-# import ckanapi
 
 from ckanext.cfpb_extrafields.exportutils import to_csv, FIELDS
 
 def get_datasets(rows=10000):
     """Get datasets (packages) from CKAN"""
-    # api = ckanapi.LocalCKAN()
     data_dict = {
         "q": "",
         "rows": rows,
     }
     if check_ckan_version('2.6'):
         data_dict["include_private"] = True
-    # result = api.call_action("package_search", data_dict)
+
     result = get_action("package_search")({}, data_dict)
     return result
 
