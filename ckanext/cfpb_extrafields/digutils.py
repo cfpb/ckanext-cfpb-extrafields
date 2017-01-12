@@ -67,7 +67,7 @@ FIELDS = {
     "update_frequency": "F47",
     "usage_restrictions":  concat(["B18", "B19"]),
     "website_url": "B54",
-    "wiki_link": "B54"
+    "wiki_link": "B54"#TODO multiple B54 fields?
 }
 
 def get_field(worksheet, field, fields=FIELDS):
