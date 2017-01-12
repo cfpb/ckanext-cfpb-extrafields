@@ -524,6 +524,14 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_view(self, pkg_dict):
         return pkg_dict
 
+class SSOPlugin(p.SingletonPlugin):
+    p.implements(p.IAuthenticator, inherit=True)
+
+    def identify(self):
+        username = tk.request.headers.get("TST_USERNAME")
+        if username:
+            tk.c.user = username
+
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
 

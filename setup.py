@@ -23,8 +23,8 @@ setup(
     ],
     entry_points='''
         [ckan.plugins]
-        # Add plugins here, e.g.
         ckanext_cfpb_extrafields=ckanext.cfpb_extrafields.plugin:ExampleIDatasetFormPlugin
+        ckanext_cfpb_sso=ckanext.cfpb_extrafields.plugin:SSOPlugin
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
     ''',
 )
