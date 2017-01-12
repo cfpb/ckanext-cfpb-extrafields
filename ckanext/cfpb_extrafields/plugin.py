@@ -528,7 +528,8 @@ class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
 
     def identify(self):
-        username = tk.request.headers.get("TST_USERNAME")
+        header_name = tk.config.get("ckanext.cfpb_sso.http_header", "From")
+        username = tk.request.headers.get(header_name)
         if username:
             tk.c.user = username
 
