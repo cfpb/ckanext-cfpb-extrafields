@@ -205,10 +205,7 @@ class TestImport(unittest.TestCase):
         ("A39", ({"test": "foo"}, [])),
         (lambda ws: v.dig_id_validator(du.strfy(ws["A39"].value)), ({}, ["test: Must be in the format DI#####"])),
     ])
-    @mock.patch("ckanext.cfpb_extrafields.validators.Invalid")
-    def test_make_rec_from_sheet(self, cell_or_func, expected, mi):
-        #TODO instead of mocking this exception, find a way to properly handle it
-        mi.side_effect = Exception("Must be in the format DI#####")
+    def test_make_rec_from_sheet(self, cell_or_func, expected):
         fields = {"test": cell_or_func}
         sheet = {"A39": MockCell("foo")}
         result = du.make_rec_from_sheet(sheet, fields)
