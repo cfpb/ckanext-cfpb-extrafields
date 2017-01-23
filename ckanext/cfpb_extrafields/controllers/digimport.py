@@ -6,8 +6,7 @@ import json
 import re
 import urllib
 
-from ckan.plugins.toolkit import BaseController, redirect_to, render, request, response, ValidationError
-import ckanapi
+from ckan.plugins.toolkit import BaseController, get_action, redirect_to, render, request, response, ValidationError
 
 from ckanext.cfpb_extrafields.digutils import make_rec
 
@@ -15,11 +14,7 @@ def make_name(title):
     return re.sub(r"[^a-zA-Z0-9]+", "-", title).lower()
 
 def upload_rec(rec):
-    api = ckanapi.LocalCKAN()
-    result = api.call_action(
-        "package_create",
-        rec
-    )
+    result = get_action("package_create")({}, rec)
     return result
 
 class ImportController(BaseController):

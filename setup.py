@@ -21,7 +21,6 @@ setup(
     install_requires=[
         # -*- Extra requirements: -*-
         "ckan",
-        "ckanapi",
         "openpyxl"
     ],
     entry_points='''
