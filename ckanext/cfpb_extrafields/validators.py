@@ -5,9 +5,9 @@ import datetime
 def Invalid(message):
     try:
         import ckan.plugins.toolkit as tk
-        Error = tk.Invalid
+        Error = tk.Invalid # pragma: no cover
     except ImportError:
-        Error = ValueError
+        Error = ValueError # pragma: no cover
     raise Error(message)
 
 def dedupe_unordered(items):
