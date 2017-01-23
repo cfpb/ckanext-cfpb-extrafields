@@ -1,7 +1,8 @@
 from openpyxl import load_workbook
 try:
     from ckan.plugins.toolkit import Invalid
-except ImportError: #If the custom exception can't be imported, use a more generic exception
+except ImportError: # pragma: no cover
+    #If the custom exception can't be imported, use a more generic exception
     Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
@@ -10,7 +11,7 @@ from ckanext.cfpb_extrafields import validators as v
 def strfy(val):
     if isinstance(val, basestring):
         return val
-    else:
+    else: # pragma: no cover
         return ""
 
 # FIELDS values can be functions that take in a worksheet and provide a value

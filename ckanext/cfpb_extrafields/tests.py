@@ -23,6 +23,8 @@ class TestValidators(unittest.TestCase):
         (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
         (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
         (u'{a,"f d",d}',[u'a', u'f d', u'd']),
+        (u'',[]),
+        (["foo"],["foo"]),
     ])
     def test_clean_select_multi(self, ms, expected):
         print ms
@@ -75,6 +77,10 @@ class TestValidators(unittest.TestCase):
     @parameterized.expand([("2010-10-01",), ("1995-01-01",), ("2100-10-20",), (None,), ])
     def test_reasonable_date_validator(self, input):
         assert_equal(input, v.reasonable_date_validator(input))
+
+    @parameterized.expand([("2010-10-01", dt.datetime(2010, 10, 1)), (None, None), ("", None), ])
+    def test_to_datetime(self, input, expected):
+        assert_equal(v.to_datetime(input), expected)
 
     @parameterized.expand([("",), (None,)])
     def test_reasonable_date_validator_empty(self, input):
