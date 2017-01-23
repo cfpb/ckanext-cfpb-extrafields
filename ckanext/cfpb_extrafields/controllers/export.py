@@ -10,21 +10,20 @@ except ImportError:
 import csv
 import json
 
-from ckan.plugins.toolkit import BaseController, render, response
-import ckanapi
+from ckan.plugins.toolkit import BaseController, check_ckan_version, get_action, render, response
 
 from ckanext.cfpb_extrafields.exportutils import to_csv, FIELDS
 
 def get_datasets(rows=10000):
     """Get datasets (packages) from CKAN"""
-    api = ckanapi.LocalCKAN()
-    result = api.call_action(
-        "package_search",
-        {
-            "q": "",
-            "rows": rows,
-        }
-    )
+    data_dict = {
+        "q": "",
+        "rows": rows,
+    }
+    if check_ckan_version('2.6'):
+        data_dict["include_private"] = True
+
+    result = get_action("package_search")({}, data_dict)
     return result
 
 class ExportController(BaseController):
