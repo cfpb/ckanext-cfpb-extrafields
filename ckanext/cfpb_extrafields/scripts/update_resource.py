@@ -6,7 +6,7 @@ usage: CKAN_API_KEY=<ckan_api_key> CKAN_URL=<ckan_url> [CKAN_DATE_FIELD=<date_fi
     CKAN_URL: url to the data catalog, i.e. http://catalog.data.cfpb.local
     CKAN_DATE_FIELD: the field on the resource metadata to update. defaults to update_date
     resource_id: the unique ID of a ckan resource
-    timestamp: ISO timestamp to use as the new update time. Defaults to now.
+    timestamp: YYYY-MM-DD timestamp to use as the new update time. Defaults to now.
 """
 from __future__ import print_function
 import datetime as dt
@@ -48,7 +48,7 @@ def main(args):
         if len(args) > 2:
             timestamp = args[2]
         else:
-            timestamp = dt.datetime.now().isoformat()
+            timestamp = dt.datetime.now().strftime("%Y-%m-%d")
 
         resource = get_resource(resource_id)
         resource[DATE_FIELD] = timestamp
