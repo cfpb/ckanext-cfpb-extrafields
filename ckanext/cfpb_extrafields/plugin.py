@@ -280,6 +280,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema['resources'].update({
                 'approximate_total_size' : [tk.get_validator('ignore_missing'),],
                 'intake_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
+                'update_date' : [v.reasonable_date_validator, tk.get_validator('ignore_missing'),],
                 'resource_type' : [tk.get_validator('ignore_missing'),],
                 'storage_location' : [tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [tk.get_validator('ignore_missing'),],
@@ -395,6 +396,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
                 'intake_date' : [tk.get_validator('ignore_missing'),],
+                'update_date' : [tk.get_validator('ignore_missing'),],
                 'resource_type' : [ tk.get_validator('ignore_missing'),],
                 'storage_location' : [ tk.get_validator('ignore_missing'),],
                 'storage_location_path' : [ tk.get_validator('ignore_missing'),],

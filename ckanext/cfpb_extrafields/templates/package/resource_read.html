@@ -145,6 +145,12 @@
                 <td class="dataset-details">{{ res.intake_date }}</td>
               </tr>
               {% endif %}
+              {% if res.update_date %}
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("update date") }}</th>
+                <td class="dataset-details">{{ res.update_date }}</td>
+              </tr>
+              {% endif %}
               <tr>
                 <th scope="row">{{ _('metadata resource ID') }}</th>
                 <td>{{ res.id or _('unknown') }}</td>

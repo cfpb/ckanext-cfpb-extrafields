@@ -8,6 +8,7 @@ X +format
 X +storage location ; path (drop-down+free-text)
 X +approximate_size
 X +intake_date
+X +update_date
 #}
 
 {% if location=="form" %}
@@ -44,6 +45,9 @@ X +intake_date
   
   {{ form.input('intake_date', type='date', label=_("intake date"),
   placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
+
+  {{ form.input('update_date', type='date', label=_("update date"),
+  placeholder="eg 2012-12-21",value=data.update_date, error=errors.update_date) }}
   <!-- end cfpb_extrafields_datafile.html snippet -->
   
 {% elif location=="description" %}
