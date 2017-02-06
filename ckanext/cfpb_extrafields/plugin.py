@@ -30,10 +30,12 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
-
-import pylons.config as config
+if hasattr(tk, "config"):
+    CONFIG = tk.config
+else:
+    import pylons.config as CONFIG
 def github_api_url():
-    return config['ckan.ckanext_cfpb_extrafields.github_api_url']
+    return CONFIG['ckan.ckanext_cfpb_extrafields.github_api_url']
 def parse_resource_related_gist(data_related_items, resource_id):
     urls = []
     if not data_related_items:
@@ -528,7 +530,7 @@ class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
 
     def identify(self):
-        header_name = tk.config.get("ckanext.cfpb_sso.http_header", "From")
+        header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
         username = tk.request.headers.get(header_name)
         if username:
             tk.c.user = username
