@@ -1,6 +1,7 @@
 from ckan.lib.helpers import flash_error
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
+import pylons
 import validators as v
 import options as opts
 import datastore_actions as ds
@@ -531,6 +532,7 @@ class SSOPlugin(p.SingletonPlugin):
         header_name = tk.config.get("ckanext.cfpb_sso.http_header", "From")
         username = tk.request.headers.get(header_name)
         if username:
+            pylons.session["ckanext-ldap-user"] = username
             tk.c.user = username
 
 class ExportPlugin(p.SingletonPlugin):
