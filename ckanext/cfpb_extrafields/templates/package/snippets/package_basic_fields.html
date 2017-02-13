@@ -7,6 +7,25 @@
 {% endblock %}
 
 {% block package_basic_fields_description %}
+
+<div class="core-field">
+  {{ form.markdown('notes', id='field-notes', label=_('description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes, is_required=true) }}
+</div>
+{% endblock %}
+
+{% block package_basic_fields_tags %} 
+<div class="core-field">
+{% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+{{ form.input('tag_string', id='field-tags', label=_('subject matter'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
+</div>
+{% endblock %}
+
+{% block package_basic_fields_org %}
+<div class="core-field">
+  {{ super() }}
+</div>
+{% endblock %}
+{% block package_metadata_fields_visibility %}
 {#----------------------------------------#}
 <div class="core-field">
 {% set dataset_is_draft = data.get('state', 'draft').startswith('draft') or data.get('state', 'none') ==  'none' %}
@@ -29,26 +48,6 @@
 {% endif %}
 </div>
 {#----------------------------------------#}
-
-<div class="core-field">
-  {{ form.markdown('notes', id='field-notes', label=_('description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes, is_required=true) }}
-</div>
-{% endblock %}
-
-{% block package_basic_fields_tags %} 
-<div class="core-field">
-{% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-{{ form.input('tag_string', id='field-tags', label=_('subject matter'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
-</div>
-{% endblock %}
-
-{% block package_basic_fields_org %}
-<div class="core-field">
-  {{ super() }}
-</div>
-{% endblock %}
-{% block package_metadata_fields_visibility %}
- {# moved above #}
 {% endblock %}
 
 
