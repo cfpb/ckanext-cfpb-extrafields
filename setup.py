@@ -20,6 +20,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "openpyxl",
+        "lxml",
     ],
     entry_points='''
         [ckan.plugins]
