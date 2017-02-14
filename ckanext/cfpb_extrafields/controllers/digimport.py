@@ -36,8 +36,7 @@ class ImportController(BaseController):
         else:
             rec["owner_org"] = group
             rec["name"] = make_name(request.POST.get("name") or rec["title"])
-            rec["notes"] = request.POST["notes"]
-            import logging;logging.error(repr(rec))
+            rec["notes"] = rec["notes"] or "Record automatcially created from DIG file"
             try:
                 upload_rec(rec)
             except ValidationError as err:
