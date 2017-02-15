@@ -40,15 +40,6 @@ def date(cell):
         return val
     return get_date
 
-def strip_semicolon(cell):
-    """Fields with dropdowns have semicolons/spaces at the end.
-
-    We want to strip those characters."""
-    def strip(ws):
-        val = ws[cell].value
-        return val.rstrip("; ")
-    return strip
-
 """Maps field name to either a cell or a function that's passed the worksheet and should return the value"""
 FIELDS = {
     "access_restrictions": "B17",
@@ -58,7 +49,7 @@ FIELDS = {
     "dataset_notes": "B54",
     "dig_id": lambda ws: v.dig_id_validator(strfy(ws["B5"].value)),
     "initial_purpose_for_intake": "H15",
-    "legal_authority_for_collection": strip_semicolon("B25"),
+    "legal_authority_for_collection": "B25",
     "notes": "H4",
     "pra_exclusion": concat(["D38", "B39"]),
     "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
@@ -66,11 +57,11 @@ FIELDS = {
     "privacy_contains_pii": "B29",
     "privacy_has_direct_identifiers": "B30",
     "privacy_has_privacy_act_statement": "D30",
-    "privacy_pia_notes": strip_semicolon("B33"),
-    "privacy_pia_title": strip_semicolon("D32"),
+    "privacy_pia_notes": "B33",
+    "privacy_pia_title": "D32",
     "privacy_sorn_number": "D31",
     "procurement_document_id": "F24",
-    "relevant_governing_documents": strip_semicolon("D24"),
+    "relevant_governing_documents": "D24",
     "sensitivity_level": "B13",
     "title": "B4",
     "transfer_details": "B54",
