@@ -10,7 +10,9 @@ from ckanext.cfpb_extrafields import validators as v
 # Helper functions to convert values of sheets
 def strfy(val):
     if isinstance(val, basestring):
-        return val
+        if val.lower().strip() in ["na", "n/a", "not applicable"]:
+            return ""
+        return val.strip()
     else: # pragma: no cover
         return ""
 
