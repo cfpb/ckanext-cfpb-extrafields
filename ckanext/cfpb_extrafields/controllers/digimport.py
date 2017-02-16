@@ -23,8 +23,8 @@ class ImportController(BaseController):
         if errors:
             try:
                 errors = json.loads(errors)
-            except json.JSONDecodeError:
-                errors = ["Unknown errors detected"]
+            except (ValueError, json.JSONDecodeError) as err:
+                errors = ["Error while decododing json for the 'error' parameter: {}".format(err.message)]
         return render('ckanext/cfpb-extrafields/import_index.html', {"errors": errors, "group": group})
 
     def upload(self):

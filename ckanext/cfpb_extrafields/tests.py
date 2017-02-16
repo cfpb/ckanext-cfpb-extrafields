@@ -10,7 +10,6 @@ import ckanext.cfpb_extrafields.exportutils as eu
 import ckanext.cfpb_extrafields.digutils as du
 
 
-
 class TestValidators(unittest.TestCase):
 
     @parameterized.expand([

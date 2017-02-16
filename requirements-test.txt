@@ -4,3 +4,4 @@ mock
 nose
 nose-parameterized
 openpyxl
+lxml
