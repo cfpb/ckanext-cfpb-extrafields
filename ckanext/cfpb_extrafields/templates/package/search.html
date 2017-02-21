@@ -4,8 +4,8 @@
 <span style="float:right;overflow:hidden">
 {% if h.check_access('package_create') %}
     {% link_for _('Add Dataset'), controller='package', action='new', icon='plus-sign-alt' %}
-    {% link_for _('Export CSV'), named_route='export_csv', icon='download-alt' %}
 {% endif %}
+{% link_for _('Export CSV'), named_route='export_csv', icon='download-alt' %}
 </span>
 {% endblock %}
 {% block page_primary_action %}
