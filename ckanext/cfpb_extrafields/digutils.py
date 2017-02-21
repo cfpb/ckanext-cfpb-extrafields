@@ -11,7 +11,7 @@ from ckanext.cfpb_extrafields import validators as v
 # Helper functions to convert values of sheets
 def strfy(val):
     if isinstance(val, basestring):
-        if val.lower().strip() in ["na", "n/a", "not applicable"]:
+        if val.lower().strip() in ["na", "n/a", "not applicable", "select one"]:
             return ""
         return val.strip()
     else: # pragma: no cover
@@ -62,6 +62,7 @@ FIELDS = {
     "privacy_pia_notes": "B33",
     "privacy_pia_title": "D32",
     "privacy_sorn_number": "D31",
+    "private": lambda ws: True,# Always have new data sources default to private
     "procurement_document_id": "F24",
     "relevant_governing_documents": "D24",
     "sensitivity_level": "B13",
