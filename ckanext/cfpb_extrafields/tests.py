@@ -186,6 +186,24 @@ class TestImport(unittest.TestCase):
         assert_equal(result, "foobarbaz")
 
     @parameterized.expand([
+        ("No", "No", " ", ""),
+        ("No", "No", " additional", "additional"),
+        ("No", "Yes", "", "Data Owner approval required"),
+        ("No", "Yes", "additional notes", "Data Owner approval required, additional notes"),
+        ("Yes", "No", " ", "Supervisor approval required"),
+        ("Yes", "Yes", " ", "Supervisor approval required, Data Owner approval required"),
+        ("Yes", "Yes", "additional notes", "Supervisor approval required, Data Owner approval required, additional notes"),
+    ])
+    def test_access_restrictions(self, sup, owner, addl, expected):
+        sheet = {
+            "B16": MockCell(sup),
+            "D16": MockCell(owner),
+            "B17": MockCell(addl),
+        }
+        result = du.access_restrictions(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
         (dt.datetime(1989, 03, 11), "1989-03-11"),
         (dt.date(1989, 03, 11), "1989-03-11"),
         ("1989-03-11", "1989-03-11"),

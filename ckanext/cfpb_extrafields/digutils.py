@@ -14,8 +14,18 @@ def strfy(val):
         if val.lower().strip() in ["na", "n/a", "not applicable", "select one"]:
             return ""
         return val.strip()
-    else: # pragma: no cover
+    else:
         return ""
+
+def access_restrictions(ws):
+    restrictions = []
+    for field, cell in [("Supervisor", "B16"), ("Data Owner", "D16")]:
+        if ws[cell].value == "Yes":
+            restrictions.append("{0} approval required".format(field))
+    addl_restrictions = strfy(ws["B17"].value)
+    if addl_restrictions:
+        restrictions.append(addl_restrictions)
+    return ", ".join(restrictions)
 
 # FIELDS values can be functions that take in a worksheet and provide a value
 # These factories return functions to use there.
@@ -44,7 +54,7 @@ def date(cell):
 # Maps field name to either a cell or a function that's passed the worksheet and should return the value
 # Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
-    "access_restrictions": "B17",
+    "access_restrictions": access_restrictions,
     "contact_primary_name": "D7",
     "contact_secondary_name": "B6",
     "data_source_names": "D10",
