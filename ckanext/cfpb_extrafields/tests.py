@@ -1,9 +1,13 @@
 import unittest
+import datetime as dt
+
 from nose_parameterized import parameterized
 from nose.tools import assert_equal
 import mock
+
 import validators as v
 import ckanext.cfpb_extrafields.exportutils as eu
+import ckanext.cfpb_extrafields.digutils as du
 
 
 class TestValidators(unittest.TestCase):
@@ -18,6 +22,8 @@ class TestValidators(unittest.TestCase):
         (u'{"asdf,asdf","asdf asdf"}',[u'asdf,asdf',u'asdf asdf']),
         (u'{asdf,"asdf asdf"}',[u'asdf', u'asdf asdf']),
         (u'{a,"f d",d}',[u'a', u'f d', u'd']),
+        (u'',[]),
+        (["foo"],["foo"]),
     ])
     def test_clean_select_multi(self, ms, expected):
         print ms
@@ -70,6 +76,10 @@ class TestValidators(unittest.TestCase):
     @parameterized.expand([("2010-10-01",), ("1995-01-01",), ("2100-10-20",), (None,), ])
     def test_reasonable_date_validator(self, input):
         assert_equal(input, v.reasonable_date_validator(input))
+
+    @parameterized.expand([("2010-10-01", dt.datetime(2010, 10, 1)), (None, None), ("", None), ])
+    def test_to_datetime(self, input, expected):
+        assert_equal(v.to_datetime(input), expected)
 
     @parameterized.expand([("",), (None,)])
     def test_reasonable_date_validator_empty(self, input):
@@ -150,3 +160,77 @@ class TestExport(unittest.TestCase):
     def test_to_csv(self, data, fields, fieldmap, expected):
         result = eu.to_csv(data, fields, fieldmap)
         assert_equal(result, expected)
+
+class MockCell(object):
+    def __init__(self, val):
+        self.value = val
+
+class TestImport(unittest.TestCase):
+    @parameterized.expand([
+        ("s", "s"),
+        ("", ""),
+        (1, ""),
+        (dt.datetime.now(), ""),
+    ])
+    def test_strfy(self, data, expected):
+        result = du.strfy(data)
+        assert_equal(result, expected)
+
+    def test_concat(self):
+        sheet = {
+            "A39": MockCell("foo"),
+            "B39": MockCell("bar"),
+            "C39": MockCell("baz"),
+        }
+        result = du.concat(["A39", "B39", "C39"])(sheet)
+        assert_equal(result, "foobarbaz")
+
+    @parameterized.expand([
+        ("No", "No", " ", ""),
+        ("No", "No", " additional", "additional"),
+        ("No", "Yes", "", "Data Owner approval required"),
+        ("No", "Yes", "additional notes", "Data Owner approval required, additional notes"),
+        ("Yes", "No", " ", "Supervisor approval required"),
+        ("Yes", "Yes", " ", "Supervisor approval required, Data Owner approval required"),
+        ("Yes", "Yes", "additional notes", "Supervisor approval required, Data Owner approval required, additional notes"),
+    ])
+    def test_access_restrictions(self, sup, owner, addl, expected):
+        sheet = {
+            "B16": MockCell(sup),
+            "D16": MockCell(owner),
+            "B17": MockCell(addl),
+        }
+        result = du.access_restrictions(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
+        (dt.datetime(1989, 03, 11), "1989-03-11"),
+        (dt.date(1989, 03, 11), "1989-03-11"),
+        ("1989-03-11", "1989-03-11"),
+    ])
+    def test_date(self, cell_val, expected):
+        sheet = {"A1": MockCell(cell_val)}
+        result = du.date("A1")(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
+        ("A39", "foo"),
+        (lambda x: x["A39"].value.upper(), "FOO"),
+    ])
+    def test_get_field(self, cell_or_func, expected):
+        fields = {"test": cell_or_func}
+        sheet = {"A39": MockCell("foo")}
+        result = du.get_field(sheet, "test", fields)
+        assert_equal(result, expected)
+
+
+    @parameterized.expand([
+        ("A39", ({"test": "foo"}, [])),
+        (lambda ws: v.dig_id_validator(du.strfy(ws["A39"].value)), ({}, ["test: Must be in the format DI#####"])),
+    ])
+    def test_make_rec_from_sheet(self, cell_or_func, expected):
+        fields = {"test": cell_or_func}
+        sheet = {"A39": MockCell("foo")}
+        result = du.make_rec_from_sheet(sheet, fields)
+        assert_equal(result, expected)
+

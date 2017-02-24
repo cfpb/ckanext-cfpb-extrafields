@@ -3,8 +3,12 @@ import datetime
 
 # Abstracted to simplify unit testing via mock
 def Invalid(message):
-    import ckan.plugins.toolkit as tk
-    raise tk.Invalid(message)
+    try:
+        import ckan.plugins.toolkit as tk
+        Error = tk.Invalid # pragma: no cover
+    except ImportError:
+        Error = ValueError # pragma: no cover
+    raise Error(message)
 
 def dedupe_unordered(items):
     return list(set(items))

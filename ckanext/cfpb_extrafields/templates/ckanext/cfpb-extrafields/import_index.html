@@ -1,0 +1,53 @@
+{% extends "page.html" %}
+
+{% block secondary_content %}
+	<a href="/organization/{{group}}" class="btn btn-primary" style="display:block;margin:10px">&larr; Back to Organization</a>
+{% endblock %}
+{% block primary_content %}
+	<style type="text/css">
+		#import-form label {
+			font-size: 16px;
+		}
+		.errors {
+			color: red;
+			font-weight: bold;
+			padding-top: 10px;
+			border: 2px solid red;
+			padding-left: 10px;
+			margin-top: 17px;
+			padding-bottom: 10px;
+			margin-right: 17px;
+			margin-bottom: 17px;
+		}
+		.error-list {
+			font-weight: normal;
+			margin-left: 28px;
+			margin-top: 10px;
+			margin-bottom: 2px;
+		}
+	</style>
+	{% if errors %}
+		<div class="errors">
+			Import failed. Please fix the following errors and re-upload:
+			<ul class="error-list">
+				{% for err in errors %}
+					<li>{{err}}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	<h2 style="margin-top: 10px">Import DIG File</h2>
+	<span style="color:#888;font-style:italic">Upload a DIG file to automatically ingest it into the system</span>
+	<form id="import-form" action="/import-upload" enctype="multipart/form-data" method="post" class="form" style="padding-top:20px;padding-bottom:20px">
+		<div class="form-group" style="margin-left: 5px">
+			<label for="file" style="font-weight:bold">DIG file</label>
+			<input type="file" id="file" name="file" accept=".xls,.xlsx,.xlsm" style="line-height: 10px; vertical-align: top" required>
+		</div>
+		<div class="form-group">
+			<label>Dataset Name (only use a-z and -)</label>
+			<input type="text" id="ds_name" class="text" value="" name="name" placeholder='Defaults to "Title" field'>
+		</div>
+		<input type="hidden" name="group" value="{{group}}">
+		<button type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
+	</form>
+{% endblock %}

@@ -5,7 +5,7 @@ install:
   - pip install -r requirements-test.txt --use-mirrors
   - npm install
 script:
-  - nosetests -s --with-coverage --cover-package=ckanext.cfpb_extrafields.validators --with-xunit --xunit-file=nosetests.xml
+  - nosetests -s --with-coverage --cover-package=ckanext.cfpb_extrafields.validators --cover-package=ckanext.cfpb_extrafields.digutils --cover-package=ckanext.cfpb_extrafields.exportutils --with-xunit --xunit-file=nosetests.xml
   - npm test
 after_success:
   - coveralls
