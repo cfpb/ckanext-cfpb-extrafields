@@ -6,7 +6,6 @@
 **Description**: This is a [CKAN](http://docs.ckan.org) extension to add CFPB-specific extra metadata fields.
 It is a sibling project to https://github.com/cfpb/ckan-installer and expected to live along-side that project.
 
-
 ## Dependencies
 
 ## General
@@ -40,9 +39,6 @@ For real servers, this software should be installed via `pip install`
 After following the testing installation instructions above, you can test with:
 
 `nosetests -s --with-coverage --cover-package=ckanext.cfpb_extrafields.validators`
-
-Currently the only software  under test are custom validators.
-
 
 ## Getting help
 

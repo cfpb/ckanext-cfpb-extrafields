@@ -1,12 +1,17 @@
 from setuptools import setup, find_packages
 
-version = '0.0.1'
+version = '1.2.0'
 
 setup(
     name='ckanext-cfpb-extrafields',
     version=version,
-    description="Just a test of fields",
-    long_description='''
+    description="A CKAN plugin with various customizations for the CFPB Data Catalog",
+    long_description='''This plugin customizes various aspects of CKAN:
+    * Added fields for datasets/resources
+    * Modified templates
+    * CSV export
+    * CSV import
+    * Single Sign-on
     ''',
     classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     keywords='',
