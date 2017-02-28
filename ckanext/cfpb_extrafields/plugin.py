@@ -1,4 +1,5 @@
 from ckan.lib.helpers import flash_error
+from ckan.logic import NotFound
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import pylons
@@ -534,8 +535,15 @@ class SSOPlugin(p.SingletonPlugin):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
         username = tk.request.headers.get(header_name)
         if username:
-            pylons.session["ckanext-ldap-user"] = username
-            tk.c.user = username
+            # Make sure the user already exists in CKAN.
+            # If not, the user will have to log in normally, which will automatically create their account.
+            # After their account is created, single sign-on will work for them.
+            try:
+                tk.get_action("user_show")({}, {"id": username})
+                pylons.session["ckanext-ldap-user"] = username
+                tk.c.user = username
+            except NotFound:
+                pass
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
