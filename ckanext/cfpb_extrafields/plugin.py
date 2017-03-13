@@ -7,6 +7,7 @@ import validators as v
 import options as opts
 import datastore_actions as ds
 import collections
+import logging
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -532,17 +533,29 @@ class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
 
     def identify(self):
+        # Skip if user is already logged in
+        if pylons.session.get("ckanext-ldap-user"):
+            return
+
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
         username = tk.request.headers.get(header_name)
         if username:
-            # Make sure the user already exists in CKAN.
-            # If not, the user will have to log in normally, which will automatically create their account.
-            # After their account is created, single sign-on will work for them.
+            # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
+            try:
+                from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
+                _get_or_create_ldap_user(_find_ldap_user(username))
+            except ImportError, err:
+                logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
+                pass
+
             try:
                 tk.get_action("user_show")({}, {"id": username})
+                # Mark the user as logged in, both for the ckanext-ldap plugin and for CKAN itself.
                 pylons.session["ckanext-ldap-user"] = username
                 tk.c.user = username
             except NotFound:
+                # If the user does not exist in CKAN, the above code failed.
+                # Fall back to the normal login method.
                 pass
 
 class ExportPlugin(p.SingletonPlugin):
