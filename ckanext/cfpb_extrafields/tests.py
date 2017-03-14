@@ -207,6 +207,7 @@ class TestImport(unittest.TestCase):
         (dt.datetime(1989, 03, 11), "1989-03-11"),
         (dt.date(1989, 03, 11), "1989-03-11"),
         ("1989-03-11", "1989-03-11"),
+        ("n/a", ""),
     ])
     def test_date(self, cell_val, expected):
         sheet = {"A1": MockCell(cell_val)}
