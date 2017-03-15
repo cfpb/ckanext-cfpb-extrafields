@@ -51,6 +51,11 @@ def date(cell):
         return val
     return get_date
 
+def lower(cell):
+    def get_lower(ws):
+        return (ws[cell].value or "").lower()
+    return get_lower
+
 # Maps field name to either a cell or a function that's passed the worksheet and should return the value
 # Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
@@ -66,9 +71,9 @@ FIELDS = {
     "pra_exclusion": concat(["D38", "B39"]),
     "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
     "pra_omb_expiration_date": date("F38"),
-    "privacy_contains_pii": "B29",
-    "privacy_has_direct_identifiers": "B30",
-    "privacy_has_privacy_act_statement": "D30",
+    "privacy_contains_pii": lower("B29"),
+    "privacy_has_direct_identifiers": lower("B30"),
+    "privacy_has_privacy_act_statement": lower("D30"),
     "privacy_pia_notes": "B33",
     "privacy_pia_title": "D32",
     "privacy_sorn_number": "D31",
