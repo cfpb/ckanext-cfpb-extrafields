@@ -55,8 +55,8 @@ def date(cell):
 # Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
     "access_restrictions": access_restrictions,
-    "contact_primary_name": "D7",
-    "contact_secondary_name": "B6",
+    "contact_primary_name": "F16",
+    # "contact_secondary_name": "B6",
     "data_source_names": "D10",
     # "dataset_notes": "",
     "dig_id": lambda ws: v.dig_id_validator(strfy(ws["B5"].value)),
