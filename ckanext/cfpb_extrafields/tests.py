@@ -214,6 +214,17 @@ class TestImport(unittest.TestCase):
         assert_equal(result, expected)
 
     @parameterized.expand([
+        ("Yes", "yes"),
+        ("yes", "yes"),
+        ("", ""),
+        (None, ""),
+    ])
+    def test_lower(self, cell_val, expected):
+        sheet = {"A1": MockCell(cell_val)}
+        result = du.lower("A1")(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
         ("A39", "foo"),
         (lambda x: x["A39"].value.upper(), "FOO"),
     ])
