@@ -47,6 +47,7 @@ def date(cell):
         val = ws[cell].value
         if hasattr(val, "strftime"):
             val = val.strftime("%Y-%m-%d")
+        val = strfy(val) # Treat "n/a" as empty string
         _ = v.reasonable_date_validator(val) # Make sure it's a valid date, but return the string.
         return val
     return get_date
