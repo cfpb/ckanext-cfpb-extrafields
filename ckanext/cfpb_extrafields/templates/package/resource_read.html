@@ -206,8 +206,8 @@
                 <td class="dataset-details">{{ res.db_role_level_9 }}</td></tr>
               {% endif %}
             </tbody>
-         </table>
-        {% endif %}
+	</table>
+	{% endif %}
 
       </div>
     </div>
@@ -304,10 +304,11 @@ function example_code_snippet(items) {
       <div class="modal-footer">
         <div id="ace_output"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	<!--Warning: we may want to avoid accessing c.userobj as some consider this bad practice-->
         <button id="btn_post_related_gist" class="btn btn-primary" type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
-                  data-module-email="{{c.userobj.email}}" {# accessing c. is bad practice! #}
+                  data-module-email="{{c.userobj.email}}" 
                   data-module-resource_name="{{ res.name }}"
                   data-module-github_api_url="{{ h.github_api_url() }}"
                   data-module-html="post_related_gist.html"
