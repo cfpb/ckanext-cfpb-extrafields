@@ -9,9 +9,11 @@ import validators as v
 import ckanext.cfpb_extrafields.exportutils as eu
 import ckanext.cfpb_extrafields.digutils as du
 
+# Show diffs even when they're large
+assert_equal.__self__.maxDiff = None
 
 class TestValidators(unittest.TestCase):
-
+    maxDiff=None
     @parameterized.expand([
         (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
         (u'asdf',[u'asdf']),
@@ -132,6 +134,16 @@ class TestValidators(unittest.TestCase):
         mi.side_effect = Exception("")
         with self.assertRaises(Exception):
             v.pra_control_num_validator(input)
+
+    @parameterized.expand([
+        ({}, {}),
+        (
+            {"db_role_level_1": "role1", "db_role_level_3": "role_3", "db_desc_level_3": "desc3"},
+            {"db_roles": [("role1", ""), ("role_3", "desc3"), ]}
+        ),
+    ])
+    def test_combine_roles(self, data, expected):
+        assert_equal(v.combine_roles(data), expected)
 
 class TestExport(unittest.TestCase):
     @parameterized.expand([

@@ -118,6 +118,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # send a notification of change by email
 
     def before_create(self, context, resource):
+        v.combine_roles(resource)
         return
 
     def after_create(self, context, resource):
@@ -128,6 +129,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
 
     def before_update(self, context, current, resource):
+        v.combine_roles(resource)
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
@@ -291,6 +293,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'database_server' : [ tk.get_validator('ignore_missing'),],
                 'database_name' : [ tk.get_validator('ignore_missing'),],
                 'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_roles' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
@@ -406,6 +409,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'database_server' : [ tk.get_validator('ignore_missing'),],
                 'database_name' : [ tk.get_validator('ignore_missing'),],
                 'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_roles' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
