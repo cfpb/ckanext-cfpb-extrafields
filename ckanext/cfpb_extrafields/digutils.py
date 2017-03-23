@@ -1,3 +1,5 @@
+import re
+
 from openpyxl import load_workbook
 try:
     from ckan.plugins.toolkit import Invalid
@@ -57,6 +59,14 @@ def lower(cell):
         return (ws[cell].value or "").lower()
     return get_lower
 
+def sub(cell, pattern, replacement):
+    def get_sub(ws):
+        return re.sub(pattern, replacement, str(ws[cell].value))
+    return get_sub
+
+# Strip all non-digit characters from this field
+transfer_initial_size = sub("B47", "[^0-9.]", "")
+
 # Maps field name to either a cell or a function that's passed the worksheet and should return the value
 # Note that some values are currently blank and commented out as they don't map to any fields in the DIG excel sheet
 FIELDS = {
@@ -69,7 +79,7 @@ FIELDS = {
     "initial_purpose_for_intake": "H15",
     "legal_authority_for_collection": "B25",
     "notes": "H4",
-    "pra_exclusion": concat(["D38", "B39"]),
+    "pra_exclusion": "D38",
     "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
     "pra_omb_expiration_date": date("F38"),
     "privacy_contains_pii": lower("B29"),
@@ -84,7 +94,7 @@ FIELDS = {
     "sensitivity_level": "B13",
     "title": "B4",
     "transfer_details": "B54",
-    "transfer_initial_size": "B47",
+    "transfer_initial_size": transfer_initial_size,
     "transfer_method": "B48",
     "update_frequency": "F47",
     "usage_restrictions":  concat(["B18", "B19"]),
