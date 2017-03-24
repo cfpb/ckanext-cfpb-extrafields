@@ -161,9 +161,21 @@ error=errors.privacy_contains_pii)}}
 label=_('privacy: has direct identifiers?'),
 current_value=data.privacy_has_direct_identifiers)}}
 
-{{ form_custom.radio('privacy_has_privacy_act_statement',
-label=_('privacy: has Privacy Act statement'),
-current_value=data.privacy_has_privacy_act_statement)}}
+{{ form_custom.radio('transfer_date',
+label=_('Transfer: Date'),
+current_value=data.transfer_date)}}
+{{ form_custom.radio('data_governance_notes',
+label=_('Data Governance: Notes'),
+current_value=data.data_governance_notes)}}
+{{ form_custom.radio('legal_notes',
+label=_('Legal: Notes'),
+current_value=data.legal_notes)}}
+{{ form_custom.radio('pra_notes',
+label=_('PRA: Notes'),
+current_value=data.pra_notes)}}
+{{ form_custom.radio('privacy_notes',
+label=_('Privacy: Notes'),
+current_value=data.privacy_notes)}}
 
 <div class="core-field">
 {{ form_custom.select_multi_with_other('privacy_pia_title',
@@ -215,14 +227,17 @@ size="550",
       "content_spatial": "Geographic coverage of the content",
       "content_temporal_range_end": "End of the period of time covered by the data",
       "content_temporal_range_start": "Beginning of the period of time covered by the data",
+      "data_governance_notes": "Any additional information related to the data governance metadata",
       "data_source_names": "Individuals or organization(s) that provided the data to the Bureau",
       "dataset_last_modified_date": "The date the underlying dataset was last modified",
       "dataset_notes": "Notes and additional information that Bureau staff might find useful",
       "dig_id": "Unique identifier assigned by the Data Intake Group for datasets reviewed under the Data Intake Group process. For more information, see http://team.cfpb.local/wiki/index.php/Data_Intake_Group",
       "initial_purpose_for_intake": "Original business use for intaking the dataset",
       "legal_authority_for_collection": "Legal authority under which the data was collected",
+      "legal_notes": "Any additional information related to the legal metadata",
       "obfuscated_title": "Is the title of this dataset encrypted or hidden?",
       "pra_exclusion": "If applicable, the reason for being exempt from Paperwork Reduction Act",
+      "pra_notes": "Any additional information related to the PRA metadata",
       "pra_omb_control_number": "The number assigned from OMB, if the information collection needed approval by the OMB under the Paperwork Reduction Act (PRA). See the PRA wiki page for more information http://team.cfpb.local/wiki/index.php/Paperwork_Reduction_Act_-_PRA",
       "pra_omb_expiration_date": "If applicable, the expiration date of the OMB control number from OMB",
       "privacy_contains_pii": "Does this dataset contain personally identifiable information?",
@@ -230,12 +245,14 @@ size="550",
       "privacy_has_privacy_act_statement": "Is there a related Privacy Act Statement?",
       "privacy_pia_notes": "Information on if a PIA is applicable to this dataset",
       "privacy_pia_title": "If needed, the title of the applicable Privacy Impact Assessment (PIA). For a full list of the Bureau's PIAs, go to http://www.consumerfinance.gov/privacy/",
+      "privacy_notes": "Any additional information related to the privacy metadata",
       "privacy_sorn_number": "If applicable, the title of the applicable System of Record Notice (SORN). For a full list of the Bureau's SORN's, go to http://www.consumerfinance.gov/privacy/",
       "procurement_document_id": "If applicable, the unique identifier from the Office of Procurement's internal database",
       "records_retention_schedule": "The relevant retention schedule or other information about retention requirements",
       "relevant_governing_documents": "Which types of documents govern this dataset",
       "sensitivity_level": "Bureau-assigned sensitivity level per the Information Sensitivity Leveling Standard. For more information, see http://team.cfpb.local/wiki/index.php/Information_Sensitivity_Leveling_Standard",
       "tags": "High-level subject matter that the dataset is related to. This creates tags that help group related datasets.",
+      "transfer_date": "Initial date where the data was brought into the Bureau",
       "transfer_details": "Notes on the transfer of the dataset into CFPB systems",
       "transfer_initial_size": "Approximate size of the dataset when brought into the Bureau (in megabytes)",
       "transfer_method": "Technique, format, or medium for bringing the data into the bureau",
