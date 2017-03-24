@@ -58,6 +58,11 @@ FIELDS = [
     ("records_retention_schedule", "Records retention schedule"),
     ("procurement_document_id", "Procurement document ID"),
     ("obligation", "Obligation")
+    ("transfer_date", "Transfer: Date"),
+    ("data_governance_notes", "Data Governance: Notes"),
+    ("legal_notes","Legal: Notes"),
+    ("pra_notes","PRA: Notes"),
+    ("privacy_notes","Privacy: Notes"),
 ]
 
 try:
