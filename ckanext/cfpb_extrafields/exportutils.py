@@ -47,7 +47,6 @@ FIELDS = [
     ("pra_omb_expiration_date", "PRA: OMB expiration date"),
     ("privacy_contains_pii", "Privacy: contains PII?"),
     ("privacy_has_direct_identifiers", "Privacy: has direct identifiers?"),
-    ("privacy_has_privacy_act_statement", "Privacy: has privacy act statement?"),
     ("privacy_pia_title", "Privacy: PIA title"),
     ("privacy_sorn_number", "Privacy: SORN number"),
     ("records_retention_schedule", "Records retention schedule"),

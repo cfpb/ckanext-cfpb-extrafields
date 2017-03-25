@@ -259,8 +259,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'pra_omb_expiration_date': [tk.get_validator('ignore_missing'),
                                            v.reasonable_date_validator,
                         tk.get_converter('convert_to_extras')],
-            #VK 'privacy_has_privacy_act_statement': [tk.get_validator('ignore_missing'),
-            #VK            tk.get_converter('convert_to_extras')],
             'privacy_pia_notes': [tk.get_validator('ignore_missing'),
                         tk.get_converter('convert_to_extras')],
             'records_retention_schedule': [tk.get_validator('ignore_missing'),
@@ -275,7 +273,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
-#VK
             'transfer_date' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
             'data_governance_notes' : [tk.get_validator('ignore_missing'),
@@ -286,7 +283,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                 tk.get_converter('convert_to_extras'),],
             'privacy_notes' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
-#VK
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -384,8 +380,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                            tk.get_validator('ignore_missing')],
             'pra_omb_expiration_date': [tk.get_converter('convert_from_extras'),
                                         tk.get_validator('ignore_missing')],
-#VK            'privacy_has_privacy_act_statement': [tk.get_converter('convert_from_extras'),
-#VK                                                  tk.get_validator('ignore_missing')],
             'privacy_pia_notes': [tk.get_converter('convert_from_extras'),
                                   tk.get_validator('ignore_missing')],
             'records_retention_schedule': [tk.get_converter('convert_from_extras'),
@@ -408,7 +402,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                  tk.get_validator('ignore_missing'),],
             'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
                                                  tk.get_validator('ignore_missing'),],
-#VK
             'transfer_date' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_from_extras'),],
             'data_governance_notes' : [tk.get_validator('ignore_missing'),
@@ -418,8 +411,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'pra:_notes' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_from_extras'),],
             'privacy_notes' : [tk.get_validator('ignore_missing'),
-                                                tk.get_converter('convert_from_extras'),],
-#VK
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
