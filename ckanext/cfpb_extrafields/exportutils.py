@@ -51,7 +51,6 @@ FIELDS = [
     ("privacy_contains_pii", "Privacy: contains PII?"),
     ("privacy_contains_ssn", "Privacy: contains SSN?"),
     ("privacy_has_direct_identifiers", "Privacy: has direct identifiers?"),
-    ("privacy_has_privacy_act_statement", "Privacy: has privacy act statement?"),
     ("privacy_pia_title", "Privacy: PIA title"),
     ("privacy_pia_notes", "Privacy: PIA notes"),
     ("privacy_sorn_number", "Privacy: SORN number"),
