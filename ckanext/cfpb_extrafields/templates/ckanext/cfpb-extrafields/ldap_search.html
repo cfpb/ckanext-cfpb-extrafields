@@ -1,0 +1,15 @@
+{% extends "page.html" %}
+
+{% block primary_content %}
+  <h2>LDAP Search</h2>
+  <h3>OU: {{ou}}</h3>
+  <h3>CN: {{cn}}</h3>
+  <h3>Users:</h3>
+  <table>
+  {% for user in usernames %}
+    <tr><td>
+      {{user}}
+    </td></tr>
+  {% endfor %}
+  </table>
+{% endblock %}

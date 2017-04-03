@@ -577,3 +577,10 @@ class DigImportPlugin(p.SingletonPlugin):
         map.connect("import_page", "/import/{group}", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="index")
         map.connect("import_upload", "/import-upload", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="upload", method="POST")
         return map
+
+class LdapQueryPlugin(p.SingletonPlugin):
+    p.implements(p.IRoutes, inherit=True)
+
+    def after_map(self, map):
+        map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
+        return map
