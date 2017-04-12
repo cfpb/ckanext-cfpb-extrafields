@@ -18,7 +18,7 @@ def get_datasource(source_id):
 def make_roles(cns):
     #get the roles
     data_dict = {
-        "q": "resource_type:",
+        "query": "resource_type:",
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
