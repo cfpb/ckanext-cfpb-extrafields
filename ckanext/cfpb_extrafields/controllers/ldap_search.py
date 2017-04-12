@@ -3,8 +3,6 @@
 Currently only exports public datasets, but once CKAN is upgraded to v2.4+,
 the code can be updated to support private datasets.
 """
-import logging
-
 from ckan.plugins.toolkit import BaseController, config, get_action, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
@@ -15,7 +13,8 @@ class GroupNotFound(Exception):
 
 def get_datasource(source_id):
     response = get_action("package_show")({}, {"id", source_id})
-    return response["result"]
+    return response
+    # return response["result"]
 
 def make_roles(cns):
     #get the roles
@@ -24,8 +23,7 @@ def make_roles(cns):
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
-    logging.error("RESPONSE:::::"+repr(response))
-    results = response["result"]["results"]
+    results = response["results"]
     # Map each cn to a list of resource/role combos that it matches
     role_dict = dict([(cn, []) for cn in cns])
     for resource in results:
