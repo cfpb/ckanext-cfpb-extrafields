@@ -3,13 +3,42 @@
 Currently only exports public datasets, but once CKAN is upgraded to v2.4+,
 the code can be updated to support private datasets.
 """
-from ckan.plugins.toolkit import BaseController, config, render, request
+from ckan.plugins.toolkit import BaseController, config, get_action, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
 
 class GroupNotFound(Exception):
     pass
+
+def get_datasource(source_id):
+    response = get_action("package_show")({}, {"id", source_id})
+    return response["result"]
+
+def make_roles(cns):
+    #get the roles
+    data_dict = {
+        "q": "resource_type:",
+        "limit": 9999,
+    }
+    response = get_action("resource_search")({}, data_dict)
+    results = response["result"]["results"]
+    # Map each cn to a list of resource/role combos that it matches
+    role_dict = dict([(cn, []) for cn in cns])
+    for resource in results:
+        datasource = None # We only get the source if we actually need it in the code below
+        roles = resource.get("db_roles", [])
+        for role_cn, role_desc in roles:
+            if role_cn in role_dict:
+                if datasource is None:
+                    datasource = get_datasource(resource["package_id"])
+                role_dict[role_cn].append({
+                    "source_id": resource["package_id"],
+                    "source_name": datasource["title"],
+                    "source_url": "/dataset/"+datasource["name"],
+                    "description": role_desc,
+                })
+    return role_dict
 
 def get_user(username, connection):
     base_dn = config["ckanext.ldap.base_dn"]
@@ -80,8 +109,10 @@ class LdapSearchController(BaseController):
         base_dns = config.get("ckanext.cfpb_ldap_query.base_dns").split("|")
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
+        role_dict = make_roles(cns)
         extra = {
             "username": username,
             "cns": cns,
+            "roles": roles,
         }
         return render('ckanext/cfpb-extrafields/ldap_user.html', extra_vars=extra)
