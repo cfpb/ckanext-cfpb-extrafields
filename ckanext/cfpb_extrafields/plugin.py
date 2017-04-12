@@ -120,6 +120,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_create(self, context, resource):
         logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
+        logging.error("COMBINED ROLES %r", resource)
         return
 
     def after_create(self, context, resource):
@@ -132,6 +133,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_update(self, context, current, resource):
         logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
+        logging.error("COMBINED ROLES %r", resource)
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
