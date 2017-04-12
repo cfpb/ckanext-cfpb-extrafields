@@ -144,6 +144,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         ''' do things on field changes '''
         # unfinished email trigger:
         # self._email_on_change(context,resource,'privacy_contains_pii')
+        logging.error("AFTER UPDATE %r", resource)
         self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys
         for key in self.changed:
