@@ -110,7 +110,7 @@ class LdapSearchController(BaseController):
         base_dns = config.get("ckanext.cfpb_ldap_query.base_dns").split("|")
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
-        role_dict = make_roles(cns)
+        roles = make_roles(cns)
         extra = {
             "username": username,
             "cns": cns,
