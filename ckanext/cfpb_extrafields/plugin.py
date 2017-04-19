@@ -8,6 +8,7 @@ import options as opts
 import datastore_actions as ds
 import collections
 import logging
+import json
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -70,7 +71,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                            resource_id=resource['id'],id=resource['package_id'])
 
     def _delete_and_rebuild_datadict(self, resource):
-        import json
         import unicodedata
 
         if 'datadict' in resource and 'id' in resource:
@@ -133,6 +133,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_update(self, context, current, resource):
         logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
+        if not isinstance(resource["db_roles"], basestring):
+            resource["roles"] = json.dumps(resource["roles"])
+
         logging.error("COMBINED ROLES %r", resource)
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
@@ -182,6 +185,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'create_datastore':ds.create_datastore,
                 'get_unique_datastore_json':ds.get_unique_datastore_json,
                 'delete_datastore_json':ds.delete_datastore_json,
+                'json_loads':json.loads,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,
@@ -511,9 +515,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     def after_create(self, context, pkg_dict):
         pass
-
-    # def after_update(self, context, pkg_dict):
-        # pass
 
     def after_delete(self, context, pkg_dict):
         pass
