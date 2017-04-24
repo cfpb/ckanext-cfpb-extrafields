@@ -120,6 +120,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def before_create(self, context, resource):
         logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
+        if not isinstance(resource["db_roles"], basestring):
+            resource["db_roles"] = json.dumps(resource["db_roles"])
         logging.error("COMBINED ROLES %r", resource)
         return
 
@@ -134,7 +136,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
-            resource["roles"] = json.dumps(resource["roles"])
+            resource["db_roles"] = json.dumps(resource["db_roles"])
 
         logging.error("COMBINED ROLES %r", resource)
         # note keys that have changed (current is old, resource is new)
