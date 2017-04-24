@@ -66,7 +66,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         for key in check_keys}
 
     def _redirect_to_edit_on_change(self, resource, field):
-        if self.changed[field]:
+        if hasattr(self, "changed") and self.changed[field]:
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
 
