@@ -67,7 +67,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         for key in check_keys}
 
     def _redirect_to_edit_on_change(self, resource, field):
-        if hasattr(self, "changed") and self.changed[field]:
+        if self.changed.get(field):
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
 
@@ -108,7 +108,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     # than the default notification that CKAN provides. It is not currently used.
     def _email_on_change(self, context, resource, field):
         # if specified fields have changed notify the relevant people
-        if self.changed[field]:
+        if self.changed.get(field):
             # print 'trigger email on change to '+field
             # filter by dataset name?
             followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
