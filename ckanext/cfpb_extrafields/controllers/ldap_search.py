@@ -34,7 +34,10 @@ def make_roles(cns):
         for role_cn, role_desc in roles:
             if role_cn in role_dict:
                 if datasource is None:
-                    datasource = get_datasource(resource["package_id"])
+                    try:
+                        datasource = get_datasource(resource["package_id"])
+                    except:
+                        continue
                 role_dict[role_cn].append({
                     "source_id": resource["package_id"],
                     "source_name": datasource["title"],
