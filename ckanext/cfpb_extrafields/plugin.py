@@ -179,10 +179,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
 
-                'create_datastore':ds.create_datastore,
-                'get_unique_datastore_json':ds.get_unique_datastore_json,
-                'delete_datastore_json':ds.delete_datastore_json,
-                'json_loads':json.loads,
+                'create_datastore': ds.create_datastore,
+                'get_unique_datastore_json': ds.get_unique_datastore_json,
+                'delete_datastore_json': ds.delete_datastore_json,
+                'json_loads': json.loads,
+                'get_action': tk.get_action,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,

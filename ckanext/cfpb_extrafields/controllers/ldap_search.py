@@ -3,6 +3,8 @@
 Currently only exports public datasets, but once CKAN is upgraded to v2.4+,
 the code can be updated to support private datasets.
 """
+import json
+
 from ckan.plugins.toolkit import BaseController, config, get_action, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
@@ -28,7 +30,7 @@ def make_roles(cns):
     role_dict = dict([(cn, []) for cn in cns])
     for resource in results:
         datasource = None # We only get the source if we actually need it in the code below
-        roles = resource.get("db_roles", [])
+        roles = json.loads(resource.get("db_roles") or "[]")
         for role_cn, role_desc in roles:
             if role_cn in role_dict:
                 if datasource is None:
