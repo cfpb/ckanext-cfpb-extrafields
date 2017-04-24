@@ -57,6 +57,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
+    changed = {}
 
     # modify ckan behavior on changes/(saves/updates/deletes) to resources
     p.implements(p.IResourceController)
