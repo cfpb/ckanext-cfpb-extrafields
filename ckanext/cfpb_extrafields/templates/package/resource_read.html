@@ -161,7 +161,7 @@
          </table>
 
         {% if res.db_roles %}
-        {% set roles = h.json_loads(res.db_roles) %}
+        {% set roles = h.json_loads(res.db_roles or "[]") %}
         <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
