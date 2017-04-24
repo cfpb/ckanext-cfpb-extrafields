@@ -118,11 +118,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # send a notification of change by email
 
     def before_create(self, context, resource):
-        logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
-        logging.error("COMBINED ROLES %r", resource)
         return
 
     def after_create(self, context, resource):
@@ -133,12 +131,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
 
     def before_update(self, context, current, resource):
-        logging.error("CREATING RESOURCE %r", resource)
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
 
-        logging.error("COMBINED ROLES %r", resource)
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
@@ -149,7 +145,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         ''' do things on field changes '''
         # unfinished email trigger:
         # self._email_on_change(context,resource,'privacy_contains_pii')
-        logging.error("AFTER UPDATE %r", resource)
         self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys
         for key in self.changed:
