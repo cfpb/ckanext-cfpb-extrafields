@@ -10,6 +10,8 @@ from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
 
+import logging
+
 class GroupNotFound(Exception):
     pass
 
@@ -25,6 +27,7 @@ def make_roles(cns):
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
+    logging.error(u"RESPONSE&&&&&&: {}".format(repr(response)))
     results = response["results"]
     # Map each cn to a list of resource/role combos that it matches
     role_dict = dict([(cn, []) for cn in cns])
@@ -37,6 +40,7 @@ def make_roles(cns):
                     try:
                         datasource = get_datasource(resource["package_id"])
                     except:
+                        logging.error(u"ERROR while getting datasource for resource {}".format(repr(resource)))
                         continue
                 role_dict[role_cn].append({
                     "source_id": resource["package_id"],
