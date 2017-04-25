@@ -515,6 +515,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def after_create(self, context, pkg_dict):
         pass
 
+    def after_update(self, context, pkg_dict):
+        pass
+
     def after_delete(self, context, pkg_dict):
         pass
 
