@@ -44,8 +44,11 @@ X +intake_date
   
   {{ form.input('intake_date', type='date', label=_("intake date"),
   placeholder="eg 2012-12-21",value=data.intake_date, error=errors.intake_date) }}
+
+  {% snippet "package/snippets/resource_type-specific/cfpb_extrafields_field-roles.html", data=data  %}
+
   <!-- end cfpb_extrafields_datafile.html snippet -->
-  
+
 {% elif location=="description" %}
   <!-- cfpb_extrafields_datafile.html snippet -->
   <!-- end cfpb_extrafields_datafile.html snippet -->
