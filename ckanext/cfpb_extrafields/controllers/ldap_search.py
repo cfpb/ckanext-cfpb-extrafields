@@ -98,9 +98,11 @@ class LdapSearchController(BaseController):
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
+        roles = make_roles(cn)
         extra = {
             "dns": base_dns,
             "cn": cn,
+            "roles": roles,
             "error_message": "",
         }
         try:

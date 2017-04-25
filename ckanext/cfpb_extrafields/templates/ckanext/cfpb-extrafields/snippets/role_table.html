@@ -1,0 +1,19 @@
+<table>
+  <tr><th>LDAP CN</th><th>Dataset</th><th>Role description</th></tr>
+  {% for cn in cns %}
+    <tr>
+      <td>
+        {{cn}}
+      </td>
+      <td></td>
+      <td></td>
+    </tr>
+    {% for role in roles[cn] %}
+      <tr>
+        <td></td>
+        <td><a href="{{role['source_url']}}">{{role['source_name']}}</a></td>
+        <td>{{role['description']}}</td>
+      </tr>
+    {% endfor %}
+  {% endfor %}
+</table>

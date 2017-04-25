@@ -9,6 +9,7 @@ import datastore_actions as ds
 import collections
 import logging
 import json
+import urllib
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -185,6 +186,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'delete_datastore_json': ds.delete_datastore_json,
                 'json_loads': json.loads,
                 'get_action': tk.get_action,
+                'urlencode': urllib.urlencode,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,

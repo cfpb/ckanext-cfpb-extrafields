@@ -3,23 +3,5 @@
 {% block primary_content %}
   <h3>Username: {{username}}</h3>
   <h3>Groups:</h3>
-    <table>
-      <tr><th>LDAP CN</th><th>Dataset</th><th>Role description</th></tr>
-      {% for cn in cns %}
-        <tr>
-          <td>
-            {{cn}}
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        {% for role in roles[cn] %}
-          <tr>
-            <td></td>
-            <td><a href="{{role['source_url']}}">{{role['source_name']}}</a></td>
-            <td>{{role['description']}}</td>
-          </tr>
-        {% endfor %}
-      {% endfor %}
-    </table>
+  {% snippet 'ckanext/cfpb-extrafields/snippets/role_table.html',cns=cns,roles=roles %}
 {% endblock %}
