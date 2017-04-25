@@ -16,9 +16,8 @@ class GroupNotFound(Exception):
     pass
 
 def get_datasource(source_id):
-    response = get_action("package_show")({}, {"id", source_id})
+    response = get_action("package_show")({}, {"id": source_id})
     return response
-    # return response["result"]
 
 def make_roles(cns):
     #get the roles
@@ -27,7 +26,6 @@ def make_roles(cns):
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
-    logging.error(u"RESPONSE&&&&&&: {}".format(repr(response)))
     results = response["results"]
     # Map each cn to a list of resource/role combos that it matches
     role_dict = dict([(cn, []) for cn in cns])
