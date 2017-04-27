@@ -42,6 +42,8 @@ def make_roles(cns):
                         continue
                 role_dict[role_cn].append({
                     "source_id": resource["package_id"],
+                    "resource_id": resource["id"],
+                    "resource_name": resource["name"],
                     "source_name": datasource["title"],
                     "source_url": "/dataset/"+datasource["name"],
                     "description": role_desc,
@@ -90,7 +92,6 @@ def get_user_group_cns(username, base_dns, connection):
     return sorted(cns)
 
 
-
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
@@ -98,7 +99,7 @@ class LdapSearchController(BaseController):
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
-        roles = make_roles(cn)
+        roles = make_roles([cn])
         extra = {
             "dns": base_dns,
             "cn": cn,

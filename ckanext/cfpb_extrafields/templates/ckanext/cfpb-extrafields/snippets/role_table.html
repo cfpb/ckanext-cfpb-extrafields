@@ -1,5 +1,5 @@
 <table>
-  <tr><th>LDAP CN</th><th>Dataset</th><th>Role description</th></tr>
+  <tr><th>LDAP CN</th><th>Dataset</th><th>Resource</th><th>Role description</th></tr>
   {% for cn in cns %}
     <tr>
       <td>
@@ -12,6 +12,7 @@
       <tr>
         <td></td>
         <td><a href="{{role['source_url']}}">{{role['source_name']}}</a></td>
+        <td><a href="{{role['source_url'] + "/resource/" + role["resource_id"]}}">{{role['resource_name']}}</a></td>
         <td>{{role['description']}}</td>
       </tr>
     {% endfor %}
