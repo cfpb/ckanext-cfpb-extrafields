@@ -56,6 +56,24 @@ def parse_resource_related_gist(data_related_items, resource_id):
             urls.append( {'title':title,'url':url} )
     return urls
 
+def request_access_link(resource, dataset, role):
+    return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
+        "subject": "Data Access Request for {}: {}".format(dataset.title, resource.name),
+        "body": "\n".join(
+            "I would like to request access to the following data set:",
+            "",
+            "Data Set: {}".format(dataset["title"]),
+            "Resource: {}".format(resource["name"]),
+            "Primary contact: {} {}".format(dataset["contact_primary_name"], dataset["contact_primary_email"],),
+            "Secondary contact: {} {}".format(dataset["contact_secondary_name"], dataset["contact_secondary_email"],),
+            "AD Group: {}".format(role),
+            "List of permissions linked to this role: {}".format(tk.url_for("ldap_search") + "?" + urllib.urlencode({"cn": role})),
+            "",
+            "The primary and secondary points of contact have been cc'ed for approval.",
+            "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
+        )
+    })
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     changed = {}
@@ -186,6 +204,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'delete_datastore_json': ds.delete_datastore_json,
                 'json_loads': json.loads,
                 'get_action': tk.get_action,
+                'request_access_link' request_access_link,
                 'urlencode': urllib.urlencode,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
