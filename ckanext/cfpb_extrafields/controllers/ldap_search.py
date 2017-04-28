@@ -5,7 +5,7 @@ the code can be updated to support private datasets.
 """
 import json
 
-from ckan.plugins.toolkit import BaseController, config, get_action, render, request
+from ckan.plugins.toolkit import BaseController, NotAuthorized, c, config, check_access, get_action, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
@@ -45,6 +45,7 @@ def make_roles(cns):
                     "resource_id": resource["id"],
                     "resource_name": resource["name"],
                     "source_name": datasource["title"],
+                    "owner_org": datasource["owner_org"],
                     "source_url": "/dataset/"+datasource["name"],
                     "description": role_desc,
                 })
@@ -91,15 +92,35 @@ def get_user_group_cns(username, base_dns, connection):
         )
     return sorted(cns)
 
+def check_editor_access(orgs):
+    allowed_orgs = 0
+    for org in orgs:
+        try:
+            check_access("package_update", c, {"owner_org": org})
+            allowed_orgs += 1
+        except NotAuthorized:
+            pass
+    if allowed_orgs > 0:
+        return True
+    else:
+        raise NotAuthorized()
+
 
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
-        # ou = request.params.get("ou")
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
         roles = make_roles([cn])
+
+        # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
+        owner_orgs = set((role["owner_org"] for role in roles))
+        try:
+            check_access("sysadmin")
+        except NotAuthorized:
+            check_editor_access(owner_orgs)
+
         extra = {
             "dns": base_dns,
             "cn": cn,
@@ -117,6 +138,12 @@ class LdapSearchController(BaseController):
     def user_groups(self):
         """"""
         username = request.params.get("username")
+        # If you're not a sysadmin, you can only view your own user page
+        try:
+            check_access("sysadmin")
+        except NotAuthorized:
+            if c.user.lower() != username.lower():
+                raise
         base_dns = config.get("ckanext.cfpb_ldap_query.base_dns").split("|")
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
