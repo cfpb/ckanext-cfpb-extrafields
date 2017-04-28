@@ -173,7 +173,7 @@
               {% for role, desc in roles %}   
                 {% if role %}
                   <tr>
-                    <th scope="row" class="dataset-label"><a href="{{h.url_for('ldap_search')}}" + '?' + h.urlencode({'cn': role})>{{ role }}</a></th>
+                    <th scope="row" class="dataset-label"><a href="{{h.url_for('ldap_search') + '?' + h.urlencode({'cn': role})}}">{{role}}</a></th>
                     <td class="dataset-details">{{ desc }}</td>
                   </tr>
                 {% endif %}
