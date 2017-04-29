@@ -11,6 +11,11 @@ import logging
 import json
 import urllib
 
+if hasattr(tk, "config"):
+    CONFIG = tk.config
+else:
+    import pylons.config as CONFIG
+
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
@@ -35,10 +40,6 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
-if hasattr(tk, "config"):
-    CONFIG = tk.config
-else:
-    import pylons.config as CONFIG
 def github_api_url():
     return CONFIG['ckan.ckanext_cfpb_extrafields.github_api_url']
 def parse_resource_related_gist(data_related_items, resource_id):
@@ -68,12 +69,12 @@ def request_access_link(resource, dataset, role):
             "Primary contact: {} {}".format(dataset["contact_primary_name"], dataset["contact_primary_email"],),
             "Secondary contact: {} {}".format(dataset["contact_secondary_name"], dataset["contact_secondary_email"],),
             "AD Group: {}".format(role),
-            "List of permissions linked to this role: {}".format(tk.url_for("ldap_search") + "?" + urllib.urlencode({"cn": role})),
+            "List of permissions linked to this role: {}{}".format(CONFIG["ckan.site_url"],tk.url_for("ldap_search") + "?" + urllib.urlencode({"cn": role})),
             "",
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
         ))
-    })
+    }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     changed = {}
