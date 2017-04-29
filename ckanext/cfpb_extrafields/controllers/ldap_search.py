@@ -118,7 +118,7 @@ class LdapSearchController(BaseController):
         roles = make_roles([cn])
 
         # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
-        owner_orgs = set((role["owner_org"] for role in roles))
+        owner_orgs = set((role["owner_org"] for role in roles.values()[0]))
         try:
             check_access("sysadmin", context())
         except NotAuthorized:
