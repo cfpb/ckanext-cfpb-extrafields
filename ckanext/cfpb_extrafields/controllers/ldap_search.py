@@ -117,7 +117,7 @@ class LdapSearchController(BaseController):
         # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
         owner_orgs = set((role["owner_org"] for role in roles))
         try:
-            check_access("sysadmin")
+            check_access("sysadmin", c)
         except NotAuthorized:
             check_editor_access(owner_orgs)
 
@@ -140,7 +140,7 @@ class LdapSearchController(BaseController):
         username = request.params.get("username")
         # If you're not a sysadmin, you can only view your own user page
         try:
-            check_access("sysadmin")
+            check_access("sysadmin", c)
         except NotAuthorized:
             if c.user.lower() != username.lower():
                 raise
