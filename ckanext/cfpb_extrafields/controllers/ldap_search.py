@@ -15,6 +15,9 @@ import logging
 class GroupNotFound(Exception):
     pass
 
+def context():
+    return {"user": c.user}
+
 def get_datasource(source_id):
     response = get_action("package_show")({}, {"id": source_id})
     return response
@@ -96,7 +99,7 @@ def check_editor_access(orgs):
     allowed_orgs = 0
     for org in orgs:
         try:
-            check_access("package_update", c, {"owner_org": org})
+            check_access("package_update", context(), {"owner_org": org})
             allowed_orgs += 1
         except NotAuthorized:
             pass
@@ -117,7 +120,7 @@ class LdapSearchController(BaseController):
         # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
         owner_orgs = set((role["owner_org"] for role in roles))
         try:
-            check_access("sysadmin", c)
+            check_access("sysadmin", context())
         except NotAuthorized:
             check_editor_access(owner_orgs)
 
@@ -140,7 +143,7 @@ class LdapSearchController(BaseController):
         username = request.params.get("username")
         # If you're not a sysadmin, you can only view your own user page
         try:
-            check_access("sysadmin", c)
+            check_access("sysadmin", context())
         except NotAuthorized:
             if c.user.lower() != username.lower():
                 raise
