@@ -60,7 +60,7 @@ def request_access_link(resource, dataset, role):
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
-        "body": "\n".join(
+        "body": "\n".join((
             "I would like to request access to the following data set:",
             "",
             "Data Set: {}".format(dataset["title"]),
@@ -72,7 +72,7 @@ def request_access_link(resource, dataset, role):
             "",
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
-        )
+        ))
     })
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
