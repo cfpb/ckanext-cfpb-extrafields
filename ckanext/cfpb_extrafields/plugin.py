@@ -204,7 +204,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'delete_datastore_json': ds.delete_datastore_json,
                 'json_loads': json.loads,
                 'get_action': tk.get_action,
-                'request_access_link' request_access_link,
+                'request_access_link': request_access_link,
                 'urlencode': urllib.urlencode,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
