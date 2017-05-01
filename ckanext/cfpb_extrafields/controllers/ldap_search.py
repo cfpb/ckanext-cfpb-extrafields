@@ -99,7 +99,7 @@ def check_editor_access(orgs):
     allowed_orgs = 0
     for org in orgs:
         try:
-            check_access("package_update", context(), {"owner_org": org})
+            check_access("package_create", context(), {"owner_org": org})
             allowed_orgs += 1
         except NotAuthorized:
             pass
