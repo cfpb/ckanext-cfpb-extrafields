@@ -17,7 +17,7 @@
     <table>
     {% for user in usernames %}
       <tr><td>
-        <a href="{{h.url_for('user_ldap_groups', username=user)}}">{{user}}</a>
+        <a href="{{h.url_for('user_ldap_groups', username=user.lower())}}">{{user}}</a>
       </td></tr>
     {% endfor %}
     </table>
