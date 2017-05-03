@@ -5,7 +5,7 @@ the code can be updated to support private datasets.
 """
 import json
 
-from ckan.plugins.toolkit import BaseController, NotAuthorized, abort, c, config, check_access, get_action, render, request
+from ckan.plugins.toolkit import BaseController, NotAuthorized, NotFound, abort, c, config, check_access, get_action, h, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
@@ -143,15 +143,33 @@ class LdapSearchController(BaseController):
 
     def user_ldap_groups(self, username):
         """"""
+        c.is_sysadmin = False
         if c.user.lower() != username.lower():
             try:
                 check_access("sysadmin", context())
+                c.is_sysadmin = True
             except NotAuthorized:
                 abort(403, "You can only view your own user page unless you're a sysadmin")
         base_dns = config.get("ckanext.cfpb_ldap_query.base_dns").split("|")
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
         roles = make_roles(cns)
+
+        try:
+            user_dict = get_action("user_show")(context(), {
+                "id": username,
+                 "user_obj": c.userobj,
+                 "include_datasets": True,
+                 "include_num_followers": True})
+        except NotFound:
+            abort(404, "User not found")
+        except NotAuthorized:
+            abort(403, "Not authorized to see this page")
+
+        c.is_myself = username == c.user
+        c.user_dict = user_dict
+        c.about_formatted = h["render_markdown"](user_dict["about"])
+
         extra = {
             "username": username,
             "cns": cns,
