@@ -613,5 +613,5 @@ class LdapQueryPlugin(p.SingletonPlugin):
 
     def after_map(self, map):
         map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
-        map.connect("user_groups", "/ldap/groups", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_groups")
+        map.connect("user_ldap_groups", "/user/ldap_groups/{username}", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_ldap_groups", ckan_icon="info-sign")
         return map

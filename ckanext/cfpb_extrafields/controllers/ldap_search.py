@@ -141,9 +141,8 @@ class LdapSearchController(BaseController):
 
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
-    def user_groups(self):
+    def user_ldap_groups(self, username):
         """"""
-        username = request.params.get("username")
         if c.user.lower() != username.lower():
             try:
                 check_access("sysadmin", context())
