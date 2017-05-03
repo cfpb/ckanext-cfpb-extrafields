@@ -138,6 +138,8 @@ class LdapSearchController(BaseController):
                 extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
         except GroupNotFound:
             extra["error_message"] = "Group Not Found"
+        except:
+            extra["error_message"] = "Something went wrong while querying for users. This may be becasue the group has more users than AD's query size limit."
 
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
