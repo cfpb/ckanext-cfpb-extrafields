@@ -1,16 +1,17 @@
 <table>
   <tr><th>LDAP CN</th><th>Dataset</th><th>Resource</th><th>Role description</th></tr>
   {% for cn in cns %}
-    <tr>
-      <td>
-        {{cn}}
-      </td>
+    <tr style="border-top: 3px solid #333; border-bottom: 1px solid #333;">
+      <th>
+        <a href="{{h.url_for('ldap_search') + '?' + h.urlencode({'cn': cn})}}">{{cn}}</a>
+      </th>
+      <td></td>
       <td></td>
       <td></td>
     </tr>
     {% for role in roles[cn] %}
       <tr>
-        <td></td>
+        <td>{{cn}}</td>
         <td><a href="{{role['source_url']}}">{{role['source_name']}}</a></td>
         <td><a href="{{role['source_url'] + "/resource/" + role["resource_id"]}}">{{role['resource_name']}}</a></td>
         <td>{{role['description']}}</td>
