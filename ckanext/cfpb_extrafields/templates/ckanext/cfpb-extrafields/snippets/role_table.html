@@ -11,7 +11,7 @@
     </tr>
     {% for role in roles[cn] %}
       <tr>
-        <td>{{cn}}</td>
+        <td style="border-right: 1px solid;">{{cn}}</td>
         <td><a href="{{role['source_url']}}">{{role['source_name']}}</a></td>
         <td><a href="{{role['source_url'] + "/resource/" + role["resource_id"]}}">{{role['resource_name']}}</a></td>
         <td>{{role['description']}}</td>
