@@ -5,7 +5,7 @@ the code can be updated to support private datasets.
 """
 import json
 
-from ckan.plugins.toolkit import BaseController, NotAuthorized, NotFound, abort, c, config, check_access, get_action, h, render, request
+from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
@@ -161,7 +161,7 @@ class LdapSearchController(BaseController):
                  "user_obj": c.userobj,
                  "include_datasets": True,
                  "include_num_followers": True})
-        except NotFound:
+        except ObjectNotFound:
             abort(404, "User not found")
         except NotAuthorized:
             abort(403, "Not authorized to see this page")
