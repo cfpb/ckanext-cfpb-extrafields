@@ -29,6 +29,9 @@ def make_roles(cns):
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
+
+    print 'LdapSearch.make_rolesVK=', resnonse #VK
+
     results = response["results"]
     # Map each cn to a list of resource/role combos that it matches
     role_dict = dict([(cn, []) for cn in cns])
@@ -52,6 +55,9 @@ def make_roles(cns):
                     "source_url": "/dataset/"+datasource["name"],
                     "description": role_desc,
                 })
+
+    print 'LdapSearch.role_dictVK=', role_dict #VK
+
     return role_dict
 
 def get_user(username, connection):
@@ -62,11 +68,18 @@ def get_user(username, connection):
         ldap.SCOPE_SUBTREE,
         filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
     )
+
+    print 'get_user_filterstrVK=',filterstr #VK
+    print 'get_user_resultsVK=',results #VK
+
     return results[0]
 
 def find_groups(base_dns, cn, connection):
     for base_dn in base_dns:
         for result in connection.search_s(base_dn, ldap.SCOPE_SUBTREE, filterstr="CN="+ldap.filter.escape_filter_chars(cn)):
+
+            print 'find_groups_resultVK=',result #VK
+
             yield result
 
 def get_group_full_name(base_dns, cn, connection):
@@ -78,6 +91,9 @@ def get_group_full_name(base_dns, cn, connection):
 def get_usernames_in_group(base_dns, cn, connection):
     full_name = get_group_full_name(base_dns, cn, connection)
     results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
+
+    print 'get_usernames_in_group_resultsVK=',[res[1]["sAMAccountName"][0] for res in results] #VK
+
     return [res[1]["sAMAccountName"][0] for res in results]
 
 def get_user_group_cns(username, base_dns, connection):
@@ -93,6 +109,9 @@ def get_user_group_cns(username, base_dns, connection):
                 attrlist=["cn"],
             )
         )
+
+    print 'get_user_group_cnsVK=',cns #VK
+
     return sorted(cns)
 
 def check_editor_access(orgs):
@@ -117,13 +136,21 @@ class LdapSearchController(BaseController):
         cn = request.params.get("cn")
         roles = make_roles([cn])
 
+        print 'LdapSearchController_ldap_search.rolesVK=',roles #VK
+
         # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
         owner_orgs = set((role["owner_org"] for role in roles.values()[0]))
         try:
             check_access("sysadmin", context())
+
+            print 'LdapSearchController.ldap_search_accessVK=',context() #VK
+
         except NotAuthorized:
             try: 
                 check_editor_access(owner_orgs)
+
+            print 'LdapSearchController.ldap_search_editor_accessVK=',check_editor_access(owner_orgs) #VK
+
             except NotAuthorized:
                 abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
 
@@ -136,6 +163,9 @@ class LdapSearchController(BaseController):
         try:
             with _get_ldap_connection() as connection:
                 extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
+
+            print 'LdapSearchController_extra_usernamesVK=',extra["usernames"] #VK
+
         except GroupNotFound:
             extra["error_message"] = "Group Not Found"
         except:
@@ -149,6 +179,9 @@ class LdapSearchController(BaseController):
         if c.user.lower() != username.lower():
             try:
                 check_access("sysadmin", context())
+
+                print 'LdapSearchController.user_ldap_groups_accessVK=', check_access("sysadmin", context()) #VK
+
                 c.is_sysadmin = True
             except NotAuthorized:
                 abort(403, "You can only view your own user page unless you're a sysadmin")
@@ -163,6 +196,9 @@ class LdapSearchController(BaseController):
                  "user_obj": c.userobj,
                  "include_datasets": True,
                  "include_num_followers": True})
+
+            print 'LdapSearchController.user_ldap_groups_user_doctVK=', user_dict #VK
+
         except ObjectNotFound:
             abort(404, "User not found")
         except NotAuthorized:
