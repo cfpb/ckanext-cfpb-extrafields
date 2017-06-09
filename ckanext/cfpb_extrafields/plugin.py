@@ -573,11 +573,11 @@ class SSOPlugin(p.SingletonPlugin):
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
-        logging.error(u"ERROR plugin_header_nameVK= {}".format(header_name)) #VK
+        logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
 
         username = tk.request.headers.get(header_name)
 
-        logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
+        #logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
 
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
@@ -593,7 +593,7 @@ class SSOPlugin(p.SingletonPlugin):
                 # Mark the user as logged in, both for the ckanext-ldap plugin and for CKAN itself.
                 pylons.session["ckanext-ldap-user"] = username
 
-                logging.error(u"ERROR plugin_usernameVK2= {}".format(username)) #VK
+                #logging.error(u"ERROR plugin_usernameVK2= {}".format(username)) #VK
 
                 tk.c.user = username
             except NotFound:
