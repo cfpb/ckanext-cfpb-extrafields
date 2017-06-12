@@ -18,17 +18,20 @@ logging = logging.getLogger(__name__)#VK
 #fh.setLevel(logging.DEBUG)
 
 class GroupNotFound(Exception):
+    __import__('logging').warning(u'VK{}'.format('1'))
     pass
 
 def context():
     return {"user": c.user}
 
 def get_datasource(source_id):
+    __import__('logging').warning(u'VK{}'.format('2'))
     response = get_action("package_show")({}, {"id": source_id})
     return response
 
 def make_roles(cns):
     #get the roles
+    __import__('logging').warning(u'VK{}'.format('3'))
     data_dict = {
         "query": "resource_type:",
         "limit": 9999,
@@ -45,6 +48,7 @@ def make_roles(cns):
         datasource = None # We only get the source if we actually need it in the code below
         roles = json.loads(resource.get("db_roles") or "[]")
         for role_cn, role_desc in roles:
+            __import__('logging').warning(u'VK{}'.format('4'))
             if role_cn in role_dict:
                 if datasource is None:
                     try:
@@ -67,6 +71,7 @@ def make_roles(cns):
     return role_dict
 
 def get_user(username, connection):
+    __import__('logging').warning(u'VK{}'.format('5'))
     base_dn = config["ckanext.ldap.base_dn"]
     search_filter = config["ckanext.ldap.search.filter"]
     results = connection.search_s(
@@ -81,6 +86,7 @@ def get_user(username, connection):
     return results[0]
 
 def find_groups(base_dns, cn, connection):
+    __import__('logging').warning(u'VK{}'.format('6'))
     for base_dn in base_dns:
         for result in connection.search_s(base_dn, ldap.SCOPE_SUBTREE, filterstr="CN="+ldap.filter.escape_filter_chars(cn)):
 
@@ -89,12 +95,14 @@ def find_groups(base_dns, cn, connection):
             yield result
 
 def get_group_full_name(base_dns, cn, connection):
+    __import__('logging').warning(u'VK{}'.format('7'))
     try:
         return next(find_groups(base_dns, cn, connection))[0]
     except StopIteration:
         raise GroupNotFound()
 
 def get_usernames_in_group(base_dns, cn, connection):
+    __import__('logging').warning(u'VK{}'.format('8'))
     full_name = get_group_full_name(base_dns, cn, connection)
     results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
 
@@ -103,6 +111,7 @@ def get_usernames_in_group(base_dns, cn, connection):
     return [res[1]["sAMAccountName"][0] for res in results]
 
 def get_user_group_cns(username, base_dns, connection):
+    __import__('logging').warning(u'VK{}'.format('9'))
     user_id, _ = get_user(username, connection)
     cns = set()
     for base_dn in base_dns:
@@ -121,6 +130,7 @@ def get_user_group_cns(username, base_dns, connection):
     return sorted(cns)
 
 def check_editor_access(orgs):
+    __import__('logging').warning(u'VK{}'.format('10'))
     allowed_orgs = 0
     for org in orgs:
         try:
@@ -137,6 +147,7 @@ def check_editor_access(orgs):
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
+        __import__('logging').warning(u'VK{}'.format('11'))
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
@@ -177,10 +188,12 @@ class LdapSearchController(BaseController):
         except:
             extra["error_message"] = "Something went wrong while querying for users. This may be becasue the group has more users than AD's query size limit."
 
+        __import__('logging').warning(u'VK{}'.format('12'))
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
     def user_ldap_groups(self, username):
         """"""
+        __import__('logging').warning(u'VK{}'.format('13'))
         c.is_sysadmin = False
         if c.user.lower() != username.lower():
             try:
@@ -219,4 +232,5 @@ class LdapSearchController(BaseController):
             "cns": cns,
             "roles": roles,
         }
+        __import__('logging').warning(u'VK{}'.format('14'))
         return render('ckanext/cfpb-extrafields/ldap_user.html', extra_vars=extra)
