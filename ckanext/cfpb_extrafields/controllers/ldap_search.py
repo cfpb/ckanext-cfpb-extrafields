@@ -166,7 +166,7 @@ class LdapSearchController(BaseController):
             try: 
                 check_editor_access(owner_orgs)
 
-            logging.warning(u"LdapSearch.ldap_search_editor_accessVK= {}".format(repr(check_editor_access(owner_orgs))) ) #VK`
+                logging.warning(u"LdapSearch.ldap_search_editor_accessVK= {}".format(repr(check_editor_access(owner_orgs))) ) #VK`
 
             except NotAuthorized:
                 abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
