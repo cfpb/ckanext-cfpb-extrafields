@@ -11,6 +11,8 @@ import logging
 import json
 import urllib
 
+#logging = logging.getLogger(__name__)#VK
+
 if hasattr(tk, "config"):
     CONFIG = tk.config
 else:
