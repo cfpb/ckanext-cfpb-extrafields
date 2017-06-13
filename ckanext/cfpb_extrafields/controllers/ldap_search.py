@@ -70,6 +70,7 @@ def make_roles(cns):
 
     return role_dict
 
+username='boehmm'#VK
 def get_user(username, connection):
     __import__('logging').warning(u'VK{}'.format('5'))
     base_dn = config["ckanext.ldap.base_dn"]
