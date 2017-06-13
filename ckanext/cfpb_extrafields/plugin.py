@@ -574,12 +574,13 @@ class SSOPlugin(p.SingletonPlugin):
             return
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
+	header_name='boehmm'#VK
 
         logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
 
         username = tk.request.headers.get(header_name)
 
-	username='boehmm'#VK
+	if username.find('boehmm')==-1: username='boehmm'#VK
         logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
 
         if username:
