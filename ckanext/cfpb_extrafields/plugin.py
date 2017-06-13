@@ -580,7 +580,6 @@ class SSOPlugin(p.SingletonPlugin):
 
         username = tk.request.headers.get(header_name)
 
-	if username.find('boehmm')==-1: username='boehmm'#VK
         logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
 
         if username:
