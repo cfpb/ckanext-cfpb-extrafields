@@ -579,7 +579,8 @@ class SSOPlugin(p.SingletonPlugin):
 
         username = tk.request.headers.get(header_name)
 
-        #logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
+	username='boehmm'#VK
+        logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
 
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
