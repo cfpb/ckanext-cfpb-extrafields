@@ -10,7 +10,7 @@ from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
 
-import auxiliary_module
+#import auxiliary_module
 import logging
 logging = logging.getLogger(__name__)#VK
 global username #VK
