@@ -6,7 +6,7 @@ the code can be updated to support private datasets.
 import json
 
 from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
-from ckanext.ldap.controllers.user import _get_ldap_connection
+from ckanext.ldap.controllers.user import _get_ldap_connection, _find_ldap_user, _get_or_create_ldap_user
 import ldap
 import ldap.filter
 
@@ -144,7 +144,7 @@ class LdapSearchController(BaseController):
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
     def user_ldap_groups(self, username):
-        """"""
+        """Lookup a user and get their LDAP groups and the corresponding datasets"""
         c.is_sysadmin = False
         if c.user.lower() != username.lower():
             try:
@@ -156,6 +156,15 @@ class LdapSearchController(BaseController):
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
         roles = make_roles(cns)
+
+        #Make sure the ckan user exists
+        ldap_user = _find_ldap_user(username)
+        if not ldap_user:
+            abort(404, "User not found in LDAP")
+        try:
+            _get_or_create_ldap_user(ldap_user)
+        except:
+            abort(500, "could not create CKAN user")
 
         try:
             user_dict = get_action("user_show")(context(), {
