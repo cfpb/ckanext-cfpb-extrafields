@@ -10,10 +10,9 @@ from ckanext.ldap.controllers.user import _get_ldap_connection
 import ldap
 import ldap.filter
 
-#import auxiliary_module
 import logging
 logging = logging.getLogger(__name__)#VK
-global username #VK
+global username='boehmm' #VK
 
 class GroupNotFound(Exception):
     __import__('logging').warning(u'VK{}'.format('1'))
@@ -68,9 +67,9 @@ def make_roles(cns):
 
     return role_dict
 
-#username='boehmm'#VK
+username='boehmm'#VK
 def get_user(username, connection):
-#    username='boehmm'#VK
+    username='boehmm'#VK
     __import__('logging').warning(u'VK{}'.format('5'))
     base_dn = config["ckanext.ldap.base_dn"]
     search_filter = config["ckanext.ldap.search.filter"]
@@ -102,7 +101,7 @@ def get_group_full_name(base_dns, cn, connection):
         raise GroupNotFound()
 
 def get_usernames_in_group(base_dns, cn, connection):
-#    username='boehmm'#VK
+    username='boehmm'#VK
     __import__('logging').warning(u'VK{}'.format('8'))
     full_name = get_group_full_name(base_dns, cn, connection)
     results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
@@ -112,7 +111,7 @@ def get_usernames_in_group(base_dns, cn, connection):
     return [res[1]["sAMAccountName"][0] for res in results]
 
 def get_user_group_cns(username, base_dns, connection):
-#    username='boehmm'#VK
+    username='boehmm'#VK
     __import__('logging').warning(u'VK{}'.format('9'))
     user_id, _ = get_user(username, connection)
     cns = set()
@@ -149,7 +148,7 @@ def check_editor_access(orgs):
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
-       # username='boehmm'#VK
+        username='boehmm'#VK
         __import__('logging').warning(u'VK{}'.format('11'))
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
@@ -196,7 +195,7 @@ class LdapSearchController(BaseController):
 
     def user_ldap_groups(self, username):
         """"""
-        #username='boehmm'#VK
+        username='boehmm'#VK
         __import__('logging').warning(u'VK{}'.format('13'))
         c.is_sysadmin = False
         if c.user.lower() != username.lower():
@@ -240,7 +239,7 @@ class LdapSearchController(BaseController):
         return render('ckanext/cfpb-extrafields/ldap_user.html', extra_vars=extra)
 #VK
 import ckan.plugins.toolkit as tk
-logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
+logging.error(u"ERROR plugin_username1VK= {}".format(username)) #VK
 import json
 from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection 
@@ -262,6 +261,6 @@ ldap.SCOPE_SUBTREE,
 filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 )
 
-logging.warning(u"LdapSearch.get_user_filterstrVK= {}".format(repr(filterstr))) #VK
-logging.warning(u"LdapSearch.get_user_resultsVK= {}".format(repr(results))) #VK
+logging.warning(u"LdapSearch.get_user_filterstr1VK= {}".format(repr(filterstr))) #VK
+logging.warning(u"LdapSearch.get_user_results1VK= {}".format(repr(results))) #VK
 #VK
