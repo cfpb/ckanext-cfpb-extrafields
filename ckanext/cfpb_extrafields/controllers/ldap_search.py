@@ -233,7 +233,6 @@ class LdapSearchController(BaseController):
         return render('ckanext/cfpb-extrafields/ldap_user.html', extra_vars=extra)
 #VK
 import ckan.plugins.toolkit as tk
-logging.error(u"ERROR plugin_username1VK= {}".format(username)) #VK
 import json
 from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 from ckanext.ldap.controllers.user import _get_ldap_connection 
@@ -257,4 +256,5 @@ filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 
 logging.warning(u"LdapSearch.get_user_filterstr1VK= {}".format(repr(filterstr))) #VK
 logging.warning(u"LdapSearch.get_user_results1VK= {}".format(repr(results))) #VK
+logging.warning(u"LdapSearch._username1VK= {}".format(username)) #VK
 #VK
