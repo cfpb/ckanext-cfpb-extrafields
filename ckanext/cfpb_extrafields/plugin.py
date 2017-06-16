@@ -574,7 +574,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 #import logging
 #from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
 #_get_or_create_ldap_user(_find_ldap_user(username))
-global username#='boehmm'
+global username
 #VK
 
 class SSOPlugin(p.SingletonPlugin):
@@ -586,7 +586,6 @@ class SSOPlugin(p.SingletonPlugin):
             return
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
-	#header_name='boehmm'#VK
 
         logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
 
