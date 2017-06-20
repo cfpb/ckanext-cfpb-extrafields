@@ -554,9 +554,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if 'facet.field' in search_params and 'sort' not in search_params:
             search_params['sort'] = "title_string asc"
             print('Modded')
-    	    after_search(self, search_results, search_params)#VK
-        print 'plugin.before_searchVK=',search_params #VK
-    	after_search(self, search_results, search_params)#VK
         return search_params
 
     def after_search(self, search_results, search_params):
