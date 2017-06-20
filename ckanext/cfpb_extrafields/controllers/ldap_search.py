@@ -17,8 +17,8 @@ class GroupNotFound(Exception):
     __import__('logging').warning(u'VK{}'.format('1'))
 #VK
     with _get_ldap_connection() as connection:
-    user_id= get_user(username, connection)
-    __import__('logging').warning(u'plugin.request_access_linkVK{}'.format(user_id))
+    	user_id= get_user(username, connection)
+    __import__('logging').warning(u'ldapsearch.GroupNotFoundVK{}'.format(user_id))
 #VK
     pass
 

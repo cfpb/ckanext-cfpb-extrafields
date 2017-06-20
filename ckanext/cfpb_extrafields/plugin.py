@@ -61,9 +61,6 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def request_access_link(resource, dataset, role):
-#VK
-    __import__('logging').warning(u'VK{}'.format('request_access_link'))
-#VK
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
@@ -557,10 +554,13 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if 'facet.field' in search_params and 'sort' not in search_params:
             search_params['sort'] = "title_string asc"
             print('Modded')
-
+    	    after_search(self, search_results, search_params)#VK
+        print 'plugin.before_searchVK=',search_params #VK
+    	after_search(self, search_results, search_params)#VK
         return search_params
 
     def after_search(self, search_results, search_params):
+        print  'plugin.after_searchVK=',search_results #VK
         return search_results
 
     def before_index(self, pkg_dict):
@@ -579,7 +579,7 @@ class SSOPlugin(p.SingletonPlugin):
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
-        logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
+        #logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
 
         username = tk.request.headers.get(header_name)
 
