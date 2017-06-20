@@ -12,10 +12,14 @@ import ldap.filter
 
 import logging
 logging = logging.getLogger(__name__)#VK
-global username #VK
 
 class GroupNotFound(Exception):
     __import__('logging').warning(u'VK{}'.format('1'))
+#VK
+    with _get_ldap_connection() as connection:
+    user_id= get_user(username, connection)
+    __import__('logging').warning(u'plugin.request_access_linkVK{}'.format(user_id))
+#VK
     pass
 
 def context():
@@ -231,30 +235,3 @@ class LdapSearchController(BaseController):
         }
         __import__('logging').warning(u'VK{}'.format('14'))
         return render('ckanext/cfpb-extrafields/ldap_user.html', extra_vars=extra)
-#VK
-import ckan.plugins.toolkit as tk
-import json
-from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
-from ckanext.ldap.controllers.user import _get_ldap_connection 
-import ldap
-import ldap.filter
-#	import auxiliary_module
-#	import logging
-from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
-_get_or_create_ldap_user(_find_ldap_user(username))
-tk.get_action("user_show")({}, {"id": username})
-pylons.session["ckanext-ldap-user"] = username
-tk.c.user = username
-
-base_dn = config["ckanext.ldap.base_dn"]
-search_filter = config["ckanext.ldap.search.filter"]
-results = connection.search_s(
-base_dn,
-ldap.SCOPE_SUBTREE,
-filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
-)
-
-logging.warning(u"LdapSearch.get_user_filterstr1VK= {}".format(repr(filterstr))) #VK
-logging.warning(u"LdapSearch.get_user_results1VK= {}".format(repr(results))) #VK
-logging.warning(u"LdapSearch._username1VK= {}".format(username)) #VK
-#VK

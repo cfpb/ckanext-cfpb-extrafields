@@ -11,7 +11,8 @@ import logging
 import json
 import urllib
 
-#logging = logging.getLogger(__name__)#VK
+import logging #VK
+logging = logging.getLogger(__name__)#VK
 
 if hasattr(tk, "config"):
     CONFIG = tk.config
@@ -60,6 +61,9 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def request_access_link(resource, dataset, role):
+#VK
+    __import__('logging').warning(u'VK{}'.format('request_access_link'))
+#VK
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
@@ -564,18 +568,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
 
     def before_view(self, pkg_dict):
         return pkg_dict
-#VK
-#import json
-#from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
-#from ckanext.ldap.controllers.user import _get_ldap_connection 
-#import ldap
-#import ldap.filter
-#import auxiliary_module
-#import logging
-#from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
-#_get_or_create_ldap_user(_find_ldap_user(username))
-global username
-#VK
 
 class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
@@ -590,32 +582,9 @@ class SSOPlugin(p.SingletonPlugin):
         logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
 
         username = tk.request.headers.get(header_name)
-#VK
-        logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
-#	import json
-#	from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
-#	from ckanext.ldap.controllers.user import _get_ldap_connection 
-#	import ldap
-#	import ldap.filter
-##	import auxiliary_module
-##	import logging
-#        from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
-#        _get_or_create_ldap_user(_find_ldap_user(username))
-#        tk.get_action("user_show")({}, {"id": username})
-#        pylons.session["ckanext-ldap-user"] = username
-#        tk.c.user = username
-    
-#        base_dn = config["ckanext.ldap.base_dn"]
-#        search_filter = config["ckanext.ldap.search.filter"]
-#        results = connection.search_s(
-#           base_dn,
-#           ldap.SCOPE_SUBTREE,
-#           filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
-#        )
 
-#    	logging.warning(u"LdapSearch.get_user_filterstrVK= {}".format(repr(filterstr))) #VK
-#    	logging.warning(u"LdapSearch.get_user_resultsVK= {}".format(repr(results))) #VK
-#VK
+        logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
+
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
