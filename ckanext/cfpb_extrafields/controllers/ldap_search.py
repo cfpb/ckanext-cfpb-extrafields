@@ -13,6 +13,11 @@ import ldap.filter
 import logging
 logging = logging.getLogger(__name__)#VK
 
+#VK
+with _get_ldap_connection() as connection:
+	user_id= get_user(username, connection)
+__import__('logging').warning(u'ldapsearch.VK{}'.format(repr(user_id)))
+#VK
 class GroupNotFound(Exception):
     __import__('logging').warning(u'VK{}'.format('1'))
 #VK

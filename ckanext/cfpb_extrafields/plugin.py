@@ -557,7 +557,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return search_params
 
     def after_search(self, search_results, search_params):
-        print  'plugin.after_searchVK=',search_results #VK
         return search_results
 
     def before_index(self, pkg_dict):
@@ -576,17 +575,20 @@ class SSOPlugin(p.SingletonPlugin):
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
-        #logging.error(u"ERROR plugin_header_nameVK= {}".format(repr(header_name))) #VK
+        logging.warning(u"plugin_header_nameVK= {}".format(repr(header_name)))
 
         username = tk.request.headers.get(header_name)
 
-        logging.error(u"ERROR plugin_usernameVK= {}".format(username)) #VK
+        logging.warning(u"plugin_usernameVK= {}".format(username))
 
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
                 from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
+
+                logging.warning(u"plugin_identity.usernameVK= {}".format(repr(_find_ldap_user(username))))
+
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
                 pass
