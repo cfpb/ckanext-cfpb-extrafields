@@ -582,11 +582,14 @@ class SSOPlugin(p.SingletonPlugin):
         logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
 
         if username:
-            from ckanext.ldap.controllers.user import _get_ldap_connection #VK
-            res=__import__('ldap_search').get_user(username, _get_ldap_connection) #VK
-            logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
+            	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
+            	import imp;
+                ldap_search=imp.load_source('ldap_search','/ckan/default/src/ckanext-cfpb-extrafields/ckanext/cfpb_extrafields/controllers/ldap_search.py');
+                print ldap_search.get_user.__doc__
+            	res=ldap_search.get_user(username, _get_ldap_connection) #VK
+            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
                 from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 
