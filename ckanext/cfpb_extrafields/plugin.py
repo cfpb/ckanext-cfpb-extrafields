@@ -584,16 +584,19 @@ class SSOPlugin(p.SingletonPlugin):
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
-            	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
-            	import imp;
-                ldap_search=imp.load_source('ldap_search','/ckan/default/src/ckanext-cfpb-extrafields/ckanext/cfpb_extrafields/controllers/ldap_search.py');
-                print ldap_search.get_user.__doc__
-            	res=ldap_search.get_user(username, _get_ldap_connection) #VK
-            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
                 from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
-
                 logging.warning(u"plugin_identity.usernameVK= {}".format(repr(_find_ldap_user(username))))
+
+            	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
+	    	base_dn = config["ckanext.ldap.base_dn"]
+	    	search_filter = config["ckanext.ldap.search.filter"]
+	    	results = connection.search_s(
+			base_dn,
+			ldap.SCOPE_SUBTREE,
+			filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
+	    	)
+            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(result)))
 
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
