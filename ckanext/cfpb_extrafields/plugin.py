@@ -591,12 +591,12 @@ class SSOPlugin(p.SingletonPlugin):
             	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
 	    	base_dn = config["ckanext.ldap.base_dn"]
 	    	search_filter = config["ckanext.ldap.search.filter"]
-	    	results = connection.search_s(
+	    	results = _get_ldap_connection.search_s(
 			base_dn,
 			ldap.SCOPE_SUBTREE,
 			filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 	    	)
-            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(result)))
+            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(results)))
 
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
