@@ -584,6 +584,7 @@ class SSOPlugin(p.SingletonPlugin):
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
+		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
                 from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
                 logging.warning(u"plugin_identity.usernameVK= {}".format(repr(_find_ldap_user(username))))
