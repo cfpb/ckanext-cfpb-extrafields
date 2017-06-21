@@ -589,14 +589,29 @@ class SSOPlugin(p.SingletonPlugin):
                 logging.warning(u"plugin_identity.usernameVK= {}".format(repr(_find_ldap_user(username))))
 
             	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
-	    	base_dn = config["ckanext.ldap.base_dn"]
-	    	search_filter = config["ckanext.ldap.search.filter"]
-	    	results = _get_ldap_connection.search_s(
-			base_dn,
-			ldap.SCOPE_SUBTREE,
-			filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
-	    	)
-            	logging.warning(u"plugin_identity.get_userVK= {}".format(repr(results)))
+		import ldap
+		import ldap.filter
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
+			results = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
+			)
+			logging.warning(u"plugin_identity.get_userVK= {}".format(repr(results)))
+			#base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
+			#base_dns = base_dn_string.split("|")
+			#cn = request.params.get("cn")
+			#roles = make_roles([cn])
+			#extra = {
+			#    "dns": base_dns,
+			#    "cn": cn,
+			#    "roles": roles,
+			#    "error_message": "",
+			#}
+			#extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
+			#logging.warning(u"plugin_identity.get_userVK= {}".format(repr(extra)))
 
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
