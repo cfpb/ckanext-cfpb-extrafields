@@ -579,13 +579,10 @@ class SSOPlugin(p.SingletonPlugin):
 
         username = tk.request.headers.get(header_name)
 
-        logging.warning(u"plugin_usernameVK= {}".format(username))
-        from ckanext.ldap.controllers.user import _get_ldap_connection #VK
-        res=__import__('ldap_search').get_user(username, _get_ldap_connection) #VK
         logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
 
         if username:
-        #    from ckanext.ldap.controllers.user import _get_ldap_connection #VK
+            from ckanext.ldap.controllers.user import _get_ldap_connection #VK
             res=__import__('ldap_search').get_user(username, _get_ldap_connection) #VK
             logging.warning(u"plugin_identity.get_userVK= {}".format(repr(res)))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
