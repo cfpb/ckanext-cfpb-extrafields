@@ -584,14 +584,17 @@ class SSOPlugin(p.SingletonPlugin):
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
-		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
-                from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
+		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
-                logging.warning(u"plugin_identity.usernameVK= {}".format(repr(_find_ldap_user(username))))
+#VK
+                results1= _find_ldap_user( username )
+                logging.warning(u"plugin_identity.result1VK= {}".format(repr( results1 )))
 
-            	from ckanext.ldap.controllers.user import _get_ldap_connection #VK
+		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
+		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
+
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -600,20 +603,15 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
-			logging.warning(u"plugin_identity.get_userVK= {}".format(repr(results)))
-			#base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
-			#base_dns = base_dn_string.split("|")
-			#cn = request.params.get("cn")
-			#roles = make_roles([cn])
-			#extra = {
-			#    "dns": base_dns,
-			#    "cn": cn,
-			#    "roles": roles,
-			#    "error_message": "",
-			#}
-			#extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
-			#logging.warning(u"plugin_identity.get_userVK= {}".format(repr(extra)))
-
+			logging.warning(u"plugin_identity.results= {}".format(repr(results)))
+                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( results["manager"][0] )))
+			email = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr=results["manager"][0]
+			)
+                        logging.warning(u"plugin_identity.manageremailVK= {}".format(repr( email )))
+#VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
                 pass
