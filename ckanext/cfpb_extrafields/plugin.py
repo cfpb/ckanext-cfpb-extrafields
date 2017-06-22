@@ -603,14 +603,16 @@ class SSOPlugin(p.SingletonPlugin):
 				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        #logging.warning(u"plugin_identity.managerVK= {}".format(repr( results[0]["manager"] )))
+                        
+                        logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=results[0]["manager"]
+				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+# results[0]["manager"]
 			)
                         logging.warning(u"plugin_identity.manageremailVK= {}".format(repr( email )))
 #VK
