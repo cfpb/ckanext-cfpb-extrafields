@@ -587,8 +587,7 @@ class SSOPlugin(p.SingletonPlugin):
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 #VK
-                results1= _find_ldap_user( username )
-                logging.warning(u"plugin_identity.result1VK= {}".format(repr( results1 )))
+                logging.warning(u"plugin_identity.find_ldap_userVK= {}".format(repr(_find_ldap_user( username ) )))
 
 		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
@@ -603,7 +602,7 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
-			logging.warning(u"plugin_identity.results= {}".format(repr(results)))
+			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( results["manager"][0] )))
 			email = connection.search_s(
 				base_dn,
