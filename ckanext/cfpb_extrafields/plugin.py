@@ -603,11 +603,11 @@ class SSOPlugin(p.SingletonPlugin):
 				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( results["manager"][0] )))
+                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( results[0]["manager"] )))
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=results["manager"][0]
+				filterstr=results[0]["manager"]
 			)
                         logging.warning(u"plugin_identity.manageremailVK= {}".format(repr( email )))
 #VK
