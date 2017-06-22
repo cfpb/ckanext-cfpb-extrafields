@@ -584,12 +584,12 @@ class SSOPlugin(p.SingletonPlugin):
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
+		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 #VK
                 logging.warning(u"plugin_identity.find_ldap_userVK= {}".format(repr(_find_ldap_user( username ) )))
 
-		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
@@ -603,7 +603,10 @@ class SSOPlugin(p.SingletonPlugin):
 				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( results[0]["manager"] )))
+                        #logging.warning(u"plugin_identity.managerVK= {}".format(repr( results[0]["manager"] )))
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
