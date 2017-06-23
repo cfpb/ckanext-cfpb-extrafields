@@ -600,11 +600,12 @@ class SSOPlugin(p.SingletonPlugin):
 			results = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
+				filterstr=search_filter.format((username))
+				#filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
                         
-                        logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
+                        #logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
