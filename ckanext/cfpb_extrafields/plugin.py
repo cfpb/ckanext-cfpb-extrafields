@@ -600,7 +600,7 @@ class SSOPlugin(p.SingletonPlugin):
 			results = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=search_filter.format((username))
+				filterstr=search_filter.format(login=username)
 				#filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
