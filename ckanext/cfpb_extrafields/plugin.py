@@ -613,7 +613,7 @@ class SSOPlugin(p.SingletonPlugin):
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="memberOf="+full_name,attrlist=["manager"]
+				filterstr="CN=Gibson",attrlist=["manager"]
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
 			)
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( email )))
@@ -623,7 +623,7 @@ class SSOPlugin(p.SingletonPlugin):
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="memberOf="+full_name,attrlist=["sAMAccountName"]
+				filterstr=username,attrlist=["sAMAccountName"]
 			)
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
 #VK
