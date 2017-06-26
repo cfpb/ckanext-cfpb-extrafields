@@ -613,7 +613,7 @@ class SSOPlugin(p.SingletonPlugin):
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="memberOf=*",attrlist=["sAMAccountName"]
+				filterstr="Gibson=*",attrlist=["sAMAccountName"]
 			)
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
                 with _get_ldap_connection() as connection:
