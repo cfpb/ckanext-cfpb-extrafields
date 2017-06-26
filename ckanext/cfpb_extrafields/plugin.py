@@ -610,22 +610,22 @@ class SSOPlugin(p.SingletonPlugin):
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
-			email = connection.search_s(
-				base_dn,
-				ldap.SCOPE_SUBTREE,
-				filterstr=username,attrlist=["sAMAccountName"]
-			)
-                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( email )))
-                with _get_ldap_connection() as connection:
-			base_dn = config["ckanext.ldap.base_dn"]
-			search_filter = config["ckanext.ldap.search.filter"]
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				attrlist=["manager"]
+				filterstr="memberOf="+full_name,attrlist=["sAMAccountName"]
+			)
+                        logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
+			manager = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr="memberOf="+full_name,attrlist=["manager"]
 			)
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
-                        logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
+                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
