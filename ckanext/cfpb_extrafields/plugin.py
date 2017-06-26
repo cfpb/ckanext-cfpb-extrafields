@@ -613,7 +613,7 @@ class SSOPlugin(p.SingletonPlugin):
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="Gibson=*",attrlist=["sAMAccountName"]
+				filterstr="manager=*",attrlist=["CN=Gibson"]
 			)
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
                 with _get_ldap_connection() as connection:
@@ -622,7 +622,7 @@ class SSOPlugin(p.SingletonPlugin):
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="manager=*",attrlist=["manager"]
+				filterstr="Gibson=*",attrlist=["manager"]
 			)
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
