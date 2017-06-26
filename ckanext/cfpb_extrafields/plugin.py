@@ -607,7 +607,6 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
                         
                         #logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
-                full_name = get_group_full_name(base_dns, cn, connection)
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
