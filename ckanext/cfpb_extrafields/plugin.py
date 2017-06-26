@@ -613,7 +613,7 @@ class SSOPlugin(p.SingletonPlugin):
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="CN=Gibson",attrlist=["manager"]
+				filterstr="OU=CFPB Domain Users,DC=cfpb,DC=local",attrlist=["manager"]
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
 			)
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( email )))
