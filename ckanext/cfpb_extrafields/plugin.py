@@ -607,13 +607,14 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
                         
                         #logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
+                full_name = get_group_full_name(base_dns, cn, connection)
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="memberOf="+full_name,attrlist=["sAMAccountName"]
+				filterstr="memberOf=*",attrlist=["sAMAccountName"]
 			)
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
                 with _get_ldap_connection() as connection:
@@ -622,7 +623,7 @@ class SSOPlugin(p.SingletonPlugin):
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="memberOf="+full_name,attrlist=["manager"]
+				filterstr="manager=*",attrlist=["manager"]
 			)
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
