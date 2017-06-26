@@ -613,7 +613,9 @@ class SSOPlugin(p.SingletonPlugin):
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+				filterstr="",attrlist=["manager"]
+#				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+    #results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
 # results[0]["manager"]
 			)
                         logging.warning(u"plugin_identity.manageremailVK= {}".format(repr( email )))
