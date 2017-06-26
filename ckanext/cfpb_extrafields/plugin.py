@@ -613,12 +613,19 @@ class SSOPlugin(p.SingletonPlugin):
 			email = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="",attrlist=["manager"]
+				filterstr="memberOf="+full_name,attrlist=["manager"]
 #				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
-    #results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
-# results[0]["manager"]
 			)
-                        logging.warning(u"plugin_identity.manageremailVK= {}".format(repr( email )))
+                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( email )))
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
+			sama = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr="memberOf="+full_name,attrlist=["sAMAccountName"]
+			)
+                        logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
