@@ -575,13 +575,14 @@ class SSOPlugin(p.SingletonPlugin):
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
-        logging.warning(u"plugin_header_nameVK= {}".format(repr(header_name)))
+        #logging.warning(u"plugin_header_nameVK= {}".format(repr(header_name)))
 
         username = tk.request.headers.get(header_name)
 
-        logging.warning(u"plugin_identity.get_userVK= {}".format(repr(username)))
+#        logging.warning(u"plugin_identity.get_userVK= {}".format(repr(username)))
 
         if username:
+            logging.warning(u"plugin_identity.get_userVK= {}".format(username,header_name))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
 		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
