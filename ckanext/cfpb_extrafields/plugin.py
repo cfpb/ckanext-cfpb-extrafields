@@ -602,39 +602,30 @@ class SSOPlugin(p.SingletonPlugin):
 				base_dn,
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=username)
-				#filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
                         lst22=str(results).split('manager')
                         lst2=lst22[1][:100].split(',')
-#["'", "':['CN=Gibson\\ , Hilary (CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'],"]
                         print lst2 
                         str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
                         print str_lst2 
 			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
-			logging.warning(u"plugin_identity.results3VK= {}".format(repr(results[0]["manager"]  )))
+			i=str(results).find('manager')+9
+                        j=str(results).find(']',i)+1
+			logging.warning(u"plugin_identity.results3VK= {}".format(results(i,j)))
             #res[1]["cn"][0] for res in
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
-			sama = connection.search_s(
+			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr='CN=Gibson\\, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+				filterstr=search_filter.format('CN=Nardo\\, Henry(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local')
 			#	attrlist=["manager"]
 			)
 				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
-                        logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
-               # with _get_ldap_connection() as connection:
-		#	base_dn = config["ckanext.ldap.base_dn"]
-		#	search_filter = config["ckanext.ldap.search.filter"]
-		#	manager = connection.search_s(
-		#		base_dn,
-		#		ldap.SCOPE_SUBTREE,
-		#		attrlist=["manager"]
-		#	)
+                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #			filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
-                 #       logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
