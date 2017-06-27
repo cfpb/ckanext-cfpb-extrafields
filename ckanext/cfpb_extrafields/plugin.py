@@ -594,7 +594,7 @@ class SSOPlugin(p.SingletonPlugin):
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
-                username='boehmm' #VK
+                username='andereggt' #VK
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
