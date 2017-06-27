@@ -612,13 +612,16 @@ class SSOPlugin(p.SingletonPlugin):
                         str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
                         print str_lst2 
 			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
+			logging.warning(u"plugin_identity.results3VK= {}".format(repr(results[1]["manager"]  )))
+            #res[1]["cn"][0] for res in
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=search_filter.format(login=username,attrlist=["manager"])
+				filterstr='CN=Gibson\\, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+			#	attrlist=["manager"]
 			)
 				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
