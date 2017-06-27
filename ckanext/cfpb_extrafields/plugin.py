@@ -605,15 +605,20 @@ class SSOPlugin(p.SingletonPlugin):
 				#filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
 			)
 			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        
-                        #logging.warning(u"plugin_identity.managerVK= {}".format(eval( results[0]['manager'] )))
+                        lst22=str(results).split('manager')
+                        lst2=lst22[1][:100].split(',')
+#["'", "':['CN=Gibson\\ , Hilary (CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'],"]
+                        print lst2 
+                        str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
+                        print str_lst2 
+			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			sama = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="manager=*",attrlist=["CN=Gibson"]
+				filterstr="manager"
 			)
                         logging.warning(u"plugin_identity.sAMAccountNameVK= {}".format(repr( sama )))
                 with _get_ldap_connection() as connection:
@@ -622,9 +627,9 @@ class SSOPlugin(p.SingletonPlugin):
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr="Gibson=*",attrlist=["manager"]
+				attrlist=["manager"]
 			)
-#				filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+#			filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #VK
             except ImportError, err:
