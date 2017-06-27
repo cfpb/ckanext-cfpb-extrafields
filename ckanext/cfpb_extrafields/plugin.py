@@ -610,9 +610,6 @@ class SSOPlugin(p.SingletonPlugin):
                         str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
                         print str_lst2 
 			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
-			i=str(results).find('manager')+9
-                        j=str(results).find(']',i)+1
-			logging.warning(u"plugin_identity.results3VK= {}".format(results(i,j)))
             #res[1]["cn"][0] for res in
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
@@ -626,6 +623,9 @@ class SSOPlugin(p.SingletonPlugin):
 				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #			filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+			i=str(results).find('manager')+9
+                        j=str(results).find(']',i)+1
+			logging.warning(u"plugin_identity.results3VK= {}".format(str(results[i:j])))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
