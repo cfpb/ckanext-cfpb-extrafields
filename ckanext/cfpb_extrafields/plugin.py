@@ -611,7 +611,8 @@ class SSOPlugin(p.SingletonPlugin):
 			i=str(results).find('manager')+9
                         j=str(results).find(']',i)+1
                         mgr=str(results)[i+1:j-1].strip(' ')
-			mgr1=mgr.split(' ')[0][4:-3].lower()+mgr.split(' ')[1][0].lower()
+			mgr1=mgr.split(' ')[0][5:-3].lower()+mgr.split(' ')[1][0].lower()
+                        mgr1=mgr1.strip('= ')
 			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
 			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
                 with _get_ldap_connection() as connection:
