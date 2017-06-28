@@ -610,18 +610,19 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
 			i=str(results).find('manager')+9
                         j=str(results).find(']',i)+1
-                        mgr=str(results)[i+1:j-1]
+                        mgr=str(results)[i+1:j-1].strip(' ')
+			mgr1=mgr.split(' ')[0][4:-3].lower()+mgr.split(' ')[1][0].lower()))
 			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
-			logging.warning(u"plugin_identity.results5VK= {}".format(mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower()))
+			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-	filterstr=search_filter.format(manager=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
+				filterstr=search_filter.format(login=mgr1)
 			)
-	#filterstr=search_filter.format(login=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
+	#filterstr=search_filter.format(manager=mgr.split(' ')[0][4:-3].lower()+mgr.split(' ')[1][0].lower())
 			#	attrlist=["manager"]
 				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
