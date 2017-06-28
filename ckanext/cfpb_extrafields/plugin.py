@@ -610,7 +610,7 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
 			i=str(results).find('manager')+9
                         j=str(results).find(']',i)+1
-                        mgr=str(results)[i+1,j-1]
+                        mgr=str(results)[i+1:j-1]
 			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
