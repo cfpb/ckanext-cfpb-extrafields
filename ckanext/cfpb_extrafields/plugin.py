@@ -612,23 +612,20 @@ class SSOPlugin(p.SingletonPlugin):
                         j=str(results).find(']',i)+1
                         mgr=str(results)[i+1:j-1]
 			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
+			logging.warning(u"plugin_identity.results5VK= {}".format(mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower()))
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-	filterstr=search_filter.format(login=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
-	#filterstr=search_filter.format(manager=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
-			)#s22.split(' ')[0][4:-1].lower()+s22.split(' ')[2][0].lower()
+	filterstr=search_filter.format(manager=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
+			)
+	#filterstr=search_filter.format(login=mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower())
 			#	attrlist=["manager"]
 				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
 #			filterstr='CN=Gibson\\, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
-			i=str(results).find('manager')+9
-                        j=str(results).find(']',i)+1
-			logging.warning(u"plugin_identity.results4VK= {}".format(str(results)[i:j]))
-			logging.warning(u"plugin_identity.results5VK= {}".format(mgr.split(' ')[0][4:-1].lower()+mgr.split(' ')[2][0].lower()))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
