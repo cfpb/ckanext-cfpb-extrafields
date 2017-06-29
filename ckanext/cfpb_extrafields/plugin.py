@@ -62,6 +62,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def request_access_link(resource, dataset, role):
+    logging.warning(u"plugin_request_access.mgr3VK= {}".format(repr( mgr_email[0] )))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email[0],
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
@@ -571,8 +572,8 @@ class SSOPlugin(p.SingletonPlugin):
 
     def identify(self):
         # Skip if user is already logged in
-        if pylons.session.get("ckanext-ldap-user"):
-            return
+    #VK    if pylons.session.get("ckanext-ldap-user"):
+    #VK        return
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
