@@ -618,9 +618,6 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
                         r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
                         mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
-                        global mgr_email
-                        mgr_email[0]=mgr2 #VK
-
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -634,7 +631,11 @@ class SSOPlugin(p.SingletonPlugin):
                         logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
 			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
-                        logging.warning(u"plugin_identity.mgr3VK= {}".format(str(manager).split('mail')[1].split(',')[0][i:j]))
+                        mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
+                        logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( mgr3 )))
+                        global mgr_email
+                        mgr_email[0]=mgr3 #VK
+
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
