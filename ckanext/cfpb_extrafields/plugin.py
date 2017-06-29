@@ -64,7 +64,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 def request_access_link(resource, dataset, role):
     logging.warning(u"plugin_request_access.mgr3VK= {}".format(repr( mgr_email[0] )))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email[0],
+        "cc":mgr_email[0]+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -605,18 +605,18 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=username)
 			)
-			logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        lst22=str(results).split('manager')
-                        lst2=lst22[1][:100].split(',')
-                        str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
-			logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
-			i=str(results).find('manager')+9
-                        j=str(results).find(']',i)+1
-                        mgr=str(results)[i+1:j-1].strip(' ')
-			mgr1=mgr.split(' ')[0][5:-3].lower()+mgr.split(' ')[1][0].lower()
-                        mgr1=mgr1.strip('= ')
-			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
-			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
+			#logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
+                        #lst22=str(results).split('manager')
+                        #lst2=lst22[1][:100].split(',')
+                        #str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
+			#logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
+			#i=str(results).find('manager')+9
+                        #j=str(results).find(']',i)+1
+                        #mgr=str(results)[i+1:j-1].strip(' ')
+			#mgr1=mgr.split(' ')[0][5:-3].lower()+mgr.split(' ')[1][0].lower()
+                        #mgr1=mgr1.strip('= ')
+			#logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
+			#logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
                         r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
                         mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
                 with _get_ldap_connection() as connection:
@@ -627,7 +627,7 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=mgr2)
 			)
-                        logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
+                        #logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
                         logging.warning(u"plugin_identity.mgr22VK= {}".format(repr( r )))
                         logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
 			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
