@@ -13,7 +13,7 @@ import urllib
 
 import logging #VK
 logging = logging.getLogger(__name__)#VK
-mgr_email="_DL_CFPB_DataOps@cfpb.gov" #VK
+mgr_email=["VK_DL_CFPB_DataOps@cfpb.gov"] #VK
 
 if hasattr(tk, "config"):
     CONFIG = tk.config
@@ -63,7 +63,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 def request_access_link(resource, dataset, role):
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email[0],
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -595,7 +595,7 @@ class SSOPlugin(p.SingletonPlugin):
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
-                username='andereggt' #VK
+                #username='andereggt' #VK
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -618,7 +618,8 @@ class SSOPlugin(p.SingletonPlugin):
 			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
                         r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
                         mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
-                        mgr_email=mgr2 #VK
+                        global mgr_email
+                        mgr_email[0]=mgr2 #VK
 
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
