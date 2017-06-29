@@ -623,11 +623,16 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=mgr1)
 			)
-	#filterstr=search_filter.format(manager=mgr.split(' ')[0][4:-3].lower()+mgr.split(' ')[1][0].lower())
-			#	attrlist=["manager"]
-				#filterstr='CN=Gibson, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
-#			filterstr='CN=Gibson\\, Hilary(CFPB),OU=CFPB Domain Users,DC=cfpb,DC=local'
+                        
+                        r=str(results)[str(res).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
+                        mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
+                        logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
+#print s.split('mail')[1].split(',')[0]
+			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
+			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
+#print s.split('mail')[1].split(',')[0][i:j]
+                        logging.warning(u"plugin_identity.mgr3VK= {}".format(str(manager).split('mail')[1].split(',')[0][i:j]))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
