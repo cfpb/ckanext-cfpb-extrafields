@@ -13,6 +13,7 @@ import urllib
 
 import logging #VK
 logging = logging.getLogger(__name__)#VK
+mgr_email="_DL_CFPB_DataOps@cfpb.gov" #VK
 
 if hasattr(tk, "config"):
     CONFIG = tk.config
@@ -62,7 +63,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 def request_access_link(resource, dataset, role):
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -615,23 +616,23 @@ class SSOPlugin(p.SingletonPlugin):
                         mgr1=mgr1.strip('= ')
 			logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
 			logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
+                        r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
+                        mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
+                        mgr_email=mgr2 #VK
+
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
 			manager = connection.search_s(
 				base_dn,
 				ldap.SCOPE_SUBTREE,
-				filterstr=search_filter.format(login=mgr1)
+				filterstr=search_filter.format(login=mgr2)
 			)
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
-                        
-                        r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
-                        mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
+                        logging.warning(u"plugin_identity.mgr22VK= {}".format(repr( r )))
                         logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
-#print s.split('mail')[1].split(',')[0]
 			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
-#print s.split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(str(manager).split('mail')[1].split(',')[0][i:j]))
 #VK
             except ImportError, err:
