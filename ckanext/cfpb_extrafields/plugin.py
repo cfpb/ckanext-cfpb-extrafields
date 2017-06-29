@@ -625,7 +625,7 @@ class SSOPlugin(p.SingletonPlugin):
 			)
                         logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
                         
-                        r=str(results)[str(res).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
+                        r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
                         mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
                         logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
 #print s.split('mail')[1].split(',')[0]
