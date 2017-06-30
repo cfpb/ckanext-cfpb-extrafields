@@ -62,6 +62,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 def get_mgr_email():
     import os
+    f='None'
     if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
         f= open(      '/etc/httpd/log/ckan_default.error.log')
     if os.path.exists('/var/log/apache2/ckan_default.error.log'):
