@@ -61,12 +61,14 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def get_mgr_email():
-    import os
-    f=None
+    import os, sys
+    f=sys.stderr
     if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
         f= open(      '/etc/httpd/log/ckan_default.error.log')
-    if os.path.exists('/var/log/apache2/ckan_default.error.log'):
-	f= open(      '/var/log/apache2/ckan_default.error.log')
+    if os.path.exists('/var/log/apache/ckan_default.error.log'):
+	f= open(      '/var/log/apache/ckan_default.error.log')
+    if os.path.exists('/var/log/ckan_default.error.log'):
+	f= open(      '/var/log/ckan_default.error.log')
     if os.path.exists('/etc/httpd/ckan_default.error.log'):
        	f= open(      '/etc/httpd/ckan_default.error.log')
     logging.warning(u"f.get_mgr_emailVK= {}".format( repr(f) ))
