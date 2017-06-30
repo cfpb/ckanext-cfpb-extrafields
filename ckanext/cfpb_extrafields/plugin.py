@@ -78,8 +78,11 @@ def get_mgr_email():
     if len(mgr)>0: return mgr[-1]
     return ''
 
+mgr_email=get_mgr_email()
+
 def request_access_link(resource, dataset, role):
-    mgr_email=get_mgr_email()
+    #mgr_email=get_mgr_email()
+    #mgr_email=open('/tmp/info.txt').readlines()[-1]
     logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format(mgr_email))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
@@ -598,18 +601,19 @@ class SSOPlugin(p.SingletonPlugin):
         username = tk.request.headers.get(header_name)
 
         if username:
-            logging.warning(u"plugin_identity.get_userVK= {}".format(username,header_name))
+            logging.warning(u"plugin_identity.get_userVK= {}".format(username))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
 		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 #VK
-                logging.warning(u"plugin_identity.find_ldap_userVK= {}".format(repr(_find_ldap_user( username ) )))
+                #logging.warning(u"plugin_identity.find_ldap_userVK= {}".format(repr(_find_ldap_user( username ) )))
 
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
+                #f=open('/tmp/info.txt','w') #VK
                 #username='andereggt' #VK
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
@@ -635,6 +639,7 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
+                        f.write(mgr3)
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
@@ -652,6 +657,8 @@ class SSOPlugin(p.SingletonPlugin):
                 # If the user does not exist in CKAN, the above code failed.
                 # Fall back to the normal login method.
                 pass
+
+            #f.close()#VK
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
