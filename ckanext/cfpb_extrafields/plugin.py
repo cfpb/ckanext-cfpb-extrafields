@@ -69,22 +69,23 @@ def get_mgr_email():
 	f= open(      '/var/log/apache2/ckan_default.error.log')
     if os.path.exists('/etc/httpd/ckan_default.error.log'):
        	f= open(      '/etc/httpd/ckan_default.error.log')
+    logging.warning(u"f.get_mgr_emailVK= {}".format( repr(f) ))
     i=ii=-1
     mgr=[]
     for line in f:
         i= line.find('12345678')+8
         if i!=-1: ii= line.find('123456789')
         if i!=-1 and ii!=-1:  mgr.append(str(line[i:ii]));i=ii=-1
-    f.close()
+    if f : f.close()
     if len(mgr)>0: return mgr[-1]
     return ''
 
-mgr_email=get_mgr_email()
+#mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
     #mgr_email=get_mgr_email()
     #mgr_email=open('/tmp/info.txt').readlines()[-1]
-    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format(mgr_email))
+    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
