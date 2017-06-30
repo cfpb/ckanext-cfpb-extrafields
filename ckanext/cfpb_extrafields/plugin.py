@@ -13,7 +13,6 @@ import urllib
 
 import logging #VK
 logging = logging.getLogger(__name__)#VK
-mgr_email=["VK_DL_CFPB_DataOps@cfpb.gov"] #VK
 
 if hasattr(tk, "config"):
     CONFIG = tk.config
@@ -61,10 +60,23 @@ def parse_resource_related_gist(data_related_items, resource_id):
             urls.append( {'title':title,'url':url} )
     return urls
 
+def get_mgr_email():
+    f= open('/etc/httpd/ckan_default.error.log')
+    i=ii=-1
+    mgr=[]
+    for line in f:
+        i= line.find('12345678')+8
+        if i!=-1: ii= line.find('123456789')
+        if i!=-1 and ii!=-1:  mgr.append(str(line[i:ii]));i=ii=-1
+    f.close()
+    if len(mgr)>0: return mgr[-1]
+    return ''
+
 def request_access_link(resource, dataset, role):
-    logging.warning(u"plugin_request_access.mgr3VK= {}".format(repr( mgr_email[0] )))
+    mgr_email=get_mgr_email()
+    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format(mgr_email))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":mgr_email[0]+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
+        "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -572,16 +584,12 @@ class SSOPlugin(p.SingletonPlugin):
 
     def identify(self):
         # Skip if user is already logged in
-    #VK    if pylons.session.get("ckanext-ldap-user"):
-    #VK        return
+        if pylons.session.get("ckanext-ldap-user"):
+            return
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
-        #logging.warning(u"plugin_header_nameVK= {}".format(repr(header_name)))
-
         username = tk.request.headers.get(header_name)
-
-#        logging.warning(u"plugin_identity.get_userVK= {}".format(repr(username)))
 
         if username:
             logging.warning(u"plugin_identity.get_userVK= {}".format(username,header_name))
@@ -605,20 +613,8 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=username)
 			)
-			#logging.warning(u"plugin_identity.resultsVK= {}".format(repr(results)))
-                        #lst22=str(results).split('manager')
-                        #lst2=lst22[1][:100].split(',')
-                        #str_lst2=lst2[1].split('(')[0].strip(' ')+'.'+lst2[0].split('=')[1].strip('\\ ')+'@'+lst2[3].split('=')[1]+'.gov'
-			#logging.warning(u"plugin_identity.results2VK= {}".format(repr(str_lst2)))
-			#i=str(results).find('manager')+9
-                        #j=str(results).find(']',i)+1
-                        #mgr=str(results)[i+1:j-1].strip(' ')
-			#mgr1=mgr.split(' ')[0][5:-3].lower()+mgr.split(' ')[1][0].lower()
-                        #mgr1=mgr1.strip('= ')
-			#logging.warning(u"plugin_identity.results3VK= {}".format(str(results)[i:j]))
-			#logging.warning(u"plugin_identity.results4VK= {}".format(mgr1))
-                        r=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
-                        mgr2=r.split(',')[0].split('=')[1].lower().strip(' \\')+ r.split(',')[1].split(' ')[1].lower()[0]
+                        mgr1=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
+                        mgr2=mgr1.split(',')[0].split('=')[1].lower().strip(' \\')+ mgr1.split(',')[1].split(' ')[1].lower()[0]
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -627,16 +623,12 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=mgr2)
 			)
-                        #logging.warning(u"plugin_identity.managerVK= {}".format(repr( manager )))
-                        logging.warning(u"plugin_identity.mgr22VK= {}".format(repr( r )))
+                        logging.warning(u"plugin_identity.mgr1VK= {}".format(repr( mgr1 )))
                         logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
 			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
-                        logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( mgr3 )))
-                        global mgr_email
-                        mgr_email[0]=mgr3 #VK
-
+                        logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
