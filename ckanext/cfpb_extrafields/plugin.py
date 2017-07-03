@@ -62,7 +62,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 #VK
 def str_path():
     import os
-    return  os.environ['PWD']+'/stderr'
+    return  str(os.environ['PWD']).split('runs')+'latest/stderr'
 def get_mgr_email():
     import os
     f=None
@@ -72,8 +72,8 @@ def get_mgr_email():
     path_stderr = str_path()
     if os.path.exists(path_stderr): 
         f= open(path_stderr)
-        mgr=[x for x in os.popen('grep 12345678 '+ path_stderr+'/stderr')][-1][8:-10] 
-        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+str(os.path.exists('./stderr'))) ))
+        mgr=[x for x in os.popen('grep 12345678 '+ path_stder)][-1][8:-10] 
+        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+','+str(os.path.exists(path_stderr))) ))
     i=ii=-1
     mgr=[]
     for line in f:
@@ -647,7 +647,7 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str((os.environ['PWD']+'/stderr')) ))
+                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str((os.environ['PWD']).split('runs')[0]+'latest/stderr') ))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
