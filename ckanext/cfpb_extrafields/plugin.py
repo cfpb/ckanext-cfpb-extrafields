@@ -62,9 +62,14 @@ def parse_resource_related_gist(data_related_items, resource_id):
 #VK
 def get_mgr_email():
     import os
-    LOG_FILENAME = './stderr'
-    f=open(LOG_FILENAME)
-    logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='rw')
+    #out = StringIO()
+    #logger_name = './stderr')
+    #logger.addHandler(StreamHandler(out))
+    #args=(sys.stdout,)
+    #LOG_FILENAME = './stderr'
+    #f=open(LOG_FILENAME,"rt")
+    #logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='rw')
+    f=None
     if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
         f= open(      '/etc/httpd/log/ckan_default.error.log')
     if os.path.exists('/var/log/apache/ckan_default.error.log'):
@@ -73,13 +78,17 @@ def get_mgr_email():
 	f= open(      '/var/log/ckan_default.error.log')
     if os.path.exists('/etc/httpd/ckan_default.error.log'): # vagrant VB centos
        	f= open(      '/etc/httpd/ckan_default.error.log')
-    logging.warning(u"f.get_mgr_emailVK= {}".format( repr(f) ))
+    if os.path.exists('./stderr'): 
+        f=open('./stderr')
+        mgr=[x for x in os.popen('grep 12345678 ./stderr')][-1][8:-10] 
+        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+os.path.exists('./stderr')) ))
     i=ii=-1
     mgr=[]
     for line in f:
         i= line.find('12345678')+8
         if i!=-1: ii= line.find('123456789')
         if i!=-1 and ii!=-1:  mgr.append(str(line[i:ii]));i=ii=-1
+    #if f : logging.warning(u"f.get_mgr_emailVK= {}".format( repr(mgr[-1]) ))
     if f : f.close()
     if len(mgr)>0: return mgr[-1]
     return ''
@@ -88,7 +97,7 @@ def get_mgr_email():
 
 def request_access_link(resource, dataset, role):
     mgr_email=get_mgr_email()
-    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( mgr_email() ))
+    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( repr(mgr_email+','+os.path.exists('./stderr')) ))
     #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
@@ -607,7 +616,7 @@ class SSOPlugin(p.SingletonPlugin):
         username = tk.request.headers.get(header_name)
 
         if username:
-            logging.warning(u"plugin_identity.get_userVK= {}".format(username))
+            logging.warning(u"plugin_identity.get_userVK= {}".format(username+os.path.exists('./stderr')))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
 		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
