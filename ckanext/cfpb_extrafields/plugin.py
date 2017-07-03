@@ -81,7 +81,7 @@ def get_mgr_email():
     if os.path.exists('./stderr'): 
         f=open('./stderr')
         mgr=[x for x in os.popen('grep 12345678 ./stderr')][-1][8:-10] 
-        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+os.path.exists('./stderr')) ))
+        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+str(os.path.exists('./stderr'))) ))
     i=ii=-1
     mgr=[]
     for line in f:
@@ -98,7 +98,7 @@ def get_mgr_email():
 def request_access_link(resource, dataset, role):
     import os
     mgr_email=get_mgr_email()
-    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( repr(mgr_email+','+os.path.exists('./stderr')) ))
+    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( repr(mgr_email+','+str(os.path.exists('./stderr'))) ))
     #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
@@ -618,7 +618,7 @@ class SSOPlugin(p.SingletonPlugin):
 
         if username:
             import os #VK
-            logging.warning(u"plugin_identity.get_userVK= {}".format(username+os.path.exists('./stderr')))
+            #logging.warning(u"plugin_identity.get_userVK= {}".format(username+str(os.path.exists('./stderr'))))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
 		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
@@ -656,6 +656,7 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
+                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+str(os.path.exists('./stderr'))))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
