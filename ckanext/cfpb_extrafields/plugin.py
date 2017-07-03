@@ -62,43 +62,30 @@ def parse_resource_related_gist(data_related_items, resource_id):
 #VK
 def get_mgr_email():
     import os
-    #out = StringIO()
-    #logger_name = './stderr')
-    #logger.addHandler(StreamHandler(out))
-    #args=(sys.stdout,)
-    #LOG_FILENAME = './stderr'
-    #f=open(LOG_FILENAME,"rt")
-    #logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='rw')
     f=None
-    if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
-        f= open(      '/etc/httpd/log/ckan_default.error.log')
-    if os.path.exists('/var/log/apache/ckan_default.error.log'):
-	f= open(      '/var/log/apache/ckan_default.error.log')
-    if os.path.exists('/var/log/ckan_default.error.log'):
-	f= open(      '/var/log/ckan_default.error.log')
     if os.path.exists('/etc/httpd/ckan_default.error.log'): # vagrant VB centos
        	f= open(      '/etc/httpd/ckan_default.error.log')
-    if os.path.exists('./stderr'): 
-        f=open('./stderr')
-        mgr=[x for x in os.popen('grep 12345678 ./stderr')][-1][8:-10] 
-        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+str(os.path.exists('./stderr'))) ))
+    path_stderr = os.environ['PWD']+'/stderr'
+    if os.path.exists(path_stderr): 
+        f= open(path_stderr)
+        #mgr=[x for x in os.popen('grep 12345678 ./stderr')][-1][8:-10] 
+        #logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+str(os.path.exists('./stderr'))) ))
     i=ii=-1
     mgr=[]
     for line in f:
         i= line.find('12345678')+8
         if i!=-1: ii= line.find('123456789')
         if i!=-1 and ii!=-1:  mgr.append(str(line[i:ii]));i=ii=-1
-    #if f : logging.warning(u"f.get_mgr_emailVK= {}".format( repr(mgr[-1]) ))
-    if f : f.close()
+    logging.warning(u"f.get_mgr_emailVK= {}".format( repr(mgr[-1]) ))
+    f.close()
     if len(mgr)>0: return mgr[-1]
     return ''
 
 #mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
-    import os
     mgr_email=get_mgr_email()
-    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( repr(mgr_email+','+str(os.path.exists('./stderr'))) ))
+    logging.warning(u"plugin_request_access.request_accessVK= {}".format( repr(mgr_email) ))
     #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
@@ -656,7 +643,7 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+str(os.path.exists('./stderr'))))
+                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str(os.path.exists(os.environ['PWD']+'/stderr')) ))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
