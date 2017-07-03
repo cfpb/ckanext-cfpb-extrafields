@@ -62,7 +62,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 #VK
 def str_path():
     import os
-    return  str(os.environ['PWD']).split('runs')+'latest/stderr'
+    return  str(os.environ['PWD'])+'/stderr'
 def get_mgr_email():
     import os
     f=None
@@ -647,7 +647,7 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str((os.environ['PWD']).split('runs')[0]+'latest/stderr') ))
+                        logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str(os.environ['PWD'])+'/stderr' ))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
