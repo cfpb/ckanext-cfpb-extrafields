@@ -64,7 +64,7 @@ def get_mgr_email():
     import os
     LOG_FILENAME = './stderr'
     f=open(LOG_FILENAME)
-    logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='r+')
+    logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='rw')
     if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
         f= open(      '/etc/httpd/log/ckan_default.error.log')
     if os.path.exists('/var/log/apache/ckan_default.error.log'):
@@ -87,9 +87,9 @@ def get_mgr_email():
 #mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
-    #mgr_email=get_mgr_email()
-    #mgr_email=open('/tmp/info.txt').readlines()[-1]
-    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
+    mgr_email=get_mgr_email()
+    logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( mgr_email() ))
+    #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
@@ -645,7 +645,6 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-                        f.write(mgr3)
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
