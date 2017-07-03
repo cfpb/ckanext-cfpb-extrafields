@@ -96,6 +96,7 @@ def get_mgr_email():
 #mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
+    import os
     mgr_email=get_mgr_email()
     logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( repr(mgr_email+','+os.path.exists('./stderr')) ))
     #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
@@ -616,6 +617,7 @@ class SSOPlugin(p.SingletonPlugin):
         username = tk.request.headers.get(header_name)
 
         if username:
+            import os #VK
             logging.warning(u"plugin_identity.get_userVK= {}".format(username+os.path.exists('./stderr')))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
