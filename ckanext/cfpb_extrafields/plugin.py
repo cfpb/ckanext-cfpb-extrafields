@@ -11,7 +11,6 @@ import logging
 import json
 import urllib
 
-import logging #VK
 logging = logging.getLogger(__name__)#VK
 
 if hasattr(tk, "config"):
@@ -60,16 +59,19 @@ def parse_resource_related_gist(data_related_items, resource_id):
             urls.append( {'title':title,'url':url} )
     return urls
 
+#VK
 def get_mgr_email():
-    import os, sys
-    f=sys.stderr
+    import os
+    LOG_FILENAME = './stderr'
+    f=open(LOG_FILENAME)
+    logging.basicConfig(LOG_FILENAME, level=logging.DEBUG, filemode='r+')
     if os.path.exists('/etc/httpd/log/ckan_default.error.log'):
         f= open(      '/etc/httpd/log/ckan_default.error.log')
     if os.path.exists('/var/log/apache/ckan_default.error.log'):
 	f= open(      '/var/log/apache/ckan_default.error.log')
     if os.path.exists('/var/log/ckan_default.error.log'):
 	f= open(      '/var/log/ckan_default.error.log')
-    if os.path.exists('/etc/httpd/ckan_default.error.log'):
+    if os.path.exists('/etc/httpd/ckan_default.error.log'): # vagrant VB centos
        	f= open(      '/etc/httpd/ckan_default.error.log')
     logging.warning(u"f.get_mgr_emailVK= {}".format( repr(f) ))
     i=ii=-1
