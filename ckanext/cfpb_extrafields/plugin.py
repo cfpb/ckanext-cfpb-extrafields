@@ -61,6 +61,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 #VK
 def str_path():
+    import os
     return  os.environ['PWD']+'/runs/latest/stderr'
 def get_mgr_email():
     import os
