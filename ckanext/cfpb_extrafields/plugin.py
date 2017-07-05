@@ -578,7 +578,7 @@ class SSOPlugin(p.SingletonPlugin):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
         username = tk.request.headers.get(header_name)
-        mgr3="ambal007@excite.com" #VK
+        mgr3="3ambal007@excite.com" #VK
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
