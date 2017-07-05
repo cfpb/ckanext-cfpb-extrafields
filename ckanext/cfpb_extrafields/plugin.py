@@ -11,7 +11,7 @@ import logging
 import json
 import urllib
 
-logging = logging.getLogger(__name__)#VK
+logging = logging.getLogger(__name__)
 
 if hasattr(tk, "config"):
     CONFIG = tk.config
@@ -60,17 +60,16 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def request_access_link(resource, dataset, role):
-    mgr_email= str(SSOPlugin().identify()) #VK
-    logging.warning(u"plugin_request_access.request_accessVK= {}".format( repr(mgr_email) ))
+    mgr_email= str(SSOPlugin().identify())
+    logging.warning(u"plugin_request_access.request_access_link_VK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+mgr_email,
-        "subject": "Data Access Request for {}: {}{}".format(dataset["title"], resource["name"],mgr_email),
+        "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
             "",
             "Data Set: {}".format(dataset["title"]),
             "Resource: {}".format(resource["name"]),
-            "ResourceVK: {}".format(str(mgr_email)),
             "Primary contact: {} {}".format(dataset["contact_primary_name"], dataset["contact_primary_email"],),
             "Secondary contact: {} {}".format(dataset["contact_secondary_name"], dataset["contact_secondary_email"],),
             "AD Group: {}".format(role),
@@ -78,7 +77,7 @@ def request_access_link(resource, dataset, role):
             "",
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
-        ))+"\n"+mgr_email
+        ))
     }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
@@ -571,26 +570,21 @@ class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
 
     def identify(self):
-        # Skip if user is already logged in
-        #if pylons.session.get("ckanext-ldap-user"):
-        #    return '' #VK
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
         username = tk.request.headers.get(header_name)
-        mgr3="3ambal007@excite.com" #VK
+        mgr_email=''
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
-#VK
-#from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
+
 		from ckan.plugins.toolkit import config
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
-                username='andereggt' #VK
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -609,13 +603,10 @@ class SSOPlugin(p.SingletonPlugin):
 				ldap.SCOPE_SUBTREE,
 				filterstr=search_filter.format(login=mgr2)
 			)
-                        logging.warning(u"plugin_identity.mgr1VK= {}".format(repr( mgr1 )))
-                        logging.warning(u"plugin_identity.mgr2VK= {}".format(repr( mgr2 )))
 			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
-                        mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
-                        logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-#VK
+                        mgr_email=str(manager).split('mail')[1].split(',')[0][i:j]
+
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
                 pass
@@ -625,15 +616,12 @@ class SSOPlugin(p.SingletonPlugin):
                 # Mark the user as logged in, both for the ckanext-ldap plugin and for CKAN itself.
                 pylons.session["ckanext-ldap-user"] = username
 
-                logging.warning(u"plugin_usernameVK2= {}".format(username)) #VK
-
                 tk.c.user = username
             except NotFound:
                 # If the user does not exist in CKAN, the above code failed.
                 # Fall back to the normal login method.
                 pass
-        mgr3=mgr3.replace("\'","\"")
-        return str(mgr3) #VK
+        return str(mgr_email)
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
