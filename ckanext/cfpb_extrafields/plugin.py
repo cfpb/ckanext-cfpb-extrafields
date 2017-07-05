@@ -59,41 +59,11 @@ def parse_resource_related_gist(data_related_items, resource_id):
             urls.append( {'title':title,'url':url} )
     return urls
 
-#VK
-def str_path():
-    import os
-    return  str(os.environ['PWD'])+'/stderr'
-    #return identify() 
-
-def get_mgr_email():
-    import os
-    f=None
-    if os.path.exists('/etc/httpd/ckan_default.error.log'): # vagrant VB centos
-       	f= open(      '/etc/httpd/ckan_default.error.log')
-    #path_stderr = os.environ['PWD']+'/stderr'
-    path_stderr = str_path()
-    if os.path.exists(path_stderr): 
-        f= open(path_stderr)
-        mgr=[x for x in os.popen('grep 12345678 '+ path_stder)][-1][8:-10] 
-        logging.warning(u"f.get_mgr_emailVK1= {}".format( repr(mgr+','+str(os.path.exists(path_stderr))) ))
-    i=ii=-1
-    mgr=[]
-    for line in f:
-        i= line.find('12345678')+8
-        if i!=-1: ii= line.find('123456789')
-        if i!=-1 and ii!=-1:  mgr.append(str(line[i:ii]));i=ii=-1
-    logging.warning(u"f.get_mgr_emailVK= {}".format( repr(mgr[-1]) ))
-    f.close()
-    if len(mgr)>0: return mgr[-1]
-    return ''
-
-#mgr_email=get_mgr_email()
-
 def request_access_link(resource, dataset, role):
     mgr_email= str(SSOPlugin().identify()) #VK
     logging.warning(u"plugin_request_access.request_accessVK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+mgr_email,
         "subject": "Data Access Request for {}: {}{}".format(dataset["title"], resource["name"],mgr_email),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -608,22 +578,17 @@ class SSOPlugin(p.SingletonPlugin):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
         username = tk.request.headers.get(header_name)
-        mgr3='ambal007@excite.com' #VK
+        mgr3="ambal007@excite.com" #VK
         if username:
-            #logging.warning(u"plugin_identity.get_userVK= {}".format(username+str(os.path.exists('/stderr'))))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
-		from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 #VK
-                #logging.warning(u"plugin_identity.find_ldap_userVK= {}".format(repr(_find_ldap_user( username ) )))
-
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
-                #f=open('/tmp/info.txt','w') #VK
-                #username='andereggt' #VK
+                username='andereggt' #VK
                 with _get_ldap_connection() as connection:
 			base_dn = config["ckanext.ldap.base_dn"]
 			search_filter = config["ckanext.ldap.search.filter"]
@@ -648,7 +613,6 @@ class SSOPlugin(p.SingletonPlugin):
 			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
                         mgr3=str(manager).split('mail')[1].split(',')[0][i:j]
                         logging.warning(u"plugin_identity.mgr3VK= {}".format(repr( '12345678'+mgr3+'123456789' )))
-                        #logging.warning(u"plugin_identity.get_userVK= {}".format(username+' '+str(os.environ['PWD'])+'/stderr' ))
 #VK
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
@@ -666,7 +630,7 @@ class SSOPlugin(p.SingletonPlugin):
                 # If the user does not exist in CKAN, the above code failed.
                 # Fall back to the normal login method.
                 pass
-
+        mgr3=mgr3.replace("\'","\"")
         return str(mgr3) #VK
 
 class ExportPlugin(p.SingletonPlugin):
