@@ -603,7 +603,7 @@ class SSOPlugin(p.SingletonPlugin):
     def identify(self):
         # Skip if user is already logged in
         if pylons.session.get("ckanext-ldap-user"):
-            return
+            return '' #VK
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
