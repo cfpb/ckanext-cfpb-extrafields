@@ -63,7 +63,7 @@ def request_access_link(resource, dataset, role):
     mgr_email= str(SSOPlugin().identify())
     logging.warning(u"plugin_request_access.request_access_link_VK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+mgr_email,
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
