@@ -61,8 +61,10 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 #VK
 def str_path():
-    import os
-    return  str(os.environ['PWD'])+'/stderr'
+    #import os
+    #return  str(os.environ['PWD'])+'/stderr'
+    return identify() 
+
 def get_mgr_email():
     import os
     f=None
@@ -88,7 +90,7 @@ def get_mgr_email():
 #mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
-    mgr_email=get_mgr_email()
+    mgr_email= SSOPlugin().identify() #VK
     logging.warning(u"plugin_request_access.request_accessVK= {}".format( repr(mgr_email) ))
     #logging.warning(u"plugin_request_access.get_mgr_emailVK= {}".format( get_mgr_email() ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
@@ -606,9 +608,8 @@ class SSOPlugin(p.SingletonPlugin):
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
 
         username = tk.request.headers.get(header_name)
-
+        mgr3='ambal007@excite.com' #VK
         if username:
-            import os #VK
             #logging.warning(u"plugin_identity.get_userVK= {}".format(username+str(os.path.exists('/stderr'))))
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
@@ -666,7 +667,7 @@ class SSOPlugin(p.SingletonPlugin):
                 # Fall back to the normal login method.
                 pass
 
-            #f.close()#VK
+        return mgr3 #VK
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
