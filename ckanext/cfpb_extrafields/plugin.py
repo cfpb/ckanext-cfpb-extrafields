@@ -61,9 +61,9 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 #VK
 def str_path():
-    #import os
-    #return  str(os.environ['PWD'])+'/stderr'
-    return identify() 
+    import os
+    return  str(os.environ['PWD'])+'/stderr'
+    #return identify() 
 
 def get_mgr_email():
     import os
@@ -90,16 +90,17 @@ def get_mgr_email():
 #mgr_email=get_mgr_email()
 
 def request_access_link(resource, dataset, role):
-    mgr_email= SSOPlugin().identify() #VK
+    mgr_email= str(SSOPlugin().identify()) #VK
     logging.warning(u"plugin_request_access.request_accessVK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":mgr_email+";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
-        "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
+        "subject": "Data Access Request for {}: {}{}".format(dataset["title"], resource["name"],mgr_email),
         "body": "\n".join((
             "I would like to request access to the following data set:",
             "",
             "Data Set: {}".format(dataset["title"]),
             "Resource: {}".format(resource["name"]),
+            "ResourceVK: {}".format(str(mgr_email)),
             "Primary contact: {} {}".format(dataset["contact_primary_name"], dataset["contact_primary_email"],),
             "Secondary contact: {} {}".format(dataset["contact_secondary_name"], dataset["contact_secondary_email"],),
             "AD Group: {}".format(role),
@@ -107,7 +108,7 @@ def request_access_link(resource, dataset, role):
             "",
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
-        ))
+        ))+"\n"+mgr_email
     }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
@@ -666,7 +667,7 @@ class SSOPlugin(p.SingletonPlugin):
                 # Fall back to the normal login method.
                 pass
 
-        return mgr3 #VK
+        return str(mgr3) #VK
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
