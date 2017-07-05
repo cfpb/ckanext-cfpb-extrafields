@@ -585,6 +585,8 @@ class SSOPlugin(p.SingletonPlugin):
 		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
 #VK
+#from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
+		from ckan.plugins.toolkit import config
 		from ckanext.ldap.controllers.user import _get_ldap_connection 
 		import ldap
 		import ldap.filter
