@@ -91,7 +91,7 @@ def clean_select_multi(s):
         return s
     s = s.lstrip('{').rstrip('}')
     clean = []
-    cleanest=[] #VK
+    cleaner=[] #VK
     left = 0
     right = 1
     while right < len(s):
@@ -106,10 +106,11 @@ def clean_select_multi(s):
         else:
             if s[right]==",":
                 # hit a comma: append and skip the comma
+                #VK clean.append(s[left:right])
                 clean.append(s[left:right]+",")#VK
+                cleaner.append(clean) #VK
                 left = right+1 
                 right = right+2
-                cleanest.append(clean) #VK
             else:
                 right = right+1
     if s[left]=="\"":
@@ -117,10 +118,13 @@ def clean_select_multi(s):
         clean.append(s[left+1:-1])
     else:
         clean.append(s[left:])
-
-    return [' '.join(cleanest[0])] #VK
-    #VKreturn clean
-
+    if len(cleaner)>0:#VK
+        ss=' '.join(cleaner[0]) #VK
+    else: #VK
+        ss=' '.join(cleaner) #VK
+    if ss.find(',')!=-1: #VK
+        return [ss] #VK
+    return clean
 
 ROLE_PREFIX = "db_role_level_"
 DESC_PREFIX = "db_desc_level_"
