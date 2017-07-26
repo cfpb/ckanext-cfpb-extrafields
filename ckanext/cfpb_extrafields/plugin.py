@@ -311,6 +311,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
+            'access_id' : [tk.get_validator('ignore_missing'),#VK
+                                                tk.get_converter('convert_to_extras'),],#VK
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -433,6 +435,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                  tk.get_validator('ignore_missing'),],
             'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
                                       tk.get_validator('ignore_missing'),],
+            'access_id' : [tk.get_converter('convert_from_extras'),#VK
+                                      tk.get_validator('ignore_missing'),],#VK
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],

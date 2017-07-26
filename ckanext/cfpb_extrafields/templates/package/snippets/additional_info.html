@@ -269,6 +269,12 @@
             <td class="dataset-details">{{ pkg_dict.pra_omb_expiration_date }}</td>
           </tr>
         {% endif %}
+        {% if pkg_dict.access_id %}
+        <tr>
+        <th scope="row" class="dataset-label">{{ _("Access ID") }} </th>
+        <td class="dataset-details">{{ pkg_dict.access_id }} </td>
+        </tr>
+        {% endif %}
         {% if pkg_dict.privacy_contains_pii %}
         <tr>
         <th scope="row" class="dataset-label">{{ _("privacy: contains PII") }} </th>
