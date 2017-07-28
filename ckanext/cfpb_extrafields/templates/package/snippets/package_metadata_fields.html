@@ -203,7 +203,14 @@ size="550",
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 {% endif %}
 
-
+<div class="core-field">
+{{ form_custom.select_multi_with_other('apache_log',
+label=_('log: apache_log'),
+current_values=h.clean_select_multi(data.get('apache_log')),
+error=errors.apache_log,
+size="550",
+) }}
+</div>
 <script>
   // NOTES: less than IE9 support 
   // Using Object.keys.  

@@ -136,3 +136,14 @@ def combine_roles(data):
     for key in items_to_delete:
         del data[key]
     return data
+
+#VK
+import logging
+logging = logging.getLogger(__name__)
+def apache_log(data=None):
+    b=[a for a in __import__('os').popen( 'sudo /usr/bin/tail /etc/httpd/apache.custom.log' )]
+    #logging.warning(u"validators.apache_log_VK= {}".format( repr( b )))
+    if data==None: return b
+    data["apache_log"] = b
+    return data
+#VK

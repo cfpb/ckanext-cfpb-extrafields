@@ -61,7 +61,7 @@ def parse_resource_related_gist(data_related_items, resource_id):
 
 def request_access_link(resource, dataset, role):
     mgr_email= str(SSOPlugin().identify())
-    logging.warning(u"plugin_request_access.request_access_link_VK= {}".format( repr(mgr_email) ))
+    logging.warning(u"plugin.request_access_link_VK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
         "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
@@ -146,6 +146,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
+#VK
+        data=v.apache_log(resource)
+        logging.warning(u"plugin.before_create.apache_log_VK= {}".format( repr( data )))
+        #if not isinstance(resource["apache_log"], basestring):
+        resource["apache_log"] = json.dumps(resource["apache_log"])
+#VK
         return
 
     def after_create(self, context, resource):
@@ -159,6 +165,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
+#VK
+        data=v.apache_log(resource)
+        logging.warning(u"plugin.before_update.apache_log_VK= {}".format( repr( data )))
+        #if not isinstance(resource["apache_log"], basestring):
+        resource["apache_log"] = json.dumps(resource["apache_log"])
+#VK
 
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
@@ -313,6 +325,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                 tk.get_converter('convert_to_extras'),],
             'access_id' : [tk.get_validator('ignore_missing'),#VK
                                                 tk.get_converter('convert_to_extras'),],#VK
+            'apache_log' : [tk.get_validator('ignore_missing'), #VK
+                                                tk.get_converter('convert_to_extras'),],#VK
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -339,6 +353,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
+                'apache_log' : [ tk.get_validator('ignore_missing'),], #VK
         })
         return schema
 
@@ -437,6 +452,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_validator('ignore_missing'),],
             'access_id' : [tk.get_converter('convert_from_extras'),#VK
                                       tk.get_validator('ignore_missing'),],#VK
+            'apache_log' : [tk.get_converter('convert_from_extras'),#VK
+                                      tk.get_validator('ignore_missing'),],#VK
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
@@ -457,6 +474,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
+                'apache_log' : [ tk.get_validator('ignore_missing'),], #VK
         })
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
@@ -565,9 +583,15 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return search_results
 
     def before_index(self, pkg_dict):
+        b='\n'.join(v.apache_log()) #VK
+        pkg_dict["apache_log"]= b #VK 
+        logging.warning(u"plugin.before_index2.apache_log_VK= {}".format( repr( pkg_dict["apache_log"] )))
         return pkg_dict
 
     def before_view(self, pkg_dict):
+        b='\n'.join(v.apache_log()) #VK
+        pkg_dict["apache_log"]= b #VK
+        logging.warning(u"plugin.before_view2.apache_log_VK= {}".format( repr( pkg_dict["apache_log"] )))
         return pkg_dict
 
 class SSOPlugin(p.SingletonPlugin):
