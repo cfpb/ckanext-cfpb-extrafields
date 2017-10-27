@@ -44,7 +44,7 @@ FIELDS = [
     ("legal_authority_for_collection", "Legal authority for collection"),
     ("relevant_governing_documents", "Relevant governing documents"),
     ("initial_purpose_for_intake", "Initial purpose for intake"),
-    ("pra_exclusion", "PRA exclusion"),
+    ("pra_exclusion", "PRA exemption"),
     ("pra_omb_control_number", "PRA: OMB control number"),
     ("pra_omb_expiration_date", "PRA: OMB expiration date"),
     ("privacy_contains_pii", "Privacy: contains PII?"),
