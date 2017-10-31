@@ -16,10 +16,9 @@ class GroupNotFound(Exception):
 def get_datasource(source_id):
     response = get_action("package_show")({}, {"id", source_id})
     return response
-    # return response["result"]
 
 def make_roles(cns):
-    #get the roles
+    # Get the roles
     data_dict = {
         "query": "resource_type:",
         "limit": 9999,
@@ -89,7 +88,6 @@ def get_user_group_cns(username, base_dns, connection):
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
-        # ou = request.params.get("ou")
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
