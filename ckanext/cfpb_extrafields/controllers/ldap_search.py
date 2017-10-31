@@ -23,7 +23,7 @@ def get_datasource(source_id):
     return response
 
 def make_roles(cns):
-    #get the roles
+    # Get the roles
     data_dict = {
         "query": "resource_type:",
         "limit": 9999,
