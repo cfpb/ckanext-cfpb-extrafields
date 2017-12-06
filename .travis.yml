@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 install:
-  - pip install -r requirements-test.txt --use-mirrors
+  - pip install -r requirements-test.txt
   - npm install
 script:
   - nosetests -s --with-coverage --cover-package=ckanext.cfpb_extrafields.validators --cover-package=ckanext.cfpb_extrafields.digutils --cover-package=ckanext.cfpb_extrafields.exportutils --with-xunit --xunit-file=nosetests.xml
