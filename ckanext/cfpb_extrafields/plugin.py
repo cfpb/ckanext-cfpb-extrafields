@@ -8,6 +8,7 @@ import options as opts
 import datastore_actions as ds
 import collections
 import logging
+import json
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -65,12 +66,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         for key in check_keys}
 
     def _redirect_to_edit_on_change(self, resource, field):
-        if self.changed[field]:
+        if hasattr(self, "changed") and self.changed[field]:
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
 
     def _delete_and_rebuild_datadict(self, resource):
-        import json
         import unicodedata
 
         if 'datadict' in resource and 'id' in resource:
@@ -118,6 +118,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 # send a notification of change by email
 
     def before_create(self, context, resource):
+        v.combine_roles(resource)
+        if not isinstance(resource["db_roles"], basestring):
+            resource["db_roles"] = json.dumps(resource["db_roles"])
         return
 
     def after_create(self, context, resource):
@@ -128,6 +131,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         return
 
     def before_update(self, context, current, resource):
+        v.combine_roles(resource)
+        if not isinstance(resource["db_roles"], basestring):
+            resource["db_roles"] = json.dumps(resource["db_roles"])
+
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
         if current.get('resource_type', '') == 'Data Dictionary' \
@@ -172,9 +179,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
 
-                'create_datastore':ds.create_datastore,
-                'get_unique_datastore_json':ds.get_unique_datastore_json,
-                'delete_datastore_json':ds.delete_datastore_json,
+                'create_datastore': ds.create_datastore,
+                'get_unique_datastore_json': ds.get_unique_datastore_json,
+                'delete_datastore_json': ds.delete_datastore_json,
+                'json_loads': json.loads,
+                'get_action': tk.get_action,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,
@@ -291,6 +300,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'database_server' : [ tk.get_validator('ignore_missing'),],
                 'database_name' : [ tk.get_validator('ignore_missing'),],
                 'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_roles' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
@@ -406,6 +416,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'database_server' : [ tk.get_validator('ignore_missing'),],
                 'database_name' : [ tk.get_validator('ignore_missing'),],
                 'database_schema' : [ tk.get_validator('ignore_missing'),],
+                'db_roles' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_1' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_2' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_3' : [ tk.get_validator('ignore_missing'),],
@@ -503,9 +514,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def after_create(self, context, pkg_dict):
         pass
 
-    def after_update(self, context, pkg_dict):
-        pass
-
     def after_delete(self, context, pkg_dict):
         pass
 
@@ -572,4 +580,12 @@ class DigImportPlugin(p.SingletonPlugin):
     def after_map(self, map):
         map.connect("import_page", "/import/{group}", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="index")
         map.connect("import_upload", "/import-upload", controller="ckanext.cfpb_extrafields.controllers.digimport:ImportController", action="upload", method="POST")
+        return map
+
+class LdapQueryPlugin(p.SingletonPlugin):
+    p.implements(p.IRoutes, inherit=True)
+
+    def after_map(self, map):
+        map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
+        map.connect("user_groups", "/ldap/groups", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_groups")
         return map

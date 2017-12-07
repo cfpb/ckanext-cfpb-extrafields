@@ -24,8 +24,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "openpyxl",
         "lxml",
+        "openpyxl",
     ],
     entry_points='''
         [ckan.plugins]
@@ -33,5 +33,6 @@ setup(
         ckanext_cfpb_sso=ckanext.cfpb_extrafields.plugin:SSOPlugin
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
         ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:DigImportPlugin
+        ckanext_cfpb_ldap_query=ckanext.cfpb_extrafields.plugin:LdapQueryPlugin
     ''',
 )

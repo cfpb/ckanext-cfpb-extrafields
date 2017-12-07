@@ -1,0 +1,24 @@
+{% extends "page.html" %}
+
+{% block primary_content %}
+  <h2>LDAP Search</h2>
+  {% if error_message %}
+  Error: {{error_message}}
+  {% else %}
+    <h3>DNs:</h3>
+    <ul>
+      {% for dn in dns %}
+      <li>{{dn}}</li>
+      {% endfor %}
+    </ul>
+    <h3>CN: {{cn}}</h3>
+    <h3>Users:</h3>
+    <table>
+    {% for user in usernames %}
+      <tr><td>
+        {{user}}
+      </td></tr>
+    {% endfor %}
+    </table>
+  {% endif %}
+{% endblock %}

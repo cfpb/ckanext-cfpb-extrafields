@@ -160,12 +160,34 @@
             </tbody>
          </table>
 
-        {% if res.db_role_level_1 %}
+        {% if res.db_roles %}
+        {% set roles = h.json_loads(res.db_roles or "[]") %}
         <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Role") }}</th>
                 <th class="dataset-details">{{ _("Description") }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for role, desc in roles %}   
+                {% if role %}
+                  <tr>
+                    <th scope="row" class="dataset-label">{{ role }}</th>
+                    <td class="dataset-details">{{ desc }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if res.db_role_level_1 %}
+        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+            <thead>
+              <tr>
+                <th scope="row" class="dataset-label">{{ _("Old Role") }}</th>
+                <th class="dataset-details">{{ _("Old Description") }}</th>
               </tr>
             </thead>
             <tbody>
