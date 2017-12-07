@@ -282,6 +282,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                    tk.get_converter('convert_to_extras'),],
             'privacy_contains_pii' : [tk.get_validator('ignore_missing'),
                                       tk.get_converter('convert_to_extras'),],
+            'privacy_contains_ssn' : [tk.get_validator('ignore_missing'),
+                                      tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
         })
@@ -401,6 +403,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'sensitivity_level' : [ tk.get_converter('convert_from_extras'),
                                     tk.get_validator('ignore_missing'),],
             'privacy_contains_pii' : [ tk.get_converter('convert_from_extras'),
+                                       tk.get_validator('ignore_missing'),],
+            'privacy_contains_ssn' : [ tk.get_converter('convert_from_extras'),
                                        tk.get_validator('ignore_missing'),],
             'privacy_has_direct_identifiers' : [ tk.get_converter('convert_from_extras'),
                                                  tk.get_validator('ignore_missing'),],
