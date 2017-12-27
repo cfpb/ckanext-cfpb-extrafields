@@ -147,7 +147,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # self._email_on_change(context,resource,'privacy_contains_pii')
         self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys
-        if hasattr(self, "changed")
+        if hasattr(self, "changed"):
             for key in self.changed:
                 self.changed[key] = False
 
