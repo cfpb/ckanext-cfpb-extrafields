@@ -47,7 +47,7 @@ FIELDS = [
     ("pra_exclusion", "PRA exemption"),
     ("pra_omb_control_number", "PRA: OMB control number"),
     ("pra_omb_expiration_date", "PRA: OMB expiration date"),
-    ("privacy_contains_ssn", "Privacy: contains PII?"),
+    ("privacy_contains_pii", "Privacy: contains PII?"),
     ("privacy_contains_ssn", "Privacy: contains SSN?"),
     ("privacy_has_direct_identifiers", "Privacy: has direct identifiers?"),
     ("privacy_has_privacy_act_statement", "Privacy: has privacy act statement?"),
@@ -108,5 +108,8 @@ def to_csv(data, fields, fieldmap=tuple(FIELDS)):
     writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
     writer.writerow(dict(fieldmap))
     for result in data:
-        writer.writerow(flatten(result))
+        row = flatten(result)
+        #If blank, default to "No"
+        row["privacy_contains_ssn"] = row.get("privacy_contains_ssn") or "No"
+        writer.writerow(row)
     return output.getvalue()
