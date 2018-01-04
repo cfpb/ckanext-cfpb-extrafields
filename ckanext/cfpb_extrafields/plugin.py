@@ -128,7 +128,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     # than the default notification that CKAN provides. It is not currently used.
     def _email_on_change(self, context, resource, field):
         # if specified fields have changed notify the relevant people
-        if self.changed.get(field):
+        if hasattr(self, "changed") and self.changed[field]:
             # print 'trigger email on change to '+field
             # filter by dataset name?
             followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
@@ -168,8 +168,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         # self._email_on_change(context,resource,'privacy_contains_pii')
         self._redirect_to_edit_on_change(resource, 'resource_type')
         # reset monitored keys
-        for key in self.changed:
-            self.changed[key] = False
+        if hasattr(self, "changed"):
+            for key in self.changed:
+                self.changed[key] = False
 
     def before_delete(self, context, resource, resources):
         return
@@ -305,6 +306,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                    tk.get_converter('convert_to_extras'),],
             'privacy_contains_pii' : [tk.get_validator('ignore_missing'),
                                       tk.get_converter('convert_to_extras'),],
+            'privacy_contains_ssn' : [tk.get_validator('ignore_missing'),
+                                      tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
         })
@@ -424,6 +427,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'sensitivity_level' : [ tk.get_converter('convert_from_extras'),
                                     tk.get_validator('ignore_missing'),],
             'privacy_contains_pii' : [ tk.get_converter('convert_from_extras'),
+                                       tk.get_validator('ignore_missing'),],
+            'privacy_contains_ssn' : [ tk.get_converter('convert_from_extras'),
                                        tk.get_validator('ignore_missing'),],
             'privacy_has_direct_identifiers' : [ tk.get_converter('convert_from_extras'),
                                                  tk.get_validator('ignore_missing'),],
