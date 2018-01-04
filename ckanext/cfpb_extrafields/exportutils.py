@@ -109,7 +109,7 @@ def to_csv(data, fields, fieldmap=tuple(FIELDS)):
     writer.writerow(dict(fieldmap))
     for result in data:
         row = flatten(result)
-        #If blank, default to "No"
-        row["privacy_contains_ssn"] = row.get("privacy_contains_ssn") or "No"
+        #If blank, default to "no"
+        row["privacy_contains_ssn"] = row.get("privacy_contains_ssn") or "no"
         writer.writerow(row)
     return output.getvalue()
