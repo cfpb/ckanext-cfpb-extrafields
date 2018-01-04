@@ -157,6 +157,12 @@ current_value=data.privacy_contains_pii,
 error=errors.privacy_contains_pii)}}
 </div>
 
+<div class='core-field'>
+{{ form_custom.radio('privacy_contains_ssn',
+label=_('privacy: contains SSN?'),
+current_value=data.privacy_contains_ssn,
+error=errors.privacy_contains_ssn)}}
+</div>
 {{ form_custom.radio('privacy_has_direct_identifiers',
 label=_('privacy: has direct identifiers?'),
 current_value=data.privacy_has_direct_identifiers)}}
