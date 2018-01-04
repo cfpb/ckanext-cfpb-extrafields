@@ -5,16 +5,21 @@ the code can be updated to support private datasets.
 """
 import json
 
-from ckan.plugins.toolkit import BaseController, config, get_action, render, request
-from ckanext.ldap.controllers.user import _get_ldap_connection
+from ckan.plugins.toolkit import BaseController, NotAuthorized, ObjectNotFound, abort, c, config, check_access, get_action, h, render, request
+from ckanext.ldap.controllers.user import _get_ldap_connection, _find_ldap_user, _get_or_create_ldap_user
 import ldap
 import ldap.filter
+
+import logging
 
 class GroupNotFound(Exception):
     pass
 
+def context():
+    return {"user": c.user}
+
 def get_datasource(source_id):
-    response = get_action("package_show")({}, {"id", source_id})
+    response = get_action("package_show")({}, {"id": source_id})
     return response
 
 def make_roles(cns):
@@ -33,10 +38,17 @@ def make_roles(cns):
         for role_cn, role_desc in roles:
             if role_cn in role_dict:
                 if datasource is None:
-                    datasource = get_datasource(resource["package_id"])
+                    try:
+                        datasource = get_datasource(resource["package_id"])
+                    except:
+                        logging.error(u"ERROR while getting datasource for resource {}".format(repr(resource)))
+                        continue
                 role_dict[role_cn].append({
                     "source_id": resource["package_id"],
+                    "resource_id": resource["id"],
+                    "resource_name": resource["name"],
                     "source_name": datasource["title"],
+                    "owner_org": datasource["owner_org"],
                     "source_url": "/dataset/"+datasource["name"],
                     "description": role_desc,
                 })
@@ -83,6 +95,18 @@ def get_user_group_cns(username, base_dns, connection):
         )
     return sorted(cns)
 
+def check_editor_access(orgs):
+    allowed_orgs = 0
+    for org in orgs:
+        try:
+            check_access("package_create", context(), {"owner_org": org})
+            allowed_orgs += 1
+        except NotAuthorized:
+            pass
+    if allowed_orgs > 0:
+        return True
+    else:
+        raise NotAuthorized()
 
 
 class LdapSearchController(BaseController):
@@ -91,9 +115,22 @@ class LdapSearchController(BaseController):
         base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
         base_dns = base_dn_string.split("|")
         cn = request.params.get("cn")
+        roles = make_roles([cn])
+
+        # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
+        owner_orgs = set((role["owner_org"] for role in roles.values()[0]))
+        try:
+            check_access("sysadmin", context())
+        except NotAuthorized:
+            try: 
+                check_editor_access(owner_orgs)
+            except NotAuthorized:
+                abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
+
         extra = {
             "dns": base_dns,
             "cn": cn,
+            "roles": roles,
             "error_message": "",
         }
         try:
@@ -101,16 +138,49 @@ class LdapSearchController(BaseController):
                 extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
         except GroupNotFound:
             extra["error_message"] = "Group Not Found"
+        except:
+            extra["error_message"] = "Something went wrong while querying for users. This may be becasue the group has more users than AD's query size limit."
 
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
-    def user_groups(self):
-        """"""
-        username = request.params.get("username")
+    def user_ldap_groups(self, username):
+        """Lookup a user and get their LDAP groups and the corresponding datasets"""
+        c.is_sysadmin = False
+        if c.user.lower() != username.lower():
+            try:
+                check_access("sysadmin", context())
+                c.is_sysadmin = True
+            except NotAuthorized:
+                abort(403, "You can only view your own user page unless you're a sysadmin")
         base_dns = config.get("ckanext.cfpb_ldap_query.base_dns").split("|")
         with _get_ldap_connection() as connection:
             cns = get_user_group_cns(username, base_dns, connection)
         roles = make_roles(cns)
+
+        #Make sure the ckan user exists
+        ldap_user = _find_ldap_user(username)
+        if not ldap_user:
+            abort(404, "User not found in LDAP")
+        try:
+            _get_or_create_ldap_user(ldap_user)
+        except:
+            abort(500, "could not create CKAN user")
+
+        try:
+            user_dict = get_action("user_show")(context(), {
+                "id": username,
+                 "user_obj": c.userobj,
+                 "include_datasets": True,
+                 "include_num_followers": True})
+        except ObjectNotFound:
+            abort(404, "User not found")
+        except NotAuthorized:
+            abort(403, "Not authorized to see this page")
+
+        c.is_myself = username == c.user
+        c.user_dict = user_dict
+        c.about_formatted = h["render_markdown"](user_dict["about"])
+
         extra = {
             "username": username,
             "cns": cns,
