@@ -269,6 +269,12 @@
             <td class="dataset-details">{{ pkg_dict.pra_omb_expiration_date }}</td>
           </tr>
         {% endif %}
+        {% if pkg_dict.access_id %}
+        <tr>
+        <th scope="row" class="dataset-label">{{ _("Access ID") }} </th>
+        <td class="dataset-details">{{ pkg_dict.access_id }} </td>
+        </tr>
+        {% endif %}
         {% if pkg_dict.privacy_contains_pii %}
         <tr>
         <th scope="row" class="dataset-label">{{ _("privacy: contains PII") }} </th>
@@ -321,12 +327,18 @@
             <td class="dataset-details">{{ pkg_dict.procurement_document_id }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.cleansing_rules_used and false %}
+        {% if pkg_dict.apache_log %}
+         <tr>
+          <th scope="row" class="dataset-label">{{ _("apache_log") }}</th>
+        <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.apache_log) %} {{i}}; {% endfor %}</td>
+         </tr>
+        {% endif %}
+        {#% if pkg_dict.cleansing_rules_used and false %}
         <tr>
           <th scope="row" class="dataset-label">{{ _("cleansing rules used") }}</th>
           <td class="dataset-details">{{ h.render_markdown(pkg_dict.cleansing_rules_used) }}</td>
         </tr>
-        {% endif %}
+        {% endif %#}
 
         </tbody>
       </table>

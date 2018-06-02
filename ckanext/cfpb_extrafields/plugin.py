@@ -11,6 +11,8 @@ import logging
 import json
 import urllib
 
+logging = logging.getLogger(__name__)
+
 if hasattr(tk, "config"):
     CONFIG = tk.config
 else:
@@ -58,8 +60,10 @@ def parse_resource_related_gist(data_related_items, resource_id):
     return urls
 
 def request_access_link(resource, dataset, role):
+    mgr_email= str(SSOPlugin().identify())
+    logging.warning(u"plugin.request_access_link_VK= {}".format( repr(mgr_email) ))
     return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
-        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr))+";"+mgr_email,
         "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
         "body": "\n".join((
             "I would like to request access to the following data set:",
@@ -142,6 +146,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
+#VK
+        data=v.apache_log(resource)
+        logging.warning(u"plugin.before_create.apache_log_VK= {}".format( repr( data )))
+        #if not isinstance(resource["apache_log"], basestring):
+        resource["apache_log"] = json.dumps(resource["apache_log"])
+#VK
         return
 
     def after_create(self, context, resource):
@@ -155,6 +165,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         v.combine_roles(resource)
         if not isinstance(resource["db_roles"], basestring):
             resource["db_roles"] = json.dumps(resource["db_roles"])
+#VK
+        data=v.apache_log(resource)
+        logging.warning(u"plugin.before_update.apache_log_VK= {}".format( repr( data )))
+        #if not isinstance(resource["apache_log"], basestring):
+        resource["apache_log"] = json.dumps(resource["apache_log"])
+#VK
 
         # note keys that have changed (current is old, resource is new)
         self._which_check_keys_changed(current, resource)
@@ -310,6 +326,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
+            'access_id' : [tk.get_validator('ignore_missing'),#VK
+                                                tk.get_converter('convert_to_extras'),],#VK
+            'apache_log' : [tk.get_validator('ignore_missing'), #VK
+                                                tk.get_converter('convert_to_extras'),],#VK
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -336,6 +356,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
+                'apache_log' : [ tk.get_validator('ignore_missing'),], #VK
         })
         return schema
 
@@ -434,6 +455,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                  tk.get_validator('ignore_missing'),],
             'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
                                       tk.get_validator('ignore_missing'),],
+            'access_id' : [tk.get_converter('convert_from_extras'),#VK
+                                      tk.get_validator('ignore_missing'),],#VK
+            'apache_log' : [tk.get_converter('convert_from_extras'),#VK
+                                      tk.get_validator('ignore_missing'),],#VK
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
@@ -454,6 +479,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'db_role_level_7' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_8' : [ tk.get_validator('ignore_missing'),],
                 'db_role_level_9' : [ tk.get_validator('ignore_missing'),],
+                'apache_log' : [ tk.get_validator('ignore_missing'),], #VK
         })
         # this prevents vocabulary tags from polluting the free tag namespace somehow
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
@@ -556,33 +582,64 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
         if 'facet.field' in search_params and 'sort' not in search_params:
             search_params['sort'] = "title_string asc"
             print('Modded')
-
         return search_params
 
     def after_search(self, search_results, search_params):
         return search_results
 
     def before_index(self, pkg_dict):
+        b='\n'.join(v.apache_log()) #VK
+        pkg_dict["apache_log"]= b #VK 
+        logging.warning(u"plugin.before_index2.apache_log_VK= {}".format( repr( pkg_dict["apache_log"] )))
         return pkg_dict
 
     def before_view(self, pkg_dict):
+        b='\n'.join(v.apache_log()) #VK
+        pkg_dict["apache_log"]= b #VK
+        logging.warning(u"plugin.before_view2.apache_log_VK= {}".format( repr( pkg_dict["apache_log"] )))
         return pkg_dict
 
 class SSOPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
 
     def identify(self):
-        # Skip if user is already logged in
-        if pylons.session.get("ckanext-ldap-user"):
-            return
 
         header_name = CONFIG.get("ckanext.cfpb_sso.http_header", "From")
+
         username = tk.request.headers.get(header_name)
+        mgr_email=''
         if username:
             # Create the user record in CKAN if it doesn't exist (if this is the first time ever that the user is visiting the Data Catalog.)
             try:
-                from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
+		from ckanext.ldap.controllers.user import _find_ldap_user, _get_or_create_ldap_user
                 _get_or_create_ldap_user(_find_ldap_user(username))
+
+		from ckan.plugins.toolkit import config
+		from ckanext.ldap.controllers.user import _get_ldap_connection 
+		import ldap
+		import ldap.filter
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
+			results = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr=search_filter.format(login=username)
+			)
+                        mgr1=str(results)[str(results).find('manager')+11:str(results).find(']',str(results).find('manager')+11)]
+                        mgr2=mgr1.split(',')[0].split('=')[1].lower().strip(' \\')+ mgr1.split(',')[1].split(' ')[1].lower()[0]
+                with _get_ldap_connection() as connection:
+			base_dn = config["ckanext.ldap.base_dn"]
+			search_filter = config["ckanext.ldap.search.filter"]
+			manager = connection.search_s(
+				base_dn,
+				ldap.SCOPE_SUBTREE,
+				filterstr=search_filter.format(login=mgr2)
+			)
+			i= str(manager).split('mail')[1].split(',')[0].find('[') +1
+			j= str(manager).split('mail')[1].split(',')[0].find(']',str(manager).split('mail')[1].split(',')[0].find('[') )
+                        mgr_email=str(manager).split('mail')[1].split(',')[0][i:j]
+
             except ImportError, err:
                 logging.warning("Single sign-on plugin could not import ckanext-ldap. Plugin may not function properly.")
                 pass
@@ -591,11 +648,13 @@ class SSOPlugin(p.SingletonPlugin):
                 tk.get_action("user_show")({}, {"id": username})
                 # Mark the user as logged in, both for the ckanext-ldap plugin and for CKAN itself.
                 pylons.session["ckanext-ldap-user"] = username
+
                 tk.c.user = username
             except NotFound:
                 # If the user does not exist in CKAN, the above code failed.
                 # Fall back to the normal login method.
                 pass
+        return str(mgr_email)
 
 class ExportPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)

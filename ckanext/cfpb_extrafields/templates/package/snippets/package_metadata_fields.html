@@ -150,6 +150,10 @@ error=errors.pra_exclusion,) }}
 
 {{ form.input('pra_omb_expiration_date', type='date', label=_("PRA: OMB expiration date"), placeholder="eg 2012-12-21", value=data.pra_omb_expiration_date, error=errors.pra_omb_expiration_date) }}
 
+<div class="core-field">
+{{ form.input('access_id', label=_("ACCESS_ID: access_id"), placeholder="####-####", value=data.access_id, error=errors.access_id) }}
+</div>
+
 <div class='core-field'>
 {{ form_custom.radio('privacy_contains_pii',
 label=_('privacy: contains PII?'),
@@ -205,7 +209,14 @@ size="550",
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 {% endif %}
 
-
+<div class="core-field">
+{{ form_custom.select_multi_with_other('apache_log',
+label=_('log: apache_log'),
+current_values=h.clean_select_multi(data.get('apache_log')),
+error=errors.apache_log,
+size="550",
+) }}
+</div>
 <script>
   // NOTES: less than IE9 support 
   // Using Object.keys.  
@@ -231,6 +242,7 @@ size="550",
       "pra_exclusion": "If applicable, the reason for being exempt from Paperwork Reduction Act",
       "pra_omb_control_number": "The number assigned from OMB, if the information collection needed approval by the OMB under the Paperwork Reduction Act (PRA). See the PRA wiki page for more information http://team.cfpb.local/wiki/index.php/Paperwork_Reduction_Act_-_PRA",
       "pra_omb_expiration_date": "If applicable, the expiration date of the OMB control number from OMB",
+      "access_id": "If applicable, this id is manually filled now and will help for data migration from Access DB to Ckan DB"
       "privacy_contains_pii": "Does this dataset contain personally identifiable information?",
       "privacy_has_direct_identifiers": "Does this dataset contain direct personal identifiers (e.g. name, address, etc.)?",
       "privacy_has_privacy_act_statement": "Is there a related Privacy Act Statement?",

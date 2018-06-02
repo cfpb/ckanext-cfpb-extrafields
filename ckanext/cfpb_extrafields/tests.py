@@ -28,6 +28,8 @@ class TestValidators(unittest.TestCase):
         (["foo"],["foo"]),
     ])
     def test_clean_select_multi(self, ms, expected):
+        print ms
+        print expected
         assert_equal(v.clean_select_multi(ms), expected)
 
         
@@ -134,10 +136,10 @@ class TestValidators(unittest.TestCase):
             v.pra_control_num_validator(input)
 
     @parameterized.expand([
-        ({}, {"db_roles": []}),
+        ({}, {}),
         (
             {"db_role_level_1": "role1", "db_role_level_3": "role_3", "db_desc_level_3": "desc3"},
-            {"db_roles": [["role1", ""], ["role_3", "desc3"], ]}
+            {"db_roles": [("role1", ""), ("role_3", "desc3"), ]}
         ),
     ])
     def test_combine_roles(self, data, expected):

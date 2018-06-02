@@ -91,6 +91,7 @@ def clean_select_multi(s):
         return s
     s = s.lstrip('{').rstrip('}')
     clean = []
+    cleaner=[] #VK
     left = 0
     right = 1
     while right < len(s):
@@ -105,8 +106,10 @@ def clean_select_multi(s):
         else:
             if s[right]==",":
                 # hit a comma: append and skip the comma
-                clean.append(s[left:right])
-                left = right+1
+                #VK clean.append(s[left:right])
+                clean.append(s[left:right]+",")#VK
+                cleaner.append(clean) #VK
+                left = right+1 
                 right = right+2
             else:
                 right = right+1
@@ -115,8 +118,13 @@ def clean_select_multi(s):
         clean.append(s[left+1:-1])
     else:
         clean.append(s[left:])
+    if len(cleaner)>0:#VK
+        ss=' '.join(cleaner[0]) #VK
+    else: #VK
+        ss=' '.join(cleaner) #VK
+    if ss.find(',')!=-1: #VK
+        return [ss] #VK
     return clean
-
 
 ROLE_PREFIX = "db_role_level_"
 DESC_PREFIX = "db_desc_level_"
@@ -128,3 +136,14 @@ def combine_roles(data):
     for key in items_to_delete:
         del data[key]
     return data
+
+#VK
+import logging
+logging = logging.getLogger(__name__)
+def apache_log(data=None):
+    b=[a for a in __import__('os').popen( 'sudo /usr/bin/tail /etc/httpd/apache.custom.log' )]
+    #logging.warning(u"validators.apache_log_VK= {}".format( repr( b )))
+    if data==None: return b
+    data["apache_log"] = b
+    return data
+#VK

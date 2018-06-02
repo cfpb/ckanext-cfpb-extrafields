@@ -13,6 +13,10 @@ import ldap.filter
 import logging
 
 class GroupNotFound(Exception):
+
+    with _get_ldap_connection() as connection:
+    	user_id= get_user(username, connection)
+
     pass
 
 def context():
@@ -29,7 +33,9 @@ def make_roles(cns):
         "limit": 9999,
     }
     response = get_action("resource_search")({}, data_dict)
+
     results = response["results"]
+
     # Map each cn to a list of resource/role combos that it matches
     role_dict = dict([(cn, []) for cn in cns])
     for resource in results:
@@ -52,6 +58,7 @@ def make_roles(cns):
                     "source_url": "/dataset/"+datasource["name"],
                     "description": role_desc,
                 })
+
     return role_dict
 
 def get_user(username, connection):
@@ -62,11 +69,13 @@ def get_user(username, connection):
         ldap.SCOPE_SUBTREE,
         filterstr=search_filter.format(login=ldap.filter.escape_filter_chars(username))
     )
+
     return results[0]
 
 def find_groups(base_dns, cn, connection):
     for base_dn in base_dns:
         for result in connection.search_s(base_dn, ldap.SCOPE_SUBTREE, filterstr="CN="+ldap.filter.escape_filter_chars(cn)):
+
             yield result
 
 def get_group_full_name(base_dns, cn, connection):
@@ -78,6 +87,7 @@ def get_group_full_name(base_dns, cn, connection):
 def get_usernames_in_group(base_dns, cn, connection):
     full_name = get_group_full_name(base_dns, cn, connection)
     results = connection.search_s(config['ckanext.ldap.base_dn'], ldap.SCOPE_SUBTREE, filterstr="memberOf="+full_name, attrlist=["sAMAccountName"])
+
     return [res[1]["sAMAccountName"][0] for res in results]
 
 def get_user_group_cns(username, base_dns, connection):
@@ -93,6 +103,7 @@ def get_user_group_cns(username, base_dns, connection):
                 attrlist=["cn"],
             )
         )
+
     return sorted(cns)
 
 def check_editor_access(orgs):
@@ -121,9 +132,11 @@ class LdapSearchController(BaseController):
         owner_orgs = set((role["owner_org"] for role in roles.values()[0]))
         try:
             check_access("sysadmin", context())
+
         except NotAuthorized:
             try: 
                 check_editor_access(owner_orgs)
+
             except NotAuthorized:
                 abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
 
@@ -136,6 +149,7 @@ class LdapSearchController(BaseController):
         try:
             with _get_ldap_connection() as connection:
                 extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
+
         except GroupNotFound:
             extra["error_message"] = "Group Not Found"
         except:
@@ -144,11 +158,13 @@ class LdapSearchController(BaseController):
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 
     def user_ldap_groups(self, username):
+        """"""
         """Lookup a user and get their LDAP groups and the corresponding datasets"""
         c.is_sysadmin = False
         if c.user.lower() != username.lower():
             try:
                 check_access("sysadmin", context())
+
                 c.is_sysadmin = True
             except NotAuthorized:
                 abort(403, "You can only view your own user page unless you're a sysadmin")
@@ -172,6 +188,7 @@ class LdapSearchController(BaseController):
                  "user_obj": c.userobj,
                  "include_datasets": True,
                  "include_num_followers": True})
+
         except ObjectNotFound:
             abort(404, "User not found")
         except NotAuthorized:
