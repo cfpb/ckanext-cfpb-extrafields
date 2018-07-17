@@ -622,9 +622,10 @@ class LdapQueryPlugin(p.SingletonPlugin):
         map.connect("user_ldap_groups", "/ldap_user/groups/{username}", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_ldap_groups", ckan_icon="info-sign")
         return map
 
-class AccessPlugin(p.SIngletonPlugin):
+class AccessPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
 
     def after_map(self, map):
-        map.connect("request_access", "/request_access/{resource_id}", controller="ckanext.cfpb_extrafields.controllers.iiq:AccessController", action="index")
+        map.connect("request_access", "/request_access/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="index")
+        map.connect("submit_request", "/request_access/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="submit", method="POST")
         return map

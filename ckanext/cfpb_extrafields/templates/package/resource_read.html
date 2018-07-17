@@ -170,14 +170,16 @@
               </tr>
             </thead>
             <tbody>
-              {% for role, desc in roles %}   
+              {% for role, desc in roles %}
                 {% if role %}
                   <tr>
                     <th scope="row" class="dataset-label">
                       <a href="{{h.url_for('ldap_search') + '?' + h.urlencode({'cn': role})}}">{{role}}</a>
-                      <sup><a href="{{h.request_access_link(res, pkg, role)}}" style="font-variant:small-caps">Request access</a></sup>
                     </th>
                     <td class="dataset-details">{{ desc }}</td>
+                    <td class="dataset-details">
+                      <a href="{{ h.url_for('request_access', resource_id=res.id, cn=role) }}">Request Access</a>
+                    </td>
                   </tr>
                 {% endif %}
               {% endfor %}
@@ -333,7 +335,7 @@ function example_code_snippet(items) {
         <button id="btn_post_related_gist" class="btn btn-primary" type="button" data-module="post_related_gist"
                   data-module-dataset_id="{{ res.package_id }}"
                   data-module-resource_id="{{ res.id }}"
-                  data-module-email="{{c.userobj.email}}" 
+                  data-module-email="{{c.userobj.email}}"
                   data-module-resource_name="{{ res.name }}"
                   data-module-github_api_url="{{ h.github_api_url() }}"
                   data-module-html="post_related_gist.html"

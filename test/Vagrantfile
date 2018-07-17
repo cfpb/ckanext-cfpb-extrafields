@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "../", "/usr/lib/ckan/default/src/ckanext-cfpb-extrafields", type: "rsync", rsync__exclude: ".git/"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -79,7 +80,7 @@ Vagrant.configure("2") do |config|
     yum install -y epel-release centos-release-scl
     yum update
     yum groupinstall -y "Development Tools"
-    yum install -y python27 python27-python-devel postgresql-server postgresql-devel git
+    yum install -y python27 python27-python-devel postgresql-server postgresql-devel git libxml2 libxml2-devel libxslt-devel openldap-devel
 
     # Setup PostgreSQL database
     # TODO: Update pg_hba.conf to allow md5
@@ -89,16 +90,15 @@ Vagrant.configure("2") do |config|
     su postgres psql -c "CREATE DATABASE ckan_default WITH OWNER ckan_default;"
 
     # Setup Solr
-    #cd /usr/src
-    #curl http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz | tar xfz -
-    #mdkir -p /data/solr
-    #cp -R apache-solr-1.4.1/example/solr/* /data/solr
-    #cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /data/solr/solr.war
-    #chown -R tomcat /data/solr
-    #echo '<Context docBase="/data/solr/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"><Environment name="solr/home" type="java.lang.String" value="/data/solr" override="true" /></context>' >> /etc/tomcat6/Catalina/localhost/solr.xml
-    #mkdir -p /usr/share/tomcat6/common/endorsed
-    #ln -s /usr/share/java/xalan-j2.jar /usr/share/tomcat6/common/endorsed/xalan-j2.jar
-    #sudo service tomcat6 start
+    cd /usr/src
+    curl http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz | tar xfz -
+    mdkir -p /data/solr
+    cp -R apache-solr-1.4.1/example/solr/* /data/solr
+    cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /data/solr/solr.war
+    chown -R tomcat /data/solr
+    echo '<Context docBase="/data/solr/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"><Environment name="solr/home" type="java.lang.String" value="/data/solr" override="true" /></context>' >> /etc/tomcat6/Catalina/localhost/solr.xml
+    mkdir -p /usr/share/tomcat6/common/endorsed
+    ln -s /usr/share/java/xalan-j2.jar /usr/share/tomcat6/common/endorsed/xalan-j2.jar
     #service jetty start
 
     # Setup CKAN
@@ -110,12 +110,20 @@ Vagrant.configure("2") do |config|
     . /usr/lib/ckan/default/bin/activate
     pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.6.6#egg=ckan'
     pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt
+    pip install -e /usr/lib/ckan/default/ckanext-cfpb-extrafields
+    pip install -r /usr/lib/ckan/default/ckanext-cfpb-extrafields/requirements.txt
+    pip install -r /usr/lib/ckan/default/ckanext-ldap/requirements.txt
     mkdir -p /etc/ckan/default
     chown -R vagrant /etc/ckan
     paster make-config ckan /etc/ckan/default/development.ini
     cp /usr/lib/ckan/default/src/ckan/who.ini /usr/lib/ckan/default
     cd /usr/lib/ckan/default/src/ckan
     paster db init -c /etc/ckan/default/development.ini
+
+    # Last Solr Stuff
+    sudo mv /data/solr/conf/schema.xml /data/solr/conf/schema.xml.bak
+    sudo ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /data/solr/conf/schema.xml
+    sudo service tomcat6 start
     # TODO: Set debug = true
     # TODO: Set sqlalchemy.url = postgresql://ckan_default:password@127.0.0.1/ckan_default
     # TODO: Set ckan.site_url = http://localhost:8080

@@ -23,10 +23,6 @@ setup(
     namespace_packages=['ckanext', 'ckanext.cfpb_extrafields'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        "lxml",
-        "openpyxl",
-    ],
     entry_points='''
         [ckan.plugins]
         ckanext_cfpb_extrafields=ckanext.cfpb_extrafields.plugin:ExampleIDatasetFormPlugin

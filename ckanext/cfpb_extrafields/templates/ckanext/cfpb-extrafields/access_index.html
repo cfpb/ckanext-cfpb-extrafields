@@ -1,0 +1,11 @@
+{% extends "page.html" %}
+
+{% block primary_content %}
+	<h2>Dataset Access Request</h2>
+  <div><label>Title</label>{{ h.resource_display_name(resource) }}</div>
+  <div><label>Description</label>{{ resource.description }}</div>
+  <div><label>Usage Restrictions</label>{{ package.usage_restrictions }}</div>
+  <div><label>Access Restrictions</label>{{ package.access_restrictions }}</div>
+  <div><label>Group DN</label>CN={{ cn }},OU=Groups,DC=example,DC=com</div>
+  <div><label>Data Steward Email</label>{{ package.contact_primary_email }}</div>
+{% endblock %}
