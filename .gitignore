@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-    
+
 # C extensions
 *.so
 
@@ -62,4 +62,4 @@ node_modules/
 # MacOS
 .DS_Store
 
-
+test/.vagrant

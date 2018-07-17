@@ -42,6 +42,7 @@ def tag_relevant_governing_documents():
 
 def github_api_url():
     return CONFIG['ckan.ckanext_cfpb_extrafields.github_api_url']
+
 def parse_resource_related_gist(data_related_items, resource_id):
     urls = []
     if not data_related_items:
@@ -74,7 +75,7 @@ def request_access_link(resource, dataset, role):
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
         ))
-    }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
+    }).replace("+", "%20") # ur
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     changed = {}
@@ -619,4 +620,11 @@ class LdapQueryPlugin(p.SingletonPlugin):
     def after_map(self, map):
         map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
         map.connect("user_ldap_groups", "/ldap_user/groups/{username}", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_ldap_groups", ckan_icon="info-sign")
+        return map
+
+class AccessPlugin(p.SIngletonPlugin):
+    p.implements(p.IRoutes, inherit=True)
+
+    def after_map(self, map):
+        map.connect("request_access", "/request_access/{resource_id}", controller="ckanext.cfpb_extrafields.controllers.iiq:AccessController", action="index")
         return map

@@ -34,5 +34,6 @@ setup(
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
         ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:DigImportPlugin
         ckanext_cfpb_ldap_query=ckanext.cfpb_extrafields.plugin:LdapQueryPlugin
+        ckanext_cfpb_access=ckanext.cfpb_extrafields.plugin:AccessPlugin
     ''',
 )
