@@ -167,6 +167,7 @@
               <tr>
                 <th scope="row" class="dataset-label">{{ _("Role") }}</th>
                 <th class="dataset-details">{{ _("Description") }}</th>
+                <th width="130" class="dataset-details">{{ _("Access") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -178,7 +179,7 @@
                     </th>
                     <td class="dataset-details">{{ desc }}</td>
                     <td class="dataset-details">
-                      <a href="{{ h.url_for('request_access', resource_id=res.id, cn=role) }}">Request Access</a>
+                      <a class="btn" href="{{ h.url_for('request_access', resource_id=res.id, cn=role) }}">Request Access</a>
                     </td>
                   </tr>
                 {% endif %}

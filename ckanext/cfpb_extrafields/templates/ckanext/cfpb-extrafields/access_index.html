@@ -1,11 +1,58 @@
-{% extends "page.html" %}
+{% extends "package/base.html" %}
+
+{% block breadcrumb_content_selected %}{% endblock %}
+
+{% block subtitle %}{{ h.dataset_display_name(package) }} - {{ h.resource_display_name(resource) }}{% endblock %}
+
+{% block breadcrumb_content %}
+  {{ super() }}
+  <li class="active"><a href="">{{ h.resource_display_name(resource)|truncate(30) }}</a></li>
+{% endblock %}
+
+{% block secondary_content %}
+{% block resources_list %}
+{% snippet "package/snippets/resources.html", pkg=package, active=resource.id %}
+{% endblock %}
+
+{% block resource_license %}
+{% snippet "snippets/social.html" %}
+{% endblock %}
+{% endblock %}
+
+{% block pre_primary %}
+<section class="module">
+	{% block resource_read_title %}
+		<h1 class="page-heading">Dataset Access Request</h1>
+	{% endblock %}
+</section>
+{% endblock %}
 
 {% block primary_content %}
-	<h2>Dataset Access Request</h2>
-  <div><label>Title</label>{{ h.resource_display_name(resource) }}</div>
-  <div><label>Description</label>{{ resource.description }}</div>
-  <div><label>Usage Restrictions</label>{{ package.usage_restrictions }}</div>
-  <div><label>Access Restrictions</label>{{ package.access_restrictions }}</div>
-  <div><label>Group DN</label>CN={{ cn }},OU=Groups,DC=example,DC=com</div>
-  <div><label>Data Steward Email</label>{{ package.contact_primary_email }}</div>
+<section class="module">
+	<div class="module-content">
+		<h3>Requesting user: {{ context.user }}</h3>
+		<table class="table table-striped table-bordered table-condensed table-toggle-more">
+	  	<tr><th>Title</th><td>{{ h.resource_display_name(resource) }}</td></tr>
+	  	<tr><th>Description</th><td>{{ resource.description }}</td></tr>
+	  	<tr><th>Usage Restrictions</th><td>{{ package.usage_restrictions }}</td></tr>
+	  	<tr><th>Access Restrictions</th><td>{{ package.access_restrictions }}</td></tr>
+	  	<tr><th>Group DN</th><td>CN={{ cn }},OU=Groups,DC=example,DC=com</td></tr>
+	  	<tr><th>Data Steward Email</th><td>{{ package.contact_primary_email }}</td></tr>
+		</table>
+
+		<form id="access-request-form" class="dataset-form dataset-resource-form form-horizontal" action="" method="post">
+			<div class="control-group control-full">
+				<div class="core-field">
+					<label class="control-label" for="field-justification">Access Request Justification</label>
+					<div class="controls">
+						<textarea id="field-justification"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary" name="submit" type="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+</section>
 {% endblock %}

@@ -1,4 +1,4 @@
-from ckan.plugins.toolkit import BaseController, get_action, render
+from ckan.plugins.toolkit import BaseController, get_action, render, c as context
 
 class AccessController(BaseController):
     def index(self, resource_id, cn):
@@ -10,7 +10,7 @@ class AccessController(BaseController):
             'id': resource['package_id']
         })
 
-        return render('ckanext/cfpb-extrafields/access_index.html', {"resource": resource, "package": package, "cn": cn})
+        return render('ckanext/cfpb-extrafields/access_index.html', {"resource": resource, "package": package, "cn": cn, "context": context})
 
     def submit(self, resource_id, cn):
         return

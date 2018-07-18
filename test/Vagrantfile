@@ -80,23 +80,23 @@ Vagrant.configure("2") do |config|
     yum install -y epel-release centos-release-scl
     yum update
     yum groupinstall -y "Development Tools"
-    yum install -y python27 python27-python-devel postgresql-server postgresql-devel git libxml2 libxml2-devel libxslt-devel openldap-devel
+    yum install -y python27 python27-python-devel python27-python-pip python27-python-virtualenv postgresql-server postgresql-devel git libxml2 libxml2-devel libxslt-devel openldap-devel java-1.6.0-openjdk tomcat6
 
     # Setup PostgreSQL database
     # TODO: Update pg_hba.conf to allow md5
     sudo service postgresql initdb
     sudo service postgresql start
-    su postgres psql -c "CREATE USER ckan_default WITH SUPERUSER PASSWORD 'pass';"
-    su postgres psql -c "CREATE DATABASE ckan_default WITH OWNER ckan_default;"
+    su postgres -c "psql -c \"CREATE USER ckan_default WITH SUPERUSER PASSWORD 'pass';\""
+    su postgres -c "psql -c \"CREATE DATABASE ckan_default WITH OWNER ckan_default;\""
 
     # Setup Solr
     cd /usr/src
     curl http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz | tar xfz -
-    mdkir -p /data/solr
+    mkdir -p /data/solr
     cp -R apache-solr-1.4.1/example/solr/* /data/solr
     cp apache-solr-1.4.1/dist/apache-solr-1.4.1.war /data/solr/solr.war
     chown -R tomcat /data/solr
-    echo '<Context docBase="/data/solr/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"><Environment name="solr/home" type="java.lang.String" value="/data/solr" override="true" /></context>' >> /etc/tomcat6/Catalina/localhost/solr.xml
+    echo '<Context docBase="/data/solr/solr.war" debug="0" privileged="true" allowLinking="true" crossContext="true"><Environment name="solr/home" type="java.lang.String" value="/data/solr" override="true" /></Context>' >> /etc/tomcat6/Catalina/localhost/solr.xml
     mkdir -p /usr/share/tomcat6/common/endorsed
     ln -s /usr/share/java/xalan-j2.jar /usr/share/tomcat6/common/endorsed/xalan-j2.jar
     #service jetty start
@@ -104,19 +104,19 @@ Vagrant.configure("2") do |config|
     # Setup CKAN
     cd ~
     mkdir -p /usr/lib/ckan/default
-    chown -R vagrant: /usr/lib/ckan/default
     source /opt/rh/python27/enable
-    virtualenv2.7 -p python2.7 --no-site-packages /usr/lib/ckan/default
+    virtualenv-2.7 -p python2.7 --no-site-packages /usr/lib/ckan/default
     . /usr/lib/ckan/default/bin/activate
     pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.6.6#egg=ckan'
     pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt
-    pip install -e /usr/lib/ckan/default/ckanext-cfpb-extrafields
-    pip install -r /usr/lib/ckan/default/ckanext-cfpb-extrafields/requirements.txt
-    pip install -r /usr/lib/ckan/default/ckanext-ldap/requirements.txt
+    pip install -e /usr/lib/ckan/default/src/ckanext-cfpb-extrafields
+    pip install -r /usr/lib/ckan/default/src/ckanext-cfpb-extrafields/requirements.txt
+    pip install -r /usr/lib/ckan/default/src/ckanext-ldap/requirements.txt
+    chown -R vagrant: /usr/lib/ckan/
     mkdir -p /etc/ckan/default
     chown -R vagrant /etc/ckan
     paster make-config ckan /etc/ckan/default/development.ini
-    cp /usr/lib/ckan/default/src/ckan/who.ini /usr/lib/ckan/default
+    cp /usr/lib/ckan/default/who.ini /etc/ckan/default
     cd /usr/lib/ckan/default/src/ckan
     paster db init -c /etc/ckan/default/development.ini
 
