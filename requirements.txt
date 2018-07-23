@@ -1,3 +1,4 @@
 lxml
 openpyxl
 -e git://github.com/tanderegg/ckanext-ldap.git@digest_md5#egg=ckanext-ldap
+requests

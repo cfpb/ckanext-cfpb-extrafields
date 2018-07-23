@@ -40,7 +40,7 @@
 	  	<tr><th>Data Steward Email</th><td>{{ package.contact_primary_email }}</td></tr>
 		</table>
 
-		<form id="access-request-form" class="dataset-form dataset-resource-form form-horizontal" action="" method="post">
+		<form id="access-request-form" class="dataset-form dataset-resource-form form-horizontal" action="{{ url_for('submit_request', resource_id=resource.id, package_id=package.id) }}" method="post">
 			<div class="control-group control-full">
 				<div class="core-field">
 					<label class="control-label" for="field-justification">Access Request Justification</label>
