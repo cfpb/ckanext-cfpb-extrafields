@@ -101,4 +101,4 @@ class AccessController(BaseController):
             redirect_to("get_access_request", resource_id=resource_id, cn=cn)
             return
 
-        redirect_to("dataset_read", id=package['title'])
+        redirect_to("dataset_read", id=package['id'])
