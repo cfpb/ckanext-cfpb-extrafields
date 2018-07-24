@@ -1,5 +1,5 @@
 from ckan.plugins.toolkit import BaseController, config, get_action, request, render, redirect_to, c as context
-from ckan.lib.helpers import flash_error
+from ckan.lib.helpers import flash_error, flash_notice
 import requests
 from requests.auth import HTTPBasicAuth
 import json
