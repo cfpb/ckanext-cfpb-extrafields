@@ -4,7 +4,7 @@ def form_select_format(l):
     # format for form.select option is [{'value':"var1"},{'value':"var2"}...]
     return [{'value': k} for k in l]
 
-# resources 
+# resources
 def resource_type():
     a = ["Dashboard", "Database", "Data Dictionary", "Data File", "Documentation", "Report"]
     return form_select_format(a)
@@ -87,7 +87,7 @@ def privacy_sorn_number():
             "N/A",]
 
 def relevant_governing_documents():
-    return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"] 
+    return ["Contract", "MOU", "NDA", "Interagency Agreement", "Other"]
 
 def content_spatial():
     return [""]
@@ -95,12 +95,12 @@ def content_spatial():
 def frequency_standards():
 #http://dublincore.org/groups/collections/frequency/
     a=["Triennial", "Biennial","Annual",
-       "Semiannual","Three times a year","Quarterly","Bimonthly","Monthly", 
+       "Semiannual","Three times a year","Quarterly","Bimonthly","Monthly",
        "Semimonthly","Biweekly","Three times a month","Weekly",
        "Semiweekly","Three times a week","Daily",
        "Continuous","Irregular",]
     # want shorter options first
-    a.reverse() 
+    a.reverse()
     return form_select_format(a)
 
 def content_periodicity():
@@ -123,9 +123,12 @@ def pra_exclusion():
             "N/A",]
 
 def privacy_pia_notes():
-    return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII", 
+    return ["PIA Published", "No PIA - No PII", "No PIA - Only Employee PII",
             "No PIA - All PII Aggregated"]
 
 def transfer_method():
     a=["Website", "SFTP", "FTP", "Physical Media", "Email", "Connect Direct", "Other"]
     return form_select_format(a)
+
+def source_categories():
+    return ["Commercial Vendor", "Consumers", "Financial Institution", "Financial Institution (CSI)", "Other Agency", "Public"]

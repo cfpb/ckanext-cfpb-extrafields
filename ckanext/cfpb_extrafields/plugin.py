@@ -201,7 +201,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_sensitivity_level': opts.sensitivity_level,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
-
+                'options_source_categories': opts.source_categories,
                 'create_datastore': ds.create_datastore,
                 'get_unique_datastore_json': ds.get_unique_datastore_json,
                 'delete_datastore_json': ds.delete_datastore_json,
@@ -209,7 +209,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'get_action': tk.get_action,
                 'request_access_link': request_access_link,
                 'urlencode': urllib.urlencode,
-
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,
             }
@@ -311,6 +310,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
+            'source_categories' : [tk.get_validator('convert_to_extras'),],
+            'source_category_other' : [tk.get_validator('ignore_missing'),
+                                       tk.get_converter('convert_to_extras')],
+            'cost' : [tk.get_validator('ignore_missing'),
+                      tk.get_converter('convert_to_extras')],
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -435,6 +439,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                  tk.get_validator('ignore_missing'),],
             'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
                                       tk.get_validator('ignore_missing'),],
+            'source_categories' : [tk.get_validator('convert_to_extras'),],
+            'source_category_other' : [tk.get_validator('ignore_missing'),
+                                       tk.get_converter('convert_to_extras')],
+            'cost' : [tk.get_validator('ignore_missing'),
+                      tk.get_converter('convert_to_extras')],
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],

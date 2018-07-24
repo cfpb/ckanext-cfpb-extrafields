@@ -43,7 +43,7 @@
         {% endif %}
     {% endfor %}
     {# provide an option for javascript to use to create new fields #}
-    <option value="__Other">Other, please specify</option>
+    <option value="__Other">Other (please specify)</option>
     </select>
     {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>
     {% elif error %} {{error}} {% endif %}
