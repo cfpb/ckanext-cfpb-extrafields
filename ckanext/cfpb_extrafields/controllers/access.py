@@ -96,7 +96,7 @@ class AccessController(BaseController):
                 verify=False
             )
             flash_notice("Access request has been sent, you will recieve email updates on the status of the request as it is processed.")
-            redirect_to("dataset_read", id=package['id'])
+            redirect_to("dataset_read", id=package['title'])
         except Exception as e:
             flash_error("Error occurred submitting request: {}".format(e))
             redirect_to("get_access_request", resource_id=resource_id, cn=cn)
