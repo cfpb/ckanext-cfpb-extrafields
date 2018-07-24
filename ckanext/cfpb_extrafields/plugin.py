@@ -626,6 +626,6 @@ class AccessPlugin(p.SingletonPlugin):
     p.implements(p.IRoutes, inherit=True)
 
     def after_map(self, map):
-        map.connect("request_access", "/request_access/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="index")
-        map.connect("submit_request", "/request_access/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="submit", method="POST")
+        map.connect("get_access_request", "/access_request/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="index")
+        map.connect("post_access_request", "/submit_access_request/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="submit", method="POST")
         return map

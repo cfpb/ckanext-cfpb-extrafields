@@ -207,8 +207,8 @@ size="550",
 
 
 <script>
-  // NOTES: less than IE9 support 
-  // Using Object.keys.  
+  // NOTES: less than IE9 support
+  // Using Object.keys.
   //   If needed we can shim from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 
   _popup_dict = {
@@ -252,9 +252,9 @@ size="550",
     }
 
   var fields = Object.keys(_popup_dict);
-  document.addEventListener("DOMContentLoaded", function(event) { 
- 
-    for(var i=0; i < fields.length; i++ )      // safe for < IE9 
+  document.addEventListener("DOMContentLoaded", function(event) {
+
+    for(var i=0; i < fields.length; i++ )      // safe for < IE9
     {
       var field = fields[i];
       var el = $("#"+field+",#field-"+field);
