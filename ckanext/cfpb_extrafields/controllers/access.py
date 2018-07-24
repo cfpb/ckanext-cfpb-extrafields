@@ -14,6 +14,13 @@ def get_role(roles, role_name):
 
 class AccessController(BaseController):
     def index(self, resource_id, cn):
+
+        try:
+            dns = config.get("ckanext.cfpb_ldap_query.base_dns").split('|')
+        except ValueError:
+            flash_error("At least one valid DN must be configured.")
+            redirect_to("get_access_request", resource_id=resource_id, cn=cn)
+
         resource = get_action('resource_show')({}, data_dict={
             'id': resource_id
         })
@@ -29,7 +36,7 @@ class AccessController(BaseController):
             {
                 "resource": resource, "package": package,
                 "description": role_description,
-                "cn": cn, "context": context
+                "cn": cn, "context": context, "dn": dns[0]
             }
         )
 
@@ -53,7 +60,7 @@ class AccessController(BaseController):
             redirect_to("get_access_request", resource_id=resource_id, cn=cn)
 
         try:
-            dns = config.get("ckanext.cfpb_ldap_query.base_dns").split(',')
+            dns = config.get("ckanext.cfpb_ldap_query.base_dns").split('|')
         except ValueError:
             flash_error("At least one valid DN must be configured.")
             redirect_to("get_access_request", resource_id=resource_id, cn=cn)
@@ -85,7 +92,8 @@ class AccessController(BaseController):
             response = requests.post(
                 workflow_url,
                 json=workflow_json,
-                auth=HTTPBasicAuth(workflow_user, workflow_pass)
+                auth=HTTPBasicAuth(workflow_user, workflow_pass),
+                verify=False
             )
             flash_notice("Access request has been sent, you will recieve email updates on the status of the request as it is processed.")
             redirect_to("dataset_read", id=package['id'])

@@ -36,7 +36,7 @@
 	  	<tr><th>Description</th><td>{{ description }}</td></tr>
 	  	<tr><th>Usage Restrictions</th><td>{{ package.usage_restrictions }}</td></tr>
 	  	<tr><th>Access Restrictions</th><td>{{ package.access_restrictions }}</td></tr>
-	  	<tr><th>Group DN</th><td>CN={{ cn }},OU=Groups,DC=example,DC=com</td></tr>
+	  	<tr><th>Group DN</th><td>CN={{ cn }},{{ dn }}</td></tr>
 	  	<tr><th>Data Steward Email</th><td>{{ package.contact_primary_email }}</td></tr>
 		</table>
 
