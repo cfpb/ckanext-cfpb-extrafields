@@ -167,7 +167,8 @@
                     </th>
                     <td class="dataset-details">{{ desc }}</td>
                     <td class="dataset-details">
-                      <a class="btn" href="{{ h.url_for('get_access_request', resource_id=res.id, cn=role) }}">Request Access</a>
+                      {# <a class="btn" href="{{ h.url_for('get_access_request', resource_id=res.id, cn=role) }}">Request Access</a> #}
+                      <a class="btn" href="{{h.request_access_link(res, pkg, role)}}">Request Access</a>
                     </td>
                   </tr>
                 {% endif %}

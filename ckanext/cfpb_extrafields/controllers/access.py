@@ -1,5 +1,5 @@
-from ckan.plugins.toolkit import BaseController, config, get_action, request, render, redirect_to, c as context
-from ckan.lib.helpers import flash_error, flash_notice
+from ckan.plugins.toolkit import BaseController, url_for, config, get_action, request, render, redirect_to, c as context
+from ckan.lib.helpers import flash_error, flash_notice, get_site_protocol_and_host
 import requests
 from requests.auth import HTTPBasicAuth
 import json
@@ -75,16 +75,20 @@ class AccessController(BaseController):
 
         role_description = get_role(json.loads(resource['db_roles']), cn)['description']
 
+        dataset_url = '://'.join(get_site_protocol_and_host()) + url_for(controller='package', action='read', id=package['name'])
+
         workflow_json = {
             "workflowArgs": {
                 "datasetTitle": package['title'],
                 "groupDN": "CN={},{}".format(cn, dns[0]),
                 "sAMAccountName": request.POST['user'],
                 "dataStewardEmail": package['contact_primary_email'],
+                "dataStewardEmail2": package['contact_secondary_email'],
                 "description": role_description,
                 "usageRestriction": package['usage_restrictions'],
                 "justification": request.POST['justification'],
-                "accessRestriction": package['access_restrictions']
+                "accessRestriction": package['access_restrictions'],
+                "url": dataset_url
             }
         }
 
@@ -97,7 +101,7 @@ class AccessController(BaseController):
             )
             flash_notice("Access request has been sent, you will recieve email updates on the status of the request as it is processed.")
         except Exception as e:
-            flash_error("Error occurred submitting request: {}".format(e))
+            flash_error("Error occurred submitting request: {} with content {}".format(e, workflow_json))
             redirect_to("get_access_request", resource_id=resource_id, cn=cn)
             return
 
