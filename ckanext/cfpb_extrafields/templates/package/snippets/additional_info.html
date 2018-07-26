@@ -285,10 +285,34 @@
           <td class="dataset-details">{{ pkg_dict.privacy_has_direct_identifiers }}</td>
         </tr>
         {% endif %}
-        {% if pkg_dict.privacy_has_privacy_act_statement %}
+        {% if transfer_date %}
           <tr>
-            <th scope="row" class="dataset-label">{{ _("privacy: has Privacy Act statement") }}</th>
-            <td class="dataset-details">{{ pkg_dict.privacy_has_privacy_act_statement }}</td>
+            <th scope="row" class="dataset-label">{{ _("Transfer: Date") }}</th>
+            <td class="dataset-details">{{ pkg_dict.transfer_date }}</td>
+          </tr>
+        {% endif %}
+        {% if data_governance_notes %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Data Governance: Notes") }}</th>
+            <td class="dataset-details">{{ pkg_dict.data_governance_notes }}</td>
+          </tr>
+        {% endif %}
+        {% if legal_notes %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Legal: Notes") }}</th>
+            <td class="dataset-details">{{ pkg_dict.legal_notes }}</td>
+          </tr>
+        {% endif %}
+        {% if pra_notes %}
+          <tr>
+            <th scope="row" class="dataset-label">{{_("PRA: Notes") }}</th>
+            <td class="dataset-details">{{ pkg_dict.pra_notes }}</td>
+          </tr>
+        {% endif %}
+        {% if privacy_notes %}
+         <tr>
+            <th scope="row" class="dataset-label">{{_("Privacy: Notes") }}</th>
+            <td class="dataset-details">{{ pkg_dict.privacy_notes }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.privacy_pia_title %}
