@@ -97,7 +97,7 @@ label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions,
 
 {{ form.select('transfer_method', label=_('Transfer Method'), id='field-transfer_method', options=h.options_transfer_method(), selected=data.transfer_method, error=errors.transfer_method, classes=['control-medium']) }}
 
-{{ form.input('cost', label=_("Cost"), placeholder="e.g., $10.00", errors=errors.cost)}}
+{{ form.input('obligation', label=_("Obligation"), value=data.obligation, placeholder="e.g., $10.00", error=errors.obligation)}}
 
 <hr>
 <h3>IV. Compliance</h3>

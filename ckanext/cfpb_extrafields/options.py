@@ -131,4 +131,9 @@ def transfer_method():
     return form_select_format(a)
 
 def source_categories():
-    return ["Commercial Vendor", "Consumers", "Financial Institution", "Financial Institution (CSI)", "Other Agency", "Public"]
+    return ["Commercial Vendor",
+            "Consumers",
+            "Financial Institution",
+            "Financial Institution (CSI)",
+            "Other Agency",
+            "Public"]

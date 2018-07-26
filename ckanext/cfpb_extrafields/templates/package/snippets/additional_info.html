@@ -37,13 +37,7 @@
           {% if pkg_dict.source_categories %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Source Categories") }}</th>
-            <td class="dataset-details">{{ pkg_dict.source_categories }}</td>
-          </tr>
-          {% endif %}
-          {% if pkg_dict.source_category_other %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _("Other Source Category") }}</th>
-            <td class="dataset-details">{{ pkg_dict.source_category_other }}</td>
+            <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.source_categories) %} {{ i }}{% if not loop.last %},{% endif %} {% endfor %}</td>
           </tr>
           {% endif %}
           {% if pkg_dict.content_temporal_range_start %}
