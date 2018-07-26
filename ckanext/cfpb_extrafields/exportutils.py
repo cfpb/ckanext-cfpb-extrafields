@@ -20,6 +20,7 @@ FIELDS = [
     ("organization.name", "Organization"),
     ("also_known_as", "Also known as"),
     ("data_source_names", "Data sources"),
+    ("source_categories", "Source Categories"),
     ("content_temporal_range_start", "Content start date"),
     ("content_temporal_range_end", "Content end date"),
     ("content_periodicity", "Content periodicity"),
@@ -56,6 +57,7 @@ FIELDS = [
     ("privacy_sorn_number", "Privacy: SORN number"),
     ("records_retention_schedule", "Records retention schedule"),
     ("procurement_document_id", "Procurement document ID"),
+    ("obligation", "Obligation")
 ]
 
 try:

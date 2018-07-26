@@ -1,6 +1,4 @@
-{% extends "package/base.html" %}
-
-{% block breadcrumb_content_selected %}{% endblock %}
+{% extends "page.html" %}
 
 {% block subtitle %}{{ h.dataset_display_name(package) }} - {{ h.resource_display_name(resource) }}{% endblock %}
 
@@ -17,6 +15,7 @@
 {% block pre_primary %}
 <section class="module">
 	{% block resource_read_title %}
+		<br/>
 		<h1 class="page-heading">Dataset Access Request</h1>
 	{% endblock %}
 </section>
@@ -33,6 +32,9 @@
 	  	<tr><th>Access Restrictions</th><td>{{ package.access_restrictions }}</td></tr>
 	  	<tr><th>Group DN</th><td>CN={{ cn }},{{ dn }}</td></tr>
 	  	<tr><th>Data Steward Email</th><td>{{ package.contact_primary_email }}</td></tr>
+			<tr><th>Backup Data Steward Email</th><td>{{ package.conact_secondary_email }}</td></tr>
+			<tr><th>Data Catalog URL</th><td>{{ h.get_site_protocol_and_host()[0] }}://{{ h.get_site_protocol_and_host()[1] }}{{ h.url_for(controller='package', action='read', id=package.name) }}</td></tr>
+
 		</table>
 
 		<form id="access-request-form" class="dataset-form dataset-resource-form form-horizontal" action="/submit_access_request/{{ resource.id }}/{{ cn }}" method="POST">
@@ -41,7 +43,7 @@
 					<label class="control-label" for="field-justification">Access Request Justification</label>
 					<div class="controls">
 						<textarea id="field-justification" name="justification"></textarea>
-            <input id="field-user" name="user" value="{{ context.user }}"></input>
+            <input id="field-user" name="user" type="hidden" value="{{ context.user }}"></input>
 					</div>
 				</div>
 			</div>
