@@ -12,11 +12,12 @@
       {% endfor %}
     </ul>
     <h3>CN: {{cn}}</h3>
+    {% snippet 'ckanext/cfpb-extrafields/snippets/role_table.html',cns=[cn],roles=roles %}
     <h3>Users:</h3>
     <table>
     {% for user in usernames %}
       <tr><td>
-        {{user}}
+        <a href="{{h.url_for('user_ldap_groups', username=user.lower())}}">{{user}}</a>
       </td></tr>
     {% endfor %}
     </table>

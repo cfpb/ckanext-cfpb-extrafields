@@ -1,0 +1,7 @@
+{% ckan_extends %}
+{% block content_primary_nav %}
+  {{super()}}
+  {% if h.check_access('user_update', user) %}
+    {{ h.build_nav_icon('user_ldap_groups', _('AD Groups'), username=user.name) }}
+  {% endif %}
+{% endblock %}

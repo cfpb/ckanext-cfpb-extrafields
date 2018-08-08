@@ -1,0 +1,19 @@
+<!-- Editable list of AD roles and their descriptions from the db_roles field -->
+{% import 'macros/form.html' as form %}
+
+{# Add 20 slots for blank rows to be added #}
+{% set roles = h.json_loads(data.get("db_roles") or "[]") + [("", "")] * 20 %}
+
+<div>
+  <p>Roles and access descriptions:</p>
+</div>
+
+{% for role, desc in roles %}
+  <span class="db_role{{"" if role else " hidden"}}">
+     {{ form.input('db_role_level_{}'.format(loop.index), type='text', label=_("Role"),
+placeholder="", value=role,classes=['control-full']) }}
+    {{ form.input('db_desc_level_{}'.format(loop.index), type='text', label=_("Description"),
+placeholder="", value=desc,classes=['control-full']) }}
+  </span>
+{% endfor %}
+<button type="button" onClick="$('.db_role.hidden:first').removeClass('hidden')">Add Role</button>

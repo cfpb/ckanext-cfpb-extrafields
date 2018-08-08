@@ -9,6 +9,12 @@ import datastore_actions as ds
 import collections
 import logging
 import json
+import urllib
+
+if hasattr(tk, "config"):
+    CONFIG = tk.config
+else:
+    import pylons.config as CONFIG
 
 # if tag usage is going to be expanded, the following should be generalized.
 def create_relevant_governing_documents():
@@ -34,10 +40,6 @@ def tag_relevant_governing_documents():
     except tk.ObjectNotFound:
         return None
 
-if hasattr(tk, "config"):
-    CONFIG = tk.config
-else:
-    import pylons.config as CONFIG
 def github_api_url():
     return CONFIG['ckan.ckanext_cfpb_extrafields.github_api_url']
 def parse_resource_related_gist(data_related_items, resource_id):
@@ -55,8 +57,27 @@ def parse_resource_related_gist(data_related_items, resource_id):
             urls.append( {'title':title,'url':url} )
     return urls
 
+def request_access_link(resource, dataset, role):
+    return "mailto:_DL_CFPB_DataOps@cfpb.gov?" + urllib.urlencode({
+        "cc":";".join((addr for addr in [dataset["contact_primary_email"], dataset["contact_secondary_email"],] if addr)),
+        "subject": "Data Access Request for {}: {}".format(dataset["title"], resource["name"]),
+        "body": "\n".join((
+            "I would like to request access to the following data set:",
+            "",
+            "Data Set: {}".format(dataset["title"]),
+            "Resource: {}".format(resource["name"]),
+            "Primary contact: {} {}".format(dataset["contact_primary_name"], dataset["contact_primary_email"],),
+            "Secondary contact: {} {}".format(dataset["contact_secondary_name"], dataset["contact_secondary_email"],),
+            "AD Group: {}".format(role),
+            "List of permissions linked to this role: {}{}".format(CONFIG["ckan.site_url"],tk.url_for("ldap_search") + "?" + urllib.urlencode({"cn": role})),
+            "",
+            "The primary and secondary points of contact have been cc'ed for approval.",
+            "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
+        ))
+    }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
+    changed = {}
 
     # modify ckan behavior on changes/(saves/updates/deletes) to resources
     p.implements(p.IResourceController)
@@ -66,7 +87,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                         for key in check_keys}
 
     def _redirect_to_edit_on_change(self, resource, field):
-        if hasattr(self, "changed") and self.changed[field]:
+        if self.changed.get(field):
             tk.redirect_to(controller='package', action='resource_edit',
                            resource_id=resource['id'],id=resource['package_id'])
 
@@ -107,7 +128,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     # than the default notification that CKAN provides. It is not currently used.
     def _email_on_change(self, context, resource, field):
         # if specified fields have changed notify the relevant people
-        if self.changed[field]:
+        if self.changed.get(field):
             # print 'trigger email on change to '+field
             # filter by dataset name?
             followers = tk.get_action('dataset_follower_list')(context,{'id': resource['package_id']})
@@ -184,6 +205,8 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'delete_datastore_json': ds.delete_datastore_json,
                 'json_loads': json.loads,
                 'get_action': tk.get_action,
+                'request_access_link': request_access_link,
+                'urlencode': urllib.urlencode,
 
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,
@@ -514,6 +537,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     def after_create(self, context, pkg_dict):
         pass
 
+    def after_update(self, context, pkg_dict):
+        pass
+
     def after_delete(self, context, pkg_dict):
         pass
 
@@ -587,5 +613,5 @@ class LdapQueryPlugin(p.SingletonPlugin):
 
     def after_map(self, map):
         map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
-        map.connect("user_groups", "/ldap/groups", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_groups")
+        map.connect("user_ldap_groups", "/ldap_user/groups/{username}", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_ldap_groups", ckan_icon="info-sign")
         return map

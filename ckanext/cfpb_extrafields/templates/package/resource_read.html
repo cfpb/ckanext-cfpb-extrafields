@@ -25,8 +25,8 @@
   {{ h.render_markdown(res.description) }}
   {% endif %}
 
-    {% if res.resource_type == 'Database' %}
-      {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=res,errors=errors,pkg_name=res.name,location="description" %}
+  {% if res.resource_type == 'Database' %}
+  {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_database.html',data=res,errors=errors,pkg_name=res.name,location="description" %}
     {% endif %}
     {% if res.resource_type == 'Data Dictionary'  %}
       {% snippet 'package/snippets/resource_type-specific/cfpb_extrafields_datadictionary.html',data=res,errors=errors,pkg_name=res.name,editable="false",location="description" %}
@@ -173,7 +173,10 @@
               {% for role, desc in roles %}   
                 {% if role %}
                   <tr>
-                    <th scope="row" class="dataset-label">{{ role }}</th>
+                    <th scope="row" class="dataset-label">
+                      <a href="{{h.url_for('ldap_search') + '?' + h.urlencode({'cn': role})}}">{{role}}</a>
+                      <sup><a href="{{h.request_access_link(res, pkg, role)}}" style="font-variant:small-caps">Request access</a></sup>
+                    </th>
                     <td class="dataset-details">{{ desc }}</td>
                   </tr>
                 {% endif %}
@@ -228,7 +231,7 @@
                 <td class="dataset-details">{{ res.db_role_level_9 }}</td></tr>
               {% endif %}
             </tbody>
-	</table>
+          </table>
 	{% endif %}
 
       </div>
