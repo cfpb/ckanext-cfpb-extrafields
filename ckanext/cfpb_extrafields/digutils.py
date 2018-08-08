@@ -171,7 +171,7 @@ FIELDS_BY_VERSION = {
         "sensitivity_level": "dig_sensitivity_cfpb",
         "title": "dig_request_title",
         "transfer_details": "dig_storage_notes",
-        "transfer_initial_size": sub("dig_storage_size", "[^0-9.]"),
+        "transfer_initial_size": sub("dig_storage_size", "[^0-9.]", ""),
         "transfer_method": "dig_transfer_method",
         "update_frequency": "dig_intake_freq",
         "usage_restrictions":  concat(["dig_storage_permission_notes", "dig_storage_notes"]),
