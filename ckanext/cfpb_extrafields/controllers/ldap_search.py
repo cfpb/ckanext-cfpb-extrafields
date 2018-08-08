@@ -112,34 +112,34 @@ def check_editor_access(orgs):
 class LdapSearchController(BaseController):
     def ldap_search(self):
         """"""
-        base_dn_string = request.params.get("dns") or config["ckanext.cfpb_ldap_query.base_dns"]
-        base_dns = base_dn_string.split("|")
-        cn = request.params.get("cn")
-        roles = make_roles([cn])
+        base_dn_string = request.params.get("dns") or config.get("ckanext.cfpb_ldap_query.base_dns", None)
 
-        # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
-        owner_orgs = set((role["owner_org"] for role in roles.values()[0]))
-        try:
-            check_access("sysadmin", context())
-        except NotAuthorized:
-            try: 
-                check_editor_access(owner_orgs)
+        extra = {}
+
+        if not base_dn_string:
+            extra["error_message"] = "No base DN's to search against, please set ckanext.cfpb_ldap_query.base_dns"
+        else:
+            extra["dns"] = base_dn_string.split("|")
+            extra["cn"] = request.params.get("cn")
+            extra["roles"] = make_roles(extra["cn"])
+
+            # If you're not a sysadmin, you must be an editor of one of the orgs associate with this group in order to view it
+            owner_orgs = set((role["owner_org"] for role in extra["roles"].values()[0]))
+            try:
+                check_access("sysadmin", context())
             except NotAuthorized:
-                abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
+                try:
+                    check_editor_access(owner_orgs)
+                except NotAuthorized:
+                    abort(403, "You must be a sysadmin or the have the 'Editor' permission on an org with a resource that uses this group in order to view this page.")
 
-        extra = {
-            "dns": base_dns,
-            "cn": cn,
-            "roles": roles,
-            "error_message": "",
-        }
-        try:
-            with _get_ldap_connection() as connection:
-                extra["usernames"] = get_usernames_in_group(base_dns, cn, connection)
-        except GroupNotFound:
-            extra["error_message"] = "Group Not Found"
-        except:
-            extra["error_message"] = "Something went wrong while querying for users. This may be becasue the group has more users than AD's query size limit."
+            try:
+                with _get_ldap_connection() as connection:
+                    extra["usernames"] = get_usernames_in_group(extra['dns'], extra["cn"], connection)
+            except GroupNotFound as e:
+                extra["error_message"] = "Group Not Found: {}".format(e)
+            except Exception as e:
+                extra["error_message"] = "Something went wrong while querying for users: {}".format(e)
 
         return render('ckanext/cfpb-extrafields/ldap_search.html', extra_vars=extra)
 

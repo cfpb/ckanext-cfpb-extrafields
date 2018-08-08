@@ -1,4 +1,6 @@
 from collections import namedtuple
+import re
+
 from openpyxl import load_workbook
 try:
     from ckan.plugins.toolkit import Invalid
@@ -95,6 +97,14 @@ def lower(cell):
         return (ws[cell].value or "").lower()
     return get_lower
 
+def sub(cell, pattern, replacement):
+    def get_sub(ws):
+        return re.sub(pattern, replacement, (ws[cell].value or ""))
+    return get_sub
+
+# Strip all non-digit characters from this field
+transfer_initial_size = sub("B47", "[^0-9.]", "")
+
 def _any(*cells):
     def get_any(ws):
         return "yes" if any((lower(cell)(ws) == "yes" for cell in cells)) else "no"
@@ -113,7 +123,7 @@ FIELDS_BY_VERSION = {
         "initial_purpose_for_intake": "H15",
         "legal_authority_for_collection": "B25",
         "notes": "H4",
-        "pra_exclusion": concat(["D38", "B39"]),
+        "pra_exclusion": "D38",
         "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["F37"].value)),
         "pra_omb_expiration_date": date("F38"),
         "privacy_contains_pii": _any("B29", "F29"),
@@ -128,7 +138,7 @@ FIELDS_BY_VERSION = {
         "sensitivity_level": "B13",
         "title": "B4",
         "transfer_details": "B54",
-        "transfer_initial_size": "B47",
+        "transfer_initial_size": transfer_initial_size,
         "transfer_method": "B48",
         "update_frequency": "F47",
         "usage_restrictions":  concat(["B18", "B19"]),
@@ -146,7 +156,7 @@ FIELDS_BY_VERSION = {
         "initial_purpose_for_intake": "dig_intake_purpose",
         "legal_authority_for_collection": "dig_legal_auth",
         "notes": "dig_description",
-        "pra_exclusion": concat(["dig_pra_exemption", "dig_pra_notes"]),
+        "pra_exclusion": "dig_pra_exemption",
         "pra_omb_control_number": lambda ws: v.pra_control_num_validator(strfy(ws["dig_pra_omb_control"].value)),
         "pra_omb_expiration_date": date("dig_pra_expiration"),
         "privacy_contains_pii": _any("dig_privacy_pii_cfpb", "dig_privacy_pii_3rd"), 
@@ -161,7 +171,7 @@ FIELDS_BY_VERSION = {
         "sensitivity_level": "dig_sensitivity_cfpb",
         "title": "dig_request_title",
         "transfer_details": "dig_storage_notes",
-        "transfer_initial_size": "dig_storage_size",
+        "transfer_initial_size": sub("dig_storage_size", "[^0-9.]"),
         "transfer_method": "dig_transfer_method",
         "update_frequency": "dig_intake_freq",
         "usage_restrictions":  concat(["dig_storage_permission_notes", "dig_storage_notes"]),

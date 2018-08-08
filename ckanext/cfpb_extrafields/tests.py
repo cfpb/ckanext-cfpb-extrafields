@@ -236,6 +236,20 @@ class TestImport(unittest.TestCase):
         assert_equal(result, expected)
 
     @parameterized.expand([
+        ("", ""),
+        ("21", "21"),
+        ("2.1", "2.1"),
+        ("<1mb", "1"),
+        ("foo", ""),
+        ("12-13mb", "1213"),
+        (12, "12"),
+    ])
+    def test_transfer_initial_size(self, cell_val, expected):
+        sheet = {"B47": MockCell(cell_val)}
+        result = du.transfer_initial_size(sheet)
+        assert_equal(result, expected)
+
+    @parameterized.expand([
         ("A39", "foo"),
         (lambda x: x["A39"].value.upper(), "FOO"),
     ])

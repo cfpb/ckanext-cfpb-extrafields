@@ -12,12 +12,14 @@ def Invalid(message):
 
 def dedupe_unordered(items):
     return list(set(items))
+
 def contains_bad_chars(str):
     ''' contains <>'''
     test = False
     for c in ['>','<']:
         test = test or (c in str)
     return test
+
 def input_value_validator(value):
     # __Other option is the option that triggers a js event for user-specified option creation
     if "__Other" in value :
@@ -75,7 +77,7 @@ def end_after_start_validator(key, flattened_data, errors, context):
     start_str = flattened_data.get(('content_temporal_range_start',),None)
     end_str = flattened_data.get(('content_temporal_range_end',),None)
     if start_str and end_str:
-        if to_datetime(start_str) > to_datetime(end_str): 
+        if to_datetime(start_str) > to_datetime(end_str):
             Invalid("content start date occurs after end date")
     return
 

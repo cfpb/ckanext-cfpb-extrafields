@@ -385,9 +385,13 @@ h1.page-heading {
   padding-top: 0;
 }
 
-.module-content,
-.module-content:last-child {
+.module-content {
   margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.module-content:last-child {
+  margin-bottom: 15px;
   padding-bottom: 0;
 }
 
@@ -454,4 +458,3 @@ a.add-new-snippet {
   font-size: 14px;
   padding: 4px 6px;
 }
-

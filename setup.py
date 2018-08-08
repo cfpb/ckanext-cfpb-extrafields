@@ -23,10 +23,6 @@ setup(
     namespace_packages=['ckanext', 'ckanext.cfpb_extrafields'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        "lxml",
-        "openpyxl",
-    ],
     entry_points='''
         [ckan.plugins]
         ckanext_cfpb_extrafields=ckanext.cfpb_extrafields.plugin:ExampleIDatasetFormPlugin
@@ -34,5 +30,6 @@ setup(
         ckanext_cfpb_export=ckanext.cfpb_extrafields.plugin:ExportPlugin
         ckanext_cfpb_import=ckanext.cfpb_extrafields.plugin:DigImportPlugin
         ckanext_cfpb_ldap_query=ckanext.cfpb_extrafields.plugin:LdapQueryPlugin
+        ckanext_cfpb_access=ckanext.cfpb_extrafields.plugin:AccessPlugin
     ''',
 )

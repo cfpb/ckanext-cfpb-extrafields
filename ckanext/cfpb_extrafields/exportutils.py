@@ -12,13 +12,15 @@ import json
 
 
 FIELDS = [
+    ("dig_id", "DIG ID"),
     ("title", "Dataset title"),
-    ("private", "Visibility"),
     ("notes", "Description"),
+    ("private", "Visibility"),
     # ("i", "Subject Matter"),
     ("organization.name", "Organization"),
     ("also_known_as", "Also known as"),
     ("data_source_names", "Data sources"),
+    ("source_categories", "Source Categories"),
     ("content_temporal_range_start", "Content start date"),
     ("content_temporal_range_end", "Content end date"),
     ("content_periodicity", "Content periodicity"),
@@ -26,32 +28,36 @@ FIELDS = [
     ("update_frequency", "Update frequency"),
     ("wiki_link", "Wiki link"),
     ("website_url", "Reference website URL"),
-    ("contact_primary_email", "Primary contact"),
-    ("contact_secondary_email", "Secondary contact"),
-    ("access_notes", "How to get access"),
+    ("contact_primary_name", "Primary contact name"),
+    ("contact_primary_email", "Primary contact email"),
+    ("contact_secondary_name", "Secondary contact name"),
+    ("contact_secondary_email", "Secondary contact email"),
     ("access_restrictions", "Access restrictions"),
+    ("access_notes", "How to get access"),
     ("usage_restrictions", "Usage restrictions"),
     ("dataset_notes", "Dataset notes"),
     # ("i", "Dataset Last Modified Date"),
     ("obfuscated_title", "Obfuscated title"),
     ("transfer_details", "Transfer details"),
-    ("dig_id", "DIG ID"),
     ("transfer_initial_size", "Transfer initial size (MB)"),
     ("transfer_method", "Transfer method"),
     ("sensitivity_level", "Sensitivity level"),
     ("legal_authority_for_collection", "Legal authority for collection"),
     ("relevant_governing_documents", "Relevant governing documents"),
     ("initial_purpose_for_intake", "Initial purpose for intake"),
-    ("pra_exclusion", "PRA exclusion"),
+    ("pra_exclusion", "PRA exemption"),
     ("pra_omb_control_number", "PRA: OMB control number"),
     ("pra_omb_expiration_date", "PRA: OMB expiration date"),
     ("privacy_contains_pii", "Privacy: contains PII?"),
+    ("privacy_contains_ssn", "Privacy: contains SSN?"),
     ("privacy_has_direct_identifiers", "Privacy: has direct identifiers?"),
     ("privacy_has_privacy_act_statement", "Privacy: has privacy act statement?"),
     ("privacy_pia_title", "Privacy: PIA title"),
+    ("privacy_pia_notes", "Privacy: PIA notes"),
     ("privacy_sorn_number", "Privacy: SORN number"),
     ("records_retention_schedule", "Records retention schedule"),
     ("procurement_document_id", "Procurement document ID"),
+    ("obligation", "Obligation")
 ]
 
 try:
@@ -104,5 +110,8 @@ def to_csv(data, fields, fieldmap=tuple(FIELDS)):
     writer = csv.DictWriter(output, [f[0] for f in fields], extrasaction="ignore")
     writer.writerow(dict(fieldmap))
     for result in data:
-        writer.writerow(flatten(result))
+        row = flatten(result)
+        #If blank, default to "no"
+        row["privacy_contains_ssn"] = row.get("privacy_contains_ssn") or "no"
+        writer.writerow(row)
     return output.getvalue()
