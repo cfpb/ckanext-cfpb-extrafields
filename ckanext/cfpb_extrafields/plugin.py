@@ -42,6 +42,7 @@ def tag_relevant_governing_documents():
 
 def github_api_url():
     return CONFIG['ckan.ckanext_cfpb_extrafields.github_api_url']
+
 def parse_resource_related_gist(data_related_items, resource_id):
     urls = []
     if not data_related_items:
@@ -74,7 +75,7 @@ def request_access_link(resource, dataset, role):
             "The primary and secondary points of contact have been cc'ed for approval.",
             "Once this request is approved by a POC and you have vetted it, please forward it to _DL_CFPB_SystemsEngineeringSupport@cfpb.gov so that they can grant the final access.",
         ))
-    }).replace("+", "%20") # urlencode uses quote_plus instead of quote, annoyingly.
+    }).replace("+", "%20") # ur
 
 class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
     changed = {}
@@ -200,7 +201,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_sensitivity_level': opts.sensitivity_level,
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
-
+                'options_source_categories': opts.source_categories,
                 'create_datastore': ds.create_datastore,
                 'get_unique_datastore_json': ds.get_unique_datastore_json,
                 'delete_datastore_json': ds.delete_datastore_json,
@@ -208,7 +209,6 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'get_action': tk.get_action,
                 'request_access_link': request_access_link,
                 'urlencode': urllib.urlencode,
-
                 'parse_resource_related_gist': parse_resource_related_gist,
                 'github_api_url': github_api_url,
             }
@@ -310,6 +310,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                       tk.get_converter('convert_to_extras'),],
             'privacy_has_direct_identifiers' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
+            'source_categories' : [tk.get_validator('ignore_missing'),
+                                   tk.get_converter('convert_to_extras'),],
+            'obligation' : [tk.get_validator('ignore_missing'),
+                            tk.get_converter('convert_to_extras')],
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -434,6 +438,10 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                  tk.get_validator('ignore_missing'),],
             'cleansing_rules_used' : [tk.get_converter('convert_from_extras'),
                                       tk.get_validator('ignore_missing'),],
+            'source_categories' : [tk.get_converter('convert_from_extras'),
+                                   tk.get_validator('ignore_missing'),],
+            'obligation' : [tk.get_converter('convert_from_extras'),
+                            tk.get_validator('ignore_missing'),],
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
@@ -619,4 +627,12 @@ class LdapQueryPlugin(p.SingletonPlugin):
     def after_map(self, map):
         map.connect("ldap_search", "/ldap/search", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="ldap_search")
         map.connect("user_ldap_groups", "/ldap_user/groups/{username}", controller="ckanext.cfpb_extrafields.controllers.ldap_search:LdapSearchController", action="user_ldap_groups", ckan_icon="info-sign")
+        return map
+
+class AccessPlugin(p.SingletonPlugin):
+    p.implements(p.IRoutes, inherit=True)
+
+    def after_map(self, map):
+        map.connect("get_access_request", "/access_request/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="index")
+        map.connect("post_access_request", "/submit_access_request/{resource_id}/{cn}", controller="ckanext.cfpb_extrafields.controllers.access:AccessController", action="submit", method="POST")
         return map

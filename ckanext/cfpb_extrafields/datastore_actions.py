@@ -21,8 +21,8 @@ def default_datastore(rid):
     json_colname = 'json_record'
     all_fields =[{'id':title_colname,'type':'text'},
                  {'id':subtitle_colname,'type':'text'},
-                 {'id':datetime_colname,'type':'timestamp'}, 
-                 {'id':response_colname,'type':'bool'}, 
+                 {'id':datetime_colname,'type':'timestamp'},
+                 {'id':response_colname,'type':'bool'},
                  {'id':response_timems_colname,'type':'int'},
                  {'id':json_colname,'type':'json'},]
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
@@ -38,7 +38,7 @@ def default_datastore(rid):
 
 
 # JSON related (for datadict):
-def create_datastore(rid, json_title=None, json_record=None): 
+def create_datastore(rid, json_title=None, json_record=None):
     ''' create a new datastore json element with title_colname and record '''
     defaults = default_datastore(rid)
     data = defaults.data
@@ -53,7 +53,7 @@ def create_datastore(rid, json_title=None, json_record=None):
     ds = tk.get_action('datastore_create')(defaults.context, data)
 
 
-def get_all_datastore_jsons(rid, json_title): 
+def get_all_datastore_jsons(rid, json_title):
     defaults = default_datastore(rid)
     data = defaults.data
     if json_title:
@@ -62,9 +62,9 @@ def get_all_datastore_jsons(rid, json_title):
         ds = tk.get_action('datastore_search')(defaults.context, data)
     except tk.ValidationError, err:
         # don't fail if the filter is bad! (e.g., defaults.title_colname doesn't exist)
-        return 
+        return
     except tk.ObjectNotFound, err:
-        return 
+        return
     else:
         recs = ds.get('records',[{}])
         json_list = [rec[defaults.json_colname] for rec in recs]
@@ -74,10 +74,10 @@ def get_all_datastore_jsons(rid, json_title):
 def get_unique_datastore_json(rid, json_title):
     ''' For json_title, you're asserting that what you want is unique. '''
     jsons = get_all_datastore_jsons(rid, json_title)
-    if not jsons: 
+    if not jsons:
         return
     elif len(jsons) > 1:
-        raise IndexError 
+        raise IndexError
     else:
         return jsons[0]
 
