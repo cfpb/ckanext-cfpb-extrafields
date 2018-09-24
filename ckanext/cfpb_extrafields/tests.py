@@ -210,7 +210,7 @@ class TestImport(unittest.TestCase):
             "D16": MockCell(owner),
             "B17": MockCell(addl),
         }
-        result = du.access_restrictions(sheet)
+        result = du.access_restrictions("B16", "D16", "B17")(sheet)
         assert_equal(result, expected)
 
     @parameterized.expand([
@@ -242,7 +242,7 @@ class TestImport(unittest.TestCase):
         ("<1mb", "1"),
         ("foo", ""),
         ("12-13mb", "1213"),
-        (12, "12"),
+        ("12", "12"),
     ])
     def test_transfer_initial_size(self, cell_val, expected):
         sheet = {"B47": MockCell(cell_val)}

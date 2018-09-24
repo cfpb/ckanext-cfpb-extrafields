@@ -2,6 +2,6 @@ coverage
 coveralls
 mock
 nose
-nose-parameterized
+parameterized
 openpyxl
 lxml

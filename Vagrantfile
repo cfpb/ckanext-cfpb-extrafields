@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "../", "/usr/lib/ckan/default/src/ckanext-cfpb-extrafields", type: "rsync", rsync__exclude: ".git/"
+  config.vm.synced_folder ".", "/usr/lib/ckan/default/src/ckanext-cfpb-extrafields", type: "rsync", rsync__exclude: ".git/"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -129,5 +129,13 @@ Vagrant.configure("2") do |config|
     # TODO: Set ckan.site_url = http://localhost:8080
     # TODO: Set ckan.simple_search = 1
     # TODO: Include CKAN plugins in config
+
+    # To use:
+    # 1. In one window, run vagrant rsync-auto
+    # 2. In the other, run vagrant ssh.
+    # 3. In ssh, source /opt/rh/python27/enable
+    # 4. Then, source /usr/lib/ckan/default/bin/activate
+    # 5. pip install -e /usr/lib/ckan/default/src/ckanext-cfpb-extrafields (on any change)
+    # 6. Finally, run paster serve /etc/ckan/default/development.ini
   SHELL
 end
