@@ -55,6 +55,7 @@ def strfy(val):
         return val.strip()
     else:
         return ""
+
 def access_restrictions(supervisor_cell, owner_cell, addl_cell):
     def get_access_restrictions(ws):
         restrictions = []
@@ -99,7 +100,7 @@ def lower(cell):
 
 def sub(cell, pattern, replacement):
     def get_sub(ws):
-        return re.sub(pattern, replacement, (ws[cell].value or ""))
+        return re.sub(pattern, replacement, ws[cell].value or "")
     return get_sub
 
 # Strip all non-digit characters from this field
