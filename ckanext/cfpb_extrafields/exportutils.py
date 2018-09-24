@@ -51,13 +51,17 @@ FIELDS = [
     ("privacy_contains_pii", "Privacy: contains PII?"),
     ("privacy_contains_ssn", "Privacy: contains SSN?"),
     ("privacy_has_direct_identifiers", "Privacy: has direct identifiers?"),
-    ("privacy_has_privacy_act_statement", "Privacy: has privacy act statement?"),
     ("privacy_pia_title", "Privacy: PIA title"),
     ("privacy_pia_notes", "Privacy: PIA notes"),
     ("privacy_sorn_number", "Privacy: SORN number"),
     ("records_retention_schedule", "Records retention schedule"),
     ("procurement_document_id", "Procurement document ID"),
-    ("obligation", "Obligation")
+    ("obligation", "Obligation"),
+    ("transfer_date", "Transfer: Date"),
+    ("data_governance_notes", "Data Governance: Notes"),
+    ("legal_notes","Legal: Notes"),
+    ("pra_notes","PRA: Notes"),
+    ("privacy_notes","Privacy: Notes"),
 ]
 
 try:
