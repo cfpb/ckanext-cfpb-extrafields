@@ -322,6 +322,12 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                                                 tk.get_converter('convert_to_extras'),],
             'privacy_notes' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
+            'opendata_indicator' : [tk.get_validator('ignore_missing'),
+                                                tk.get_converter('convert_to_extras'),],
+            'opendata_priority_indicator' : [tk.get_validator('ignore_missing'),
+                                                tk.get_converter('convert_to_extras'),],
+            'opendata_public_location' : [tk.get_validator('ignore_missing'),
+                                                tk.get_converter('convert_to_extras'),],
         })
         # now modify tag fields and convert_to_tags
         schema.update({
@@ -458,6 +464,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                             tk.get_validator('ignore_missing'),],
             'privacy_notes' : [tk.get_converter('convert_from_extras'),
                                tk.get_validator('ignore_missing'),],
+            'opendata_indicator' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
+            'opendata_priority_indicator' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
+            'opendata_public_location' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
