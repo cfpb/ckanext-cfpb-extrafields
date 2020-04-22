@@ -92,6 +92,16 @@ def relevant_governing_documents():
 def content_spatial():
     return [""]
 
+def foia_exemptions():
+    return [
+            "B3 Indicator - Information specifically exempted from disclousre by statute",
+            "B4 Indicator - Trade secrets or other information submitted confidentially",
+            "B5 Indicator - Inter-agency or intra-agency memorandums not available by law",
+            "B6 Indicator - Personnel and medical files",
+            "B7 Indicator - Law enforcement information",
+            "B8 Indicator - Examination, operating or condition reports prepared by or for regulators",
+            ]
+
 def frequency_standards():
 #http://dublincore.org/groups/collections/frequency/
     a=["Triennial", "Biennial","Annual",

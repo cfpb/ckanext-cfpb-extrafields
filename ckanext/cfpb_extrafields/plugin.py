@@ -202,6 +202,7 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'options_approximate_total_size': opts.approximate_total_size,
                 'options_resource_type': opts.resource_type,
                 'options_source_categories': opts.source_categories,
+                'options_foia_exemptions': opts.foia_exemptions,
                 'create_datastore': ds.create_datastore,
                 'get_unique_datastore_json': ds.get_unique_datastore_json,
                 'delete_datastore_json': ds.delete_datastore_json,
@@ -327,6 +328,11 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'opendata_priority_indicator' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
             'opendata_public_location' : [tk.get_validator('ignore_missing'),
+                                                tk.get_converter('convert_to_extras'),],
+            'foia_exemptions': [tk.get_validator('ignore_missing'),
+                        v.input_value_validator,
+                        tk.get_converter('convert_to_extras')],
+            'foia_exemptions_notes' : [tk.get_validator('ignore_missing'),
                                                 tk.get_converter('convert_to_extras'),],
         })
         # now modify tag fields and convert_to_tags
@@ -467,6 +473,9 @@ class ExampleIDatasetFormPlugin(p.SingletonPlugin, tk.DefaultDatasetForm):
             'opendata_indicator' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
             'opendata_priority_indicator' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
             'opendata_public_location' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
+            'foia_exemptions': [tk.get_converter('convert_from_extras'),
+                                    tk.get_validator('ignore_missing')],
+            'foia_exemptions_notes' : [ tk.get_converter('convert_from_extras'),tk.get_validator('ignore_missing'),],
         })
         schema['resources'].update({
                 'approximate_total_size' : [ tk.get_validator('ignore_missing'),],
