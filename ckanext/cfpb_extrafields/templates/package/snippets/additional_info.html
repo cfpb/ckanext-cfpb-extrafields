@@ -368,6 +368,49 @@
     </div>
   </div>
 
+  <div class="expandable expandable__padded">
+    <button class="expandable_header expandable_target" title="Expand content">
+        <span class="expandable_header-left expandable_label">
+            V. Open Data
+        </span>
+        <span class="expandable_header-right expandable_link">
+            <span class="expandable_cue-open">
+                Show
+                <span class="cf-icon cf-icon-plus-round"></span>
+            </span>
+            <span class="expandable_cue-close">
+                Hide
+                <span class="cf-icon cf-icon-minus-round"></span>
+            </span>
+        </span>
+    </button>
+    <div class="expandable_content">
+      <table class="table table-striped table-bordered table-condensed">
+        <tbody>
+        {% if pkg_dict.opendata_indicator %}
+         <tr>
+            <th scope="row" class="dataset-label">{{_("Open Data Indicator") }}</th>
+            <td class="dataset-details">{{ pkg_dict.opendata_indicator }}</td>
+          </tr>
+        {% endif %}
+        {% if pkg_dict.opendata_priority_indicator %}
+         <tr>
+            <th scope="row" class="dataset-label">{{_("Priority Indicator") }}</th>
+            <td class="dataset-details">{{ pkg_dict.opendata_priority_indicator }}</td>
+          </tr>
+        {% endif %}
+        {% if pkg_dict.opendata_public_location %}
+         <tr>
+            <th scope="row" class="dataset-label">{{_("Public Location") }}</th>
+            <td class="dataset-details">{{ pkg_dict.opendata_public_location }}</td>
+          </tr>
+        {% endif %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </section>
 {% endblock %}
 {% endblock %}
