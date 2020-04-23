@@ -356,6 +356,18 @@
             <td class="dataset-details">{{ pkg_dict.procurement_document_id }}</td>
           </tr>
         {% endif %}
+        {% if pkg_dict.foia_exemptions %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("FOIA Exemptions") }}</th>
+            <td class="dataset-details">{% for i in h.clean_select_multi(pkg_dict.foia_exemptions) %} {{ i }}{% if not loop.last %},{% endif %} {% endfor %}</td>
+          </tr>
+        {% endif %}
+        {% if pkg_dict.foia_exemptions_notes %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("FOIA Exemption Notes") }}</th>
+            <td class="dataset-details">{{ h.render_markdown(pkg_dict.foia_exemptions_notes) }}</td>
+          </tr>
+        {% endif %}
         {% if pkg_dict.cleansing_rules_used and false %}
         <tr>
           <th scope="row" class="dataset-label">{{ _("Cleansing Rules Used") }}</th>

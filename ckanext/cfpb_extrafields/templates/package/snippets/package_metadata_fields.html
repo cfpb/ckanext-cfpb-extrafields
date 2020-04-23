@@ -218,6 +218,19 @@ size="550",
 
 {{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('records retention schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
 
+{{ form_custom.select_multi_with_other('foia_exemptions',
+label=_('FOIA: Exemptions'),
+current_values=h.clean_select_multi(data.get('foia_exemptions', '')),
+options_defaults=h.options_foia_exemptions(),
+error=errors.foia_exemptions,
+size="550",
+other=False,
+) }}
+
+<div>
+{{ form.markdown('foia_exemptions_notes', id='field-foia_exemptions_notes', label=_('FOIA Exemption Notes'), placeholder=_(''), value=data.foia_exemptions_notes, error=errors.foia_exemptions_notes) }}
+</div>
+
 {{ form.input('procurement_document_id', label=_("procurement document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
 {% if false %}
@@ -243,7 +256,6 @@ label=_('Open Data: public location'),
 value=data.opendata_public_location,
 error=errors.opendata_public_location)}}
 </div>
-
 <script>
   // NOTES: less than IE9 support
   // Using Object.keys.
