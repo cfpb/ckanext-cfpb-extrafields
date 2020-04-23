@@ -240,22 +240,19 @@ other=False,
 <hr>
 <h3>V. Open Data</h3>
 
-<div class='core-field'>
 {{ form_custom.radio('opendata_indicator',
 label=_('Open Data: open data indicator'),
 current_value=data.opendata_indicator)}}
-</div>
-<div class='core-field'>
+
 {{ form_custom.radio('opendata_priority_indicator',
 label=_('Open Data: priority indicator'),
 current_value=data.opendata_priority_indicator)}}
-</div>
-<div class='core-field'>
+
 {{ form.input('opendata_public_location',
 label=_('Open Data: public location'),
 value=data.opendata_public_location,
 error=errors.opendata_public_location)}}
-</div>
+
 <script>
   // NOTES: less than IE9 support
   // Using Object.keys.
