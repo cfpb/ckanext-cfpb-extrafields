@@ -1,5 +1,6 @@
 import re
 import datetime
+import json
 
 # Abstracted to simplify unit testing via mock
 def Invalid(message):
@@ -81,17 +82,29 @@ def end_after_start_validator(key, flattened_data, errors, context):
             Invalid("content start date occurs after end date")
     return
 
+def clean_select_multi(raw_s):
+    ''' parses the results of an html form select-multi '''
+    # This solution allows commas, but is unpythonic
+    if not raw_s:
+        return []
+    if not isinstance(raw_s, basestring):
+        return raw_s
+    if (raw_s[:2],raw_s[-2:]) == ('{"','"}'):
+        s = '['+raw_s[1:-1]+']'
+        return json.loads(s)
+    else:
+        return [ raw_s ]
 
 # select multis are contained in unicode strings that look like:
 # u'{"blah blah","blah asdf",asdf}' ; u'{asdf,asdf}' ; u'asdf' (see also tests.py)
-def clean_select_multi(s):
+def __clean_select_multi(raw_s):
     ''' parses the results of an html form select-multi '''
     # This solution allows commas, but is unpythonic
-    if not s:
+    if not raw_s:
         return []
-    if not isinstance(s, basestring):
-        return s
-    s = s.lstrip('{').rstrip('}')
+    if not isinstance(raw_s, basestring):
+        return raw_s
+    s = raw_s.lstrip('{').rstrip('}')
     clean = []
     left = 0
     right = 1
