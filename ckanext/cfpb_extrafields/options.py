@@ -92,14 +92,20 @@ def relevant_governing_documents():
 def content_spatial():
     return [""]
 
+# WARNING - Updates will not update stored data
 def foia_exemptions():
     return [
-            "B3 Indicator - Information specifically exempted from disclousre by statute",
-            "B4 Indicator - Trade secrets or other information submitted confidentially",
-            "B5 Indicator - Inter-agency or intra-agency memorandums not available by law",
-            "B6 Indicator - Personnel and medical files",
-            "B7 Indicator - Law enforcement information",
-            "B8 Indicator - Examination, operating or condition reports prepared by or for regulators",
+            "b3 - Specifically prohibited from disclosure by another federal statute",
+            "b4 - Trade secrets, commercial, financial, privileged or confidential",
+            "b5 - Privileged inter-agency or intra-agency communications",
+            "b6 - Personnel, medical files, or similar information. Includes all PII",
+            "b7A - Law enforcement data protected for law enforcement proceedings",
+            "b7B - Law enforcement data protected for fair trial or adjudication",
+            "b7C - Law enforcement data protected for personal privacy",
+            "b7D - Law enforcement data protected to safeguard a confidential source",
+            "b7E - Law enforcement data protected to avoid circumvention of the law",
+            "b8 - Financial institutions supervision data",
+            "No Exemption",
             ]
 
 def frequency_standards():
