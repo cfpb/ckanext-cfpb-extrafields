@@ -52,6 +52,8 @@ error=errors.content_spatial,
     <input id="field-website_name" type="text" placeholder="name" value="{{data.website_name}}" name="website_name" />
 {% endcall %}
 
+{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
+
 <hr>
 
 <h3>II. Access</h3>
@@ -86,8 +88,6 @@ label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions,
 <h3>III. Administrative</h3>
 
 {{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('Dataset Notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
-
-{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
 
 {{ form_custom.radio('obfuscated_title', label=_('Obfuscated Title'), current_value=data.obfuscated_title) }}
 

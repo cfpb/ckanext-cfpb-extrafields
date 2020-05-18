@@ -82,6 +82,12 @@
             <td class="dataset-details"><a href="{{ pkg_dict.website_url }}">{{ pkg_dict.website_name}}</a> </td>
           </tr>
           {% endif %}
+	  {% if pkg_dict.dataset_last_modified_date %}
+	  <tr>
+		  <th scope="row" class="dataset-label">{{ _("Dataset Last Modified Date") }}</th>
+		  <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
+	  </tr>
+	  {% endif %}
         </tbody>
       </table>
     </div>
@@ -175,12 +181,6 @@
           <tr>
             <th scope="row" class="dataset-label">{{ _("Dataset Notes") }}</th>
             <td class="dataset-details">{{ h.render_markdown(pkg_dict.dataset_notes) }}</td>
-          </tr>
-        {% endif %}
-        {% if pkg_dict.dataset_last_modified_date %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _("Dataset Last Modified Date") }}</th>
-            <td class="dataset-details">{{ pkg_dict.dataset_last_modified_date }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.obfuscated_title %}
