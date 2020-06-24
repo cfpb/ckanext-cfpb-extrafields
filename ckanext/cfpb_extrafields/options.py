@@ -104,6 +104,7 @@ def foia_exemptions():
             "b7C - Law enforcement data protected for personal privacy",
             "b7D - Law enforcement data protected to safeguard a confidential source",
             "b7E - Law enforcement data protected to avoid circumvention of the law",
+            "b7F - Law enforcement data protected to safeguard life or physical safety",
             "b8 - Financial institutions supervision data",
             "No Exemption",
             ]
