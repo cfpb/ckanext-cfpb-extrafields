@@ -82,19 +82,6 @@ def end_after_start_validator(key, flattened_data, errors, context):
             Invalid("content start date occurs after end date")
     return
 
-def __clean_select_multi(raw_s):
-    ''' parses the results of an html form select-multi '''
-    # This solution allows commas, but is unpythonic
-    if not raw_s:
-        return []
-    if not isinstance(raw_s, basestring):
-        return raw_s
-    if (raw_s[:2],raw_s[-2:]) == ('{"','"}'):
-        s = '['+raw_s[1:-1]+']'
-        return json.loads(s)
-    else:
-        return [ raw_s ]
-
 # select multis are contained in unicode strings that look like:
 # u'{"blah blah","blah asdf",asdf}' ; u'{asdf,asdf}' ; u'asdf' (see also tests.py)
 def clean_select_multi(raw_s):
