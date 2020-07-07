@@ -15,8 +15,10 @@ assert_equal.__self__.maxDiff = None
 class TestValidators(unittest.TestCase):
     maxDiff=None
     @parameterized.expand([
-        (u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
+        #(u'"asdf","asdf,asdf"',[u'asdf', u'asdf,asdf']),
+        (u'"asdf","asdf,asdf"',[u'"asdf","asdf,asdf"']),
         (u'asdf',[u'asdf']),
+        (u'asdf, asdf',[u'asdf, asdf']),
         (u'a',[u'a']),
         (u'{"blah blah","blah asdf",asdf}',[u'blah blah', u'blah asdf', u'asdf']),
         (u'{asdf,asdf}',[u'asdf', u'asdf']),
@@ -26,6 +28,21 @@ class TestValidators(unittest.TestCase):
         (u'{a,"f d",d}',[u'a', u'f d', u'd']),
         (u'',[]),
         (["foo"],["foo"]),
+        (u'''{123Consumers,123-Consumers,"123,Consumers",123.Consumers,123?Consumers,123<>Consumers,"123{}Consumers",123[]Consumers,123()Consumers,"123\\Consumers",123+Consumers,123'Consumers}''',
+        [
+            u'123Consumers',
+            u'123-Consumers',
+            u"123,Consumers",
+            u'123.Consumers',
+            u'123?Consumers',
+            u'123<>Consumers',
+            u"123{}Consumers",
+            u'123[]Consumers',
+            u'123()Consumers',
+            u"123\\Consumers",
+            u'123+Consumers',
+            u"123'Consumers"]
+            ),
     ])
     def test_clean_select_multi(self, ms, expected):
         assert_equal(v.clean_select_multi(ms), expected)

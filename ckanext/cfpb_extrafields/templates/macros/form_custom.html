@@ -25,7 +25,7 @@
 {% endmacro %}
 
 {# select multiple list with specified other option #}
-{% macro select_multi_with_other(name, id='', label='', current_values=[], size="400", options_defaults=[], extra_html="", error='') %}
+{% macro select_multi_with_other(name, id='', label='', current_values=[], size="400", options_defaults=[], extra_html="", error='',other=True) %}
 <div class="control-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
     <label class="control-label" for="{{ name }}">{{label}}</label>
     <div class="controls{{ " " ~ control_classes | join(' ') }}">
@@ -43,7 +43,9 @@
         {% endif %}
     {% endfor %}
     {# provide an option for javascript to use to create new fields #}
+    {% if other %}
     <option value="__Other">Other (please specify)</option>
+    {% endif %}
     </select>
     {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>
     {% elif error %} {{error}} {% endif %}

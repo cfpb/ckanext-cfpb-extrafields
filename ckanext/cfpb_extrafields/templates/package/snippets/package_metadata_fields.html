@@ -52,6 +52,8 @@ error=errors.content_spatial,
     <input id="field-website_name" type="text" placeholder="name" value="{{data.website_name}}" name="website_name" />
 {% endcall %}
 
+{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
+
 <hr>
 
 <h3>II. Access</h3>
@@ -86,8 +88,6 @@ label=_('Usage Restrictions'), placeholder=_(''), value=data.usage_restrictions,
 <h3>III. Administrative</h3>
 
 {{ form.markdown('dataset_notes', id='field-dataset_notes', label=_('Dataset Notes'), placeholder=_(''), value=data.dataset_notes, error=errors.dataset_notes) }}
-
-{{ form.input('dataset_last_modified_date', type='date', label=_("Dataset Last Modified Date"), placeholder="eg 2012-12-21", value=data.dataset_last_modified_date, error=errors.dataset_last_modified_date) }}
 
 {{ form_custom.radio('obfuscated_title', label=_('Obfuscated Title'), current_value=data.obfuscated_title) }}
 
@@ -218,12 +218,40 @@ size="550",
 
 {{ form.markdown('records_retention_schedule', id='field-records_retention_schedule', label=_('records retention schedule'), placeholder=_(''), value=data.records_retention_schedule, error=errors.records_retention_schedule) }}
 
+{{ form_custom.select_multi_with_other('foia_exemptions',
+label=_('FOIA: Exemptions'),
+current_values=h.clean_select_multi(data.get('foia_exemptions', '')),
+options_defaults=h.options_foia_exemptions(),
+error=errors.foia_exemptions,
+size="550",
+other=False,
+) }}
+
+<div>
+{{ form.markdown('foia_exemptions_notes', id='field-foia_exemptions_notes', label=_('FOIA Exemption Notes'), placeholder=_(''), value=data.foia_exemptions_notes, error=errors.foia_exemptions_notes) }}
+</div>
+
 {{ form.input('procurement_document_id', label=_("procurement document ID"), placeholder="CFPB-12-Z-00015-0011", value=data.procurement_document_id, error=errors.procurement_document_id) }}
 
 {% if false %}
 {{ form.markdown('cleansing_rules_used', id='field-cleansing_rules_used', label=_('cleansing rules used'), placeholder=_(''), value=data.cleansing_rules_used, error=errors.cleansing_rules_used) }}
 {% endif %}
 
+<hr>
+<h3>V. Open Data</h3>
+
+{{ form_custom.radio('opendata_indicator',
+label=_('Open Data: open data indicator'),
+current_value=data.opendata_indicator)}}
+
+{{ form_custom.radio('opendata_priority_indicator',
+label=_('Open Data: priority indicator'),
+current_value=data.opendata_priority_indicator)}}
+
+{{ form.input('opendata_public_location',
+label=_('Open Data: public location'),
+value=data.opendata_public_location,
+error=errors.opendata_public_location)}}
 
 <script>
   // NOTES: less than IE9 support
@@ -270,6 +298,11 @@ size="550",
       "transfer_initial_size": "Approximate size of the dataset when brought into the Bureau (in megabytes)",
       "transfer_method": "Technique, format, or medium for bringing the data into the bureau",
       "update_frequency": "How often the Bureau receives updates to the data",
+      "foia_exemptions": "Would this data be available through a FOIA request? If yes, coose \"No Exemption\". If no, indicate the FOIA exemptions that would prevent publication of this data asset",
+      "foia_exemptions_notes": "If a FOIA Exemption is supported, please list any supporting information available such as law that prvents publication, privacy agreement, Memo of Understanding with a company or agency, subset of data that can be published if applicable",
+      "opendata_indicator": "Can the Bureau publish this data asset to Data.gov and ConsumerFinance.gov?",
+      "opendata_priority_indicator": "Has this data asset been added to the Bureau's priority data asset due to the value it can provide to external customers, its prior publication on ConsumerFinance.gov, or data assets recommended for publication by customer facing Bureau organizations?",
+      "opendata_public_location": "What is the URL where the general public can access the data assets, its data dictionary, JSON, XML, and or API?",
       "usage_restrictions": "Rules and restrictions for using the specific dataset, above and beyond normal Bureau policies and applicable law. All usage and disclosure of information is subject to applicable law, including the Bureau’s confidentiality regulations, the Privacy Act, and the Trade Secrets Act.  Information should not be disclosed outside of the Bureau unless it is aggregated and does not directly or indirectly identify an individual or an entity.  Additional usage or disclosure restrictions may be present in contracts, MOUs, NDAs, or similar agreements.",
       "website_url": "Link to a relevant website",
       "wiki_link": "Link to a CFPB wiki page for this dataset"

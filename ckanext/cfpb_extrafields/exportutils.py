@@ -16,7 +16,6 @@ FIELDS = [
     ("title", "Dataset title"),
     ("notes", "Description"),
     ("private", "Visibility"),
-    # ("i", "Subject Matter"),
     ("organization.name", "Organization"),
     ("also_known_as", "Also known as"),
     ("data_source_names", "Data sources"),
@@ -36,7 +35,6 @@ FIELDS = [
     ("access_notes", "How to get access"),
     ("usage_restrictions", "Usage restrictions"),
     ("dataset_notes", "Dataset notes"),
-    # ("i", "Dataset Last Modified Date"),
     ("obfuscated_title", "Obfuscated title"),
     ("transfer_details", "Transfer details"),
     ("transfer_initial_size", "Transfer initial size (MB)"),
@@ -62,6 +60,16 @@ FIELDS = [
     ("legal_notes","Legal: Notes"),
     ("pra_notes","PRA: Notes"),
     ("privacy_notes","Privacy: Notes"),
+    # New
+    ("website_name", "Reference Website Name"),
+    ("cleansing_rules_used", "cleansing rules used"),
+    ("dataset_last_modified_date", "Dataset Last Modified Date"),
+    ("foia_exemptions", "FOIA: Exemptions"),
+    ("foia_exemptions_notes", "FOIA Exemption Notes"),
+    ("opendata_indicator", "Open Data: open data indicator"),
+    ("opendata_priority_indicator", "Open Data: priority indicator"),
+    ("opendata_public_location", "Open Data: public location"),
+
 ]
 
 try:
