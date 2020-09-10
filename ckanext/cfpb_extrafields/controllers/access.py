@@ -97,7 +97,7 @@ class AccessController(BaseController):
                 workflow_url,
                 json=workflow_json,
                 auth=HTTPBasicAuth(workflow_user, workflow_pass),
-                verify=False
+                verify=True
             )
             flash_notice("Access request has been sent, you will recieve email updates on the status of the request as it is processed.")
         except Exception as e:
