@@ -2,12 +2,14 @@ from collections import namedtuple
 import re
 
 from openpyxl import load_workbook
-try:
-    from ckan.plugins.toolkit import Invalid
-except ImportError: # pragma: no cover
-    # If the custom exception can't be imported, use a more generic exception
-    # This happens when ckan is not installed locally, like when running unit tests on travis.
-    Invalid = Exception
+#try:
+#    from ckan.plugins.toolkit import Invalid
+#except ImportError: # pragma: no cover
+#    # If the custom exception can't be imported, use a more generic exception
+#    # This happens when ckan is not installed locally, like when running unit tests on travis.
+#    Invalid = Exception
+
+Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
 
