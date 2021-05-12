@@ -10,6 +10,7 @@ from openpyxl import load_workbook
 #    Invalid = Exception
 
 Invalid = Exception
+NotFound = StopIteration
 
 from ckanext.cfpb_extrafields import validators as v
 
@@ -196,9 +197,12 @@ def make_rec_from_sheet(ws, fields):
     for field in fields:
         try:
             result[field] = get_field(ws, field, fields)
+        except NotFound as  err:
+            errors.append(field + ": Unable to extract field from workbook - Check for duplicate or undefined cell ranges")
         except Invalid as  err:
             errors.append(field + ": " + getattr(err, "error", getattr(err, "message", "UKNOWN_ERROR")))
     return result, errors
+
 def make_rec(excel_file):
     wb = load_workbook(excel_file, read_only=True)
     version = get_schema_version(wb)
