@@ -31,12 +31,12 @@ class ImportController(BaseController):
         dig = request.POST["file"].file
         group = request.POST["group"]
         rec, errors = make_rec(dig)
-        if errors:
+        if False: #errors:
             redirect_to("import_page", errors=json.dumps(errors), group=group)
         else:
             rec["owner_org"] = group
-            rec["name"] = make_name(request.POST.get("name") or rec["title"])
-            rec["notes"] = rec["notes"] or "Record automatcially created from DIG file"
+            rec["name"] = make_name(request.POST.get("name") or rec.get("title",""))
+            rec["notes"] = rec.get("notes","") or "Record automatcially created from DIG file"
             try:
                 upload_rec(rec)
             except ValidationError as err:
