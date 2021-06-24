@@ -31,6 +31,10 @@ class ImportController(BaseController):
         dig = request.POST["file"].file
         group = request.POST["group"]
         rec, errors = make_rec(dig)
+
+        # The following takes DIG processing "errors" fields impeding intake
+        # per CDO we are allowing all DIG values through "as is" and letting
+        # CKAN do the error processing/reporting.
         if False: #errors:
             redirect_to("import_page", errors=json.dumps(errors), group=group)
         else:
