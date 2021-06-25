@@ -2,12 +2,6 @@ from collections import namedtuple
 import re
 
 from openpyxl import load_workbook
-try:
-    from ckan.plugins.toolkit import Invalid
-except ImportError: # pragma: no cover
-    # If the custom exception can't be imported, use a more generic exception
-    # This happens when ckan is not installed locally, like when running unit tests on travis.
-    Invalid = Exception
 
 from ckanext.cfpb_extrafields import validators as v
 
@@ -194,9 +188,13 @@ def make_rec_from_sheet(ws, fields):
     for field in fields:
         try:
             result[field] = get_field(ws, field, fields)
-        except Invalid as  err:
+        except NotFound as  err:
+            errors.append(field + ": Unable to extract field from workbook - Check for duplicate or undefined cell ranges")
+        except (Exception, StopIteration) as  err:
+            # Invalid or Not Found respectively
             errors.append(field + ": " + getattr(err, "error", getattr(err, "message", "UKNOWN_ERROR")))
     return result, errors
+
 def make_rec(excel_file):
     wb = load_workbook(excel_file, read_only=True)
     version = get_schema_version(wb)
