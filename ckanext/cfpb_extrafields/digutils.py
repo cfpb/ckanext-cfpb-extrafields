@@ -188,8 +188,6 @@ def make_rec_from_sheet(ws, fields):
     for field in fields:
         try:
             result[field] = get_field(ws, field, fields)
-        except NotFound as  err:
-            errors.append(field + ": Unable to extract field from workbook - Check for duplicate or undefined cell ranges")
         except (Exception, StopIteration) as  err:
             # Invalid or Not Found respectively
             errors.append(field + ": " + getattr(err, "error", getattr(err, "message", "UKNOWN_ERROR")))
